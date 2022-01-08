@@ -18,14 +18,14 @@ import java.util.ArrayList;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.animation.MoveAnimation;
 import com.tuana9a.utils.Timer;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public abstract class Entity
 {
     public static final int STAY_DIRECT = 0;
     public static final int LEFT_DIRECT = 0;
     public static final int RIGHT_DIRECT = 1;
-    public GameState gameState;
+    public GameScreen gameScreen;
     protected int id;
     protected int state;
     public int moveDirect;
@@ -63,9 +63,9 @@ public abstract class Entity
     protected void initStateAnimation() {
     }
     
-    public Entity(final GameState gameState, final int id, final double x, final double y) {
+    public Entity(final GameScreen gameScreen, final int id, final double x, final double y) {
         this.typicalTimer = new Timer();
-        this.gameState = gameState;
+        this.gameScreen = gameScreen;
         this.id = id;
         this.state = 0;
         this.updatePosition(x, y);
@@ -84,7 +84,7 @@ public abstract class Entity
     
     public void render(final Graphics g) {
         App app = App.getInstance();
-        if (this.xCam + this.actualSize.x + this.actualSize.width < 0.0 || this.xCam > this.gameState.getDisplayWidth() || this.yCam + this.actualSize.y + this.actualSize.height < 0.0 || this.yCam + this.actualSize.y > this.gameState.getDisplayHeight()) {
+        if (this.xCam + this.actualSize.x + this.actualSize.width < 0.0 || this.xCam > this.gameScreen.getDisplayWidth() || this.yCam + this.actualSize.y + this.actualSize.height < 0.0 || this.yCam + this.actualSize.y > this.gameScreen.getDisplayHeight()) {
             return;
         }
         final Graphics2D g2d = (Graphics2D)g.create();
@@ -180,8 +180,8 @@ public abstract class Entity
         final Graphics2D g2d = (Graphics2D)g.create();
         g2d.setColor(Color.RED);
         final Enemy e = (Enemy)this;
-        final double x = this.gameState.getGameCamera().getCamRenderX(e.workingArea.x);
-        final double y = this.gameState.getGameCamera().getCamRenderY(e.workingArea.y);
+        final double x = this.gameScreen.getGameCamera().getCamRenderX(e.workingArea.x);
+        final double y = this.gameScreen.getGameCamera().getCamRenderY(e.workingArea.y);
         g2d.drawRect((int)x, (int)y, e.workingArea.width, e.workingArea.height);
     }
     
@@ -259,8 +259,8 @@ public abstract class Entity
     }
     
     public void updatePositionCam() {
-        this.xCam = this.gameState.getGameCamera().getCamRenderX(this.x);
-        this.yCam = this.gameState.getGameCamera().getCamRenderY(this.y);
+        this.xCam = this.gameScreen.getGameCamera().getCamRenderX(this.x);
+        this.yCam = this.gameScreen.getGameCamera().getCamRenderY(this.y);
         this.updateRotatePositionCam();
     }
     
@@ -276,8 +276,8 @@ public abstract class Entity
     }
     
     public void updateRotatePositionCam() {
-        this.xRotateCam = this.gameState.getGameCamera().getCamRenderX(this.x + this.xRotateRelX);
-        this.yRotateCam = this.gameState.getGameCamera().getCamRenderY(this.y + this.yRotateRelY);
+        this.xRotateCam = this.gameScreen.getGameCamera().getCamRenderX(this.x + this.xRotateRelX);
+        this.yRotateCam = this.gameScreen.getGameCamera().getCamRenderY(this.y + this.yRotateRelY);
     }
     
     public Rectangle actualSize(final double xOffset, final double yOffset) {

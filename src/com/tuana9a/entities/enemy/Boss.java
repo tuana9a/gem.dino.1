@@ -15,12 +15,12 @@ import com.tuana9a.abilities.SkillSpawnChild;
 import com.tuana9a.utils.Timer;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.graphic.Assets;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public class Boss extends Enemy
 {
-    public Boss(final GameState gameState, final int enemyId, final double x, final double y) {
-        super(gameState, enemyId, x, y);
+    public Boss(final GameScreen gameScreen, final int enemyId, final double x, final double y) {
+        super(gameScreen, enemyId, x, y);
     }
     
     @Override
@@ -46,27 +46,27 @@ public class Boss extends Enemy
                     final int randomId = (int)(Math.random() * 3.0 - 1.0);
                     final double temp = ConfigEnemy.widths[randomId] / 2.0;
                     if (Enemy.isHard(randomId)) {
-                        children[i] = new HardEnemy(Boss.this.gameState, randomId, startX - temp, startY);
+                        children[i] = new HardEnemy(Boss.this.gameScreen, randomId, startX - temp, startY);
                     }
                     else {
-                        children[i] = new NormalEnemy(Boss.this.gameState, randomId, startX - temp, startY);
+                        children[i] = new NormalEnemy(Boss.this.gameScreen, randomId, startX - temp, startY);
                     }
                 }
                 final Weapon[] enemyWeapons = new Weapon[size];
                 for (int j = 0; j < size; ++j) {
                     final int randomWeaponId = j % 5;
                     if (Weapon.isShootWeapon(randomWeaponId)) {
-                        enemyWeapons[j] = new Shoot(Boss.this.gameState, randomWeaponId, children[j]);
+                        enemyWeapons[j] = new Shoot(Boss.this.gameScreen, randomWeaponId, children[j]);
                     }
                     else if (Weapon.isSword(randomWeaponId)) {
-                        enemyWeapons[j] = new Sword(Boss.this.gameState, randomWeaponId, children[j]);
+                        enemyWeapons[j] = new Sword(Boss.this.gameScreen, randomWeaponId, children[j]);
                     }
                     else if (Weapon.isSpear(randomWeaponId)) {
-                        enemyWeapons[j] = new Spear(Boss.this.gameState, randomWeaponId, children[j]);
+                        enemyWeapons[j] = new Spear(Boss.this.gameScreen, randomWeaponId, children[j]);
                     }
                 }
-                Boss.this.gameState.getStage().getEntityManager().addAllEntities((Entity[])children);
-                Boss.this.gameState.getStage().getEntityManager().addAllEntities((Entity[])enemyWeapons);
+                Boss.this.gameScreen.getStage().getEntityManager().addAllEntities((Entity[])children);
+                Boss.this.gameScreen.getStage().getEntityManager().addAllEntities((Entity[])enemyWeapons);
             }
         };
     }
@@ -74,7 +74,7 @@ public class Boss extends Enemy
     @Override
     public void hitBy(final WeaponOut wo) {
         super.hitBy(wo);
-        this.gameState.updateUiBossHp(this.health);
+        this.gameScreen.updateUiBossHp(this.health);
     }
     
     @Override

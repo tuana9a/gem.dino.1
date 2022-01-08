@@ -4,11 +4,10 @@
 
 package com.tuana9a.entities;
 
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.MoveAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.configs.ConfigStaticObject;
-import com.tuana9a.entities.StaticEntity;
 
 public class StaticObject extends StaticEntity
 {
@@ -28,8 +27,8 @@ public class StaticObject extends StaticEntity
         this.moveAnimation = new MoveAnimation(Assets.staticObjects[staticObjectId]);
     }
     
-    public StaticObject(final GameState gameState, final int staticObjectId, final double x, final double y) {
-        super(gameState, staticObjectId, x, y);
+    public StaticObject(final GameScreen gameScreen, final int staticObjectId, final double x, final double y) {
+        super(gameScreen, staticObjectId, x, y);
         this.moveDirect = 0;
     }
     

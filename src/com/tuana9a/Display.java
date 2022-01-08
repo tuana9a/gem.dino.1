@@ -4,18 +4,20 @@
 
 package com.tuana9a;
 
-import com.tuana9a.state.ErrorState;
-import com.tuana9a.state.GameState;
-import com.tuana9a.state.LoadState;
-import com.tuana9a.state.MenuState;
+import com.tuana9a.screen.ErrorScreen;
+import com.tuana9a.screen.GameScreen;
+import com.tuana9a.screen.LoadScreen;
+import com.tuana9a.screen.MenuScreen;
 
-import java.awt.Toolkit;
-import java.awt.Canvas;
+import java.awt.*;
 import javax.swing.*;
-import java.awt.Dimension;
 
 public class Display {
     private static final Display instance = new Display("GemDino", 1280, 720);
+
+    private String tittle;
+    private int width;
+    private int height;
 
     private final int MAX_WIDTH;
     private final int MAX_HEIGHT;
@@ -25,9 +27,8 @@ public class Display {
     private boolean fullScreen;
     private final JFrame jFrame;
     private final Canvas canvas;
-    private String tittle;
-    private int width;
-    private int height;
+    private Graphics graphics;
+
 
     public Display(final String tittle, final int width, final int height) {
         this.tittle = tittle;
@@ -46,10 +47,22 @@ public class Display {
         this.resize(width, height);
         this.jFrame.add(this.canvas);
         this.jFrame.setVisible(true);
+        this.canvas.createBufferStrategy(3);
     }
 
     public static Display getInstance() {
         return instance;
+    }
+
+    public void resetFrame() {
+        Display display = Display.getInstance();
+        this.graphics = display.getCanvas().getBufferStrategy().getDrawGraphics();
+        this.graphics.clearRect(0, 0, display.getWidth(), display.getHeight());
+    }
+
+    public void showFrame() {
+        Display display = Display.getInstance();
+        display.getCanvas().getBufferStrategy().show();
     }
 
     private void resize(final int width, final int height) {
@@ -62,10 +75,10 @@ public class Display {
     }
 
     private void updateUiPositionWhenResize() {
-        MenuState.getInstance().getUiManager().updateAllWhenScreenResize();
-        GameState.getInstance().getUiManager().updateAllWhenScreenResize();
-        ErrorState.getInstance().getUiManager().updateAllWhenScreenResize();
-        LoadState.getInstance().getUiManager().updateAllWhenScreenResize();
+        MenuScreen.getInstance().getUiManager().updateAllWhenScreenResize();
+        GameScreen.getInstance().getUiManager().updateAllWhenScreenResize();
+        ErrorScreen.getInstance().getUiManager().updateAllWhenScreenResize();
+        LoadScreen.getInstance().getUiManager().updateAllWhenScreenResize();
     }
 
     public void fullScreen() {
@@ -94,6 +107,7 @@ public class Display {
         this.updateUiPositionWhenResize();
     }
 
+    // getter setter
     public int getWidth() {
         return this.width;
     }
@@ -116,5 +130,9 @@ public class Display {
 
     public void setTittle(String tittle) {
         this.tittle = tittle;
+    }
+
+    public Graphics getGraphics() {
+        return graphics;
     }
 }

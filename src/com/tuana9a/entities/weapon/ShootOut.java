@@ -8,7 +8,7 @@ import com.tuana9a.entities.StaticObject;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.entities.Animal;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 import com.tuana9a.entities.Entity;
 
 public class ShootOut extends WeaponOut
@@ -19,8 +19,8 @@ public class ShootOut extends WeaponOut
     protected double hitRadianRotate;
     protected int hitDirect;
     
-    public ShootOut(final GameState gameState, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
-        super(gameState, weaponOutId, fromWeapon, owner);
+    public ShootOut(final GameScreen gameScreen, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
+        super(gameScreen, weaponOutId, fromWeapon, owner);
     }
     
     @Override
@@ -45,7 +45,7 @@ public class ShootOut extends WeaponOut
     @Override
     protected void typicalUpdate() {
         if (this.hitEntity != null) {
-            if (!this.gameState.getStage().getEntityManager().isManage(this.hitEntity)) {
+            if (!this.gameScreen.getStage().getEntityManager().isManage(this.hitEntity)) {
                 this.state = 2;
             }
             this.updatePosition(this.hitEntity.x + this.hitDeltaX, this.hitEntity.y + this.hitDeltaY);

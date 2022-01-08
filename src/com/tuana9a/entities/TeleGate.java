@@ -4,18 +4,18 @@
 
 package com.tuana9a.entities;
 
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public class TeleGate extends StaticObject
 {
     private final String mapId;
     
-    public TeleGate(final GameState gameState, final int staticObjectId, final double x, final double y, final String mapId) {
-        super(gameState, staticObjectId, x, y);
+    public TeleGate(final GameScreen gameScreen, final int staticObjectId, final double x, final double y, final String mapId) {
+        super(gameScreen, staticObjectId, x, y);
         this.mapId = mapId;
     }
     
     public void teleToNewMap() {
-        this.gameState.getStage().teleportToNewMap(this.mapId);
+        this.gameScreen.getStage().teleportToNewMap(this.mapId);
     }
 }

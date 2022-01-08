@@ -20,22 +20,22 @@ import com.tuana9a.configs.ConfigEnemy;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.App;
 import com.tuana9a.entities.weapon.Weapon;
-import com.tuana9a.state.LoadState;
+import com.tuana9a.screen.LoadScreen;
 import com.tuana9a.utils.Loading;
 import com.tuana9a.entities.Entity;
 import com.tuana9a.entities.player.Player;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public class Stage {
-    private GameState gameState;
+    private GameScreen gameScreen;
     private final Map currentMap;
     private EntityManager entityManager;
     private Player player;
 
-    public Stage(final GameState gameState) {
-        this.gameState = gameState;
-        this.entityManager = new EntityManager(gameState);
-        this.currentMap = new Map(gameState);
+    public Stage(final GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+        this.entityManager = new EntityManager(gameScreen);
+        this.currentMap = new Map(gameScreen);
     }
 
     public void resetEntityManagerAll() {
@@ -59,7 +59,7 @@ public class Stage {
         this.resetEntityManagerAll();
         this.player.updatePosition(this.currentMap.getPixelSpawnX(), this.currentMap.getPixelSpawnY());
         this.player.reborn();
-        this.gameState.updateUiPayerHp(this.player.getHealth());
+        this.gameScreen.updateUiPayerHp(this.player.getHealth());
         this.entityManager.addEntity(this.player);
         this.entityManager.setPlayer(this.player);
         this.initEntitiesWithMap();
@@ -71,9 +71,9 @@ public class Stage {
         this.resetEntityManagerAll();
         this.currentMap.loading = new Loading(10, 0, 100L);
         final App app = App.getInstance();
-        LoadState loadState = LoadState.getInstance();
-        app.switchToState(loadState);
-        loadState.initLoadState(this.currentMap.loading);
+        LoadScreen loadScreen = LoadScreen.getInstance();
+        app.switchToState(loadScreen);
+        loadScreen.initLoadState(this.currentMap.loading);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -85,9 +85,9 @@ public class Stage {
                 if (newPlayer == null) {
                     final int playerId = Stage.this.currentMap.getPlayerId();
                     if (playerId == -1) {
-                        Stage.this.player = new Player(Stage.this.gameState, 0, Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
+                        Stage.this.player = new Player(Stage.this.gameScreen, 0, Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
                     } else {
-                        Stage.this.player = new Player(Stage.this.gameState, playerId, Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
+                        Stage.this.player = new Player(Stage.this.gameScreen, playerId, Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
                     }
                 } else {
                     Stage.this.player = newPlayer;
@@ -110,9 +110,9 @@ public class Stage {
         this.player.clearIntersects();
         this.currentMap.loading = new Loading(10, 0, 100L);
         final App app = App.getInstance();
-        LoadState loadState = LoadState.getInstance();
-        app.switchToState(loadState);
-        loadState.initLoadState(this.currentMap.loading);
+        LoadScreen loadScreen = LoadScreen.getInstance();
+        app.switchToState(loadScreen);
+        loadScreen.initLoadState(this.currentMap.loading);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -140,7 +140,7 @@ public class Stage {
     }
 
     public void initEntitiesWithMap() {
-        this.gameState.notBossStage();
+        this.gameScreen.notBossStage();
         final int enemyNumber = this.currentMap.getEnemyNumber();
         final int[][] enemiesInfo = this.currentMap.getEnemiesInfo();
         final Enemy[] enemies = new Enemy[enemyNumber];
@@ -148,22 +148,22 @@ public class Stage {
         for (int i = 0; i < enemyNumber; ++i) {
             final int[] info = enemiesInfo[i];
             if (Enemy.isBoss(info[0])) {
-                this.gameState.isBossStage(ConfigEnemy.healths[info[0]]);
-                enemies[i] = new Boss(this.gameState, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                this.gameScreen.isBossStage(ConfigEnemy.healths[info[0]]);
+                enemies[i] = new Boss(this.gameScreen, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else if (Enemy.isHard(info[0])) {
-                enemies[i] = new HardEnemy(this.gameState, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                enemies[i] = new HardEnemy(this.gameScreen, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else {
-                enemies[i] = new NormalEnemy(this.gameState, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                enemies[i] = new NormalEnemy(this.gameScreen, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             }
         }
         for (int i = 0; i < enemyNumber; ++i) {
             final int randomWeaponId = i % 5;
             if (Weapon.isShootWeapon(randomWeaponId)) {
-                enemyWeapons[i] = new Shoot(this.gameState, randomWeaponId, enemies[i]);
+                enemyWeapons[i] = new Shoot(this.gameScreen, randomWeaponId, enemies[i]);
             } else if (Weapon.isSword(randomWeaponId)) {
-                enemyWeapons[i] = new Sword(this.gameState, randomWeaponId, enemies[i]);
+                enemyWeapons[i] = new Sword(this.gameScreen, randomWeaponId, enemies[i]);
             } else if (Weapon.isSpear(randomWeaponId)) {
-                enemyWeapons[i] = new Spear(this.gameState, randomWeaponId, enemies[i]);
+                enemyWeapons[i] = new Spear(this.gameScreen, randomWeaponId, enemies[i]);
             }
         }
         final int weaponNumber = this.currentMap.getWeaponNumber();
@@ -172,11 +172,11 @@ public class Stage {
         for (int j = 0; j < weaponNumber; ++j) {
             final int[] info2 = aloneWeaponsInfo[j];
             if (Weapon.isShootWeapon(info2[0])) {
-                aloneWeapons[j] = new Shoot(this.gameState, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
+                aloneWeapons[j] = new Shoot(this.gameScreen, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             } else if (Weapon.isSword(info2[0])) {
-                aloneWeapons[j] = new Sword(this.gameState, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
+                aloneWeapons[j] = new Sword(this.gameScreen, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             } else if (Weapon.isSpear(info2[0])) {
-                aloneWeapons[j] = new Spear(this.gameState, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
+                aloneWeapons[j] = new Spear(this.gameScreen, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             }
         }
         final StaticObject[] statics = new StaticObject[this.currentMap.getStaticObjectNumber() + 1];
@@ -184,9 +184,9 @@ public class Stage {
         for (int k = 0; k < staticsInfo.length; ++k) {
             final int[] info3 = staticsInfo[k];
             if (Ground.isTeleAbove(info3[0])) {
-                statics[k] = new TeleGate(this.gameState, info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], this.currentMap.nextMapId);
+                statics[k] = new TeleGate(this.gameScreen, info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], this.currentMap.nextMapId);
             } else {
-                statics[k] = new StaticObject(this.gameState, info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]]);
+                statics[k] = new StaticObject(this.gameScreen, info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]]);
             }
         }
         this.entityManager.addAllEntities(new Entity[][]{enemies, enemyWeapons, aloneWeapons, statics});

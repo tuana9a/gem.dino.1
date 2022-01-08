@@ -9,21 +9,21 @@ import java.util.ArrayList;
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.utils.Algebra;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public class AnimalVision
 {
     private final Animal owner;
     private final int eyeSize;
     private double maxDistance;
-    private final GameState gameState;
+    private final GameScreen gameScreen;
     private double x;
     private double y;
     
-    public AnimalVision(final GameState gameState, final Animal owner) {
+    public AnimalVision(final GameScreen gameScreen, final Animal owner) {
         this.eyeSize = 20;
         this.maxDistance = 1000.0;
-        this.gameState = gameState;
+        this.gameScreen = gameScreen;
         this.owner = owner;
     }
     
@@ -40,7 +40,7 @@ public class AnimalVision
         final int speed = 20;
         final double xMove = speed * Math.cos(radianToEntity);
         final double yMove = speed * Math.sin(radianToEntity);
-        final ArrayList<Entity> allEntities = this.gameState.getStage().getEntityManager().getAllEntities();
+        final ArrayList<Entity> allEntities = this.gameScreen.getStage().getEntityManager().getAllEntities();
         do {
             for (final Entity e : allEntities) {
                 if (e != null && e != this.owner && !(e instanceof Weapon)) {

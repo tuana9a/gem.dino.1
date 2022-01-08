@@ -2,8 +2,9 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.state;
+package com.tuana9a.screen;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import com.tuana9a.animation.UiAnimation;
@@ -14,8 +15,8 @@ import com.tuana9a.ui.UiProgressBar;
 import com.tuana9a.utils.Timer;
 import com.tuana9a.utils.Loading;
 
-public class LoadState extends AppState {
-    private static final LoadState instance = new LoadState();
+public class LoadScreen extends BaseScreen {
+    private static final LoadScreen instance = new LoadScreen();
 
     public static final long MAX_TIME_OUT = 5000L;
     public Loading loading;
@@ -25,10 +26,10 @@ public class LoadState extends AppState {
     private UiProgressBar uiProgressBar;
     private UiImageAnimation uiProgressAnimation;
 
-    private LoadState() {
+    private LoadScreen() {
     }
 
-    public static LoadState getInstance() {
+    public static LoadScreen getInstance() {
         return instance;
     }
 
@@ -94,16 +95,17 @@ public class LoadState extends AppState {
             return;
         }
         this.refreshTimer.reset();
-        this.resetFrame();
-        this.uiManager.renderAll(this.graphics);
-        this.showFrame();
+        resetFrame();
+        Graphics g = getGraphics();
+        this.uiManager.renderAll(g);
+        showFrame();
     }
 
     public void onError(final ArrayList<String> messages) {
         App app = App.getInstance();
-        ErrorState errorState = ErrorState.getInstance();
-        app.switchToState(errorState);
-        errorState.addErrors(messages);
+        ErrorScreen errorScreen = ErrorScreen.getInstance();
+        app.switchToState(errorScreen);
+        errorScreen.addErrors(messages);
     }
 
     public void onComplete() {

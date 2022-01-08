@@ -4,7 +4,7 @@
 
 package com.tuana9a.entities;
 
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public abstract class MovingEntity extends Entity
 {
@@ -12,8 +12,8 @@ public abstract class MovingEntity extends Entity
     public double xMove;
     public double yMove;
     
-    public MovingEntity(final GameState gameState, final int id, final double x, final double y) {
-        super(gameState, id, x, y);
+    public MovingEntity(final GameScreen gameScreen, final int id, final double x, final double y) {
+        super(gameScreen, id, x, y);
     }
     
     public abstract void move();

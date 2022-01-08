@@ -10,10 +10,10 @@ import java.awt.Graphics;
 
 import com.tuana9a.utils.Utility;
 import com.tuana9a.utils.Loading;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public class Map {
-    private final GameState gameState;
+    private final GameScreen gameScreen;
     private int width;
     private int height;
     public String mapId;
@@ -32,8 +32,8 @@ public class Map {
     public static final int FULL_PROCESS = 10;
     public static final long TIME_SIMULATOR = 100L;
 
-    public Map(final GameState gameState) {
-        this.gameState = gameState;
+    public Map(final GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
     }
 
     public void loadMapById(String mapId) {
@@ -115,13 +115,13 @@ public class Map {
     }
 
     public void render(final Graphics g) {
-        final int startColumn = (int) Math.max(0.0, this.gameState.getGameCamera().getxOffset() / 64.0);
-        final int endColumn = (int) Math.min(this.width, (this.gameState.getGameCamera().getxOffset() + this.gameState.getDisplayWidth()) / 64.0 + 1.0);
-        final int startRow = (int) Math.max(0.0, this.gameState.getGameCamera().getyOffset() / 64.0);
-        for (int endRow = (int) Math.min(this.height, (this.gameState.getGameCamera().getyOffset() + this.gameState.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
+        final int startColumn = (int) Math.max(0.0, this.gameScreen.getGameCamera().getxOffset() / 64.0);
+        final int endColumn = (int) Math.min(this.width, (this.gameScreen.getGameCamera().getxOffset() + this.gameScreen.getDisplayWidth()) / 64.0 + 1.0);
+        final int startRow = (int) Math.max(0.0, this.gameScreen.getGameCamera().getyOffset() / 64.0);
+        for (int endRow = (int) Math.min(this.height, (this.gameScreen.getGameCamera().getyOffset() + this.gameScreen.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
             for (int column = startColumn; column < endColumn; ++column) {
-                final int cameraRenderX = (int) (column * 64 - this.gameState.getGameCamera().getxOffset());
-                final int cameraRenderY = (int) (row * 64 - this.gameState.getGameCamera().getyOffset());
+                final int cameraRenderX = (int) (column * 64 - this.gameScreen.getGameCamera().getxOffset());
+                final int cameraRenderY = (int) (row * 64 - this.gameScreen.getGameCamera().getyOffset());
                 this.getGround(row, column).render(g, cameraRenderX, cameraRenderY);
             }
         }

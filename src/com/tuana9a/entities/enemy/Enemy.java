@@ -12,7 +12,7 @@ import com.tuana9a.entities.weapon.Sword;
 import com.tuana9a.entities.player.Player;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.Entity;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.MoveAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.configs.ConfigEnemy;
@@ -50,8 +50,8 @@ public abstract class Enemy extends Animal
         super.initStateAnimation();
     }
     
-    public Enemy(final GameState gameState, final int enemyId, final double x, final double y) {
-        super(gameState, enemyId, x, y);
+    public Enemy(final GameScreen gameScreen, final int enemyId, final double x, final double y) {
+        super(gameScreen, enemyId, x, y);
         this.vision.setMaxDistance(ConfigEnemy.eyeDistances[enemyId]);
     }
     
@@ -109,7 +109,7 @@ public abstract class Enemy extends Animal
             return;
         }
         this.typicalTimer.reset();
-        final Player player = this.gameState.getStage().getPlayer();
+        final Player player = this.gameScreen.getStage().getPlayer();
         if (this.canSee(player)) {
             this.updateMoveScripted(player);
             this.updateWorkingArea((int)(this.x - this.workingArea.width / 2), (int)(this.y - this.workingArea.height / 2), this.workingArea.width, this.workingArea.height);

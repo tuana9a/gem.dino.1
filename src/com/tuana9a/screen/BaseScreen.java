@@ -2,7 +2,7 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.state;
+package com.tuana9a.screen;
 
 import com.tuana9a.Display;
 import com.tuana9a.ui.UiManager;
@@ -10,20 +10,20 @@ import com.tuana9a.utils.Timer;
 
 import java.awt.*;
 
-public abstract class AppState {
+public class BaseScreen {
     public static final long DEFAULT_REFRESH_TIME = 10L;
-    protected Graphics graphics;
     protected Timer refreshTimer;
     protected UiManager uiManager;
 
-    public AppState() {
+    public BaseScreen() {
         this.refreshTimer = new Timer(DEFAULT_REFRESH_TIME);
         this.uiManager = new UiManager();
-        Display.getInstance().getCanvas().createBufferStrategy(3);
         this.initUi();
     }
 
-    public abstract void initUi();
+    public void initUi() {
+
+    }
 
     public void changeCursor() {
     }
@@ -31,24 +31,32 @@ public abstract class AppState {
     public void changeFont() {
     }
 
-    public abstract void update();
+    public void update() {
 
-    public abstract void render();
+    }
 
-    public UiManager getUiManager() {
-        return this.uiManager;
+    public void render() {
+
     }
 
     protected void resetFrame() {
         Display display = Display.getInstance();
-        this.graphics = display.getCanvas().getBufferStrategy().getDrawGraphics();
-        this.graphics.clearRect(0, 0, display.getWidth(), display.getHeight());
+        display.resetFrame();
     }
 
     protected void showFrame() {
         Display display = Display.getInstance();
-        display.getCanvas().getBufferStrategy().show();
-        this.graphics.dispose();
+        display.showFrame();
+    }
+
+    protected Graphics getGraphics() {
+        Display display = Display.getInstance();
+        return display.getGraphics();
+    }
+
+    // getter setter
+    public UiManager getUiManager() {
+        return this.uiManager;
     }
 
     public int getDisplayWidth() {

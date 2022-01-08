@@ -6,7 +6,7 @@ package com.tuana9a.ui;
 
 import com.tuana9a.utils.Utility;
 import java.awt.Graphics;
-import com.tuana9a.state.AppState;
+import com.tuana9a.screen.BaseScreen;
 import java.awt.image.BufferedImage;
 
 public class UiNumber extends UiComponent
@@ -14,7 +14,7 @@ public class UiNumber extends UiComponent
     BufferedImage[] imagesNumbers;
     private int number;
     
-    public UiNumber(final AppState state, final double x, final double y, final int height, final BufferedImage[] imagesNumbers) {
+    public UiNumber(final BaseScreen state, final double x, final double y, final int height, final BufferedImage[] imagesNumbers) {
         super(state, x, y, 0, height);
         this.imagesNumbers = imagesNumbers;
     }

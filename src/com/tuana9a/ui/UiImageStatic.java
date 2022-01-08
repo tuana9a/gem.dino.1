@@ -6,16 +6,14 @@ package com.tuana9a.ui;
 
 import java.awt.Graphics;
 
-import com.tuana9a.state.AppState;
+import com.tuana9a.screen.BaseScreen;
 
 import java.awt.image.BufferedImage;
-
-import com.tuana9a.ui.UiComponent;
 
 public class UiImageStatic extends UiComponent {
     private final BufferedImage image;
 
-    public UiImageStatic(final AppState state, final double x, final double y, final int width, final int height, final BufferedImage image) {
+    public UiImageStatic(final BaseScreen state, final double x, final double y, final int width, final int height, final BufferedImage image) {
         super(state, x, y, width, height);
         this.image = image;
     }

@@ -7,12 +7,12 @@ package com.tuana9a.entities.weapon;
 import com.tuana9a.entities.Entity;
 import com.tuana9a.utils.Algebra;
 import com.tuana9a.entities.Animal;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public class SwordOut extends WeaponOut
 {
-    public SwordOut(final GameState gameState, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
-        super(gameState, weaponOutId, fromWeapon, owner);
+    public SwordOut(final GameScreen gameScreen, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
+        super(gameScreen, weaponOutId, fromWeapon, owner);
     }
     
     @Override

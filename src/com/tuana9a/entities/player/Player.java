@@ -9,7 +9,7 @@ import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.TeleGate;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.Entity;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.animation.MoveAnimation;
 import com.tuana9a.graphic.Assets;
@@ -41,9 +41,9 @@ public class Player extends Animal {
         this.allStateAnimations[Player.HIT] = new StateAnimation(Assets.emoteFaceSad, new double[][]{{(this.width - 32) / 2.0f, -32.0}, {(this.width - 32) / 2.0f, -32.0}}, 32.0, 32.0);
     }
 
-    public Player(final GameState gameState, final int playerId, final double x, final double y) {
-        super(gameState, playerId, x, y);
-        gameState.updateUiPayerHp(this.health);
+    public Player(final GameScreen gameScreen, final int playerId, final double x, final double y) {
+        super(gameScreen, playerId, x, y);
+        gameScreen.updateUiPayerHp(this.health);
     }
 
     private void updateMoveKeyboard() {
@@ -104,7 +104,7 @@ public class Player extends Animal {
     @Override
     public void hitBy(final WeaponOut wo) {
         super.hitBy(wo);
-        this.gameState.updateUiPayerHp(this.health);
+        this.gameScreen.updateUiPayerHp(this.health);
     }
 
     @Override

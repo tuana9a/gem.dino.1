@@ -2,9 +2,9 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.state;
+package com.tuana9a.screen;
 
-import java.awt.Graphics2D;
+import java.awt.*;
 
 import com.tuana9a.ui.UiImageStatic;
 import com.tuana9a.graphic.Assets;
@@ -12,16 +12,16 @@ import com.tuana9a.graphic.Assets;
 import java.util.Arrays;
 import java.util.ArrayList;
 
-public class ErrorState extends AppState {
-    private static final ErrorState instance = new ErrorState();
+public class ErrorScreen extends BaseScreen {
+    private static final ErrorScreen instance = new ErrorScreen();
 
     public ArrayList<String> errorMessages;
 
-    private ErrorState() {
+    private ErrorScreen() {
         this.errorMessages = new ArrayList<>();
     }
 
-    public static ErrorState getInstance() {
+    public static ErrorScreen getInstance() {
         return instance;
     }
 
@@ -52,22 +52,19 @@ public class ErrorState extends AppState {
     }
 
     @Override
-    public void update() {
-    }
-
-    @Override
     public void render() {
         if (!this.refreshTimer.isTime()) {
             return;
         }
-        this.resetFrame();
-        this.uiManager.renderAll(this.graphics);
-        this.writeErrors();
-        this.showFrame();
+        resetFrame();
+        Graphics g = getGraphics();
+        this.uiManager.renderAll(g);
+        this.writeErrors(g);
+        showFrame();
     }
 
-    public void writeErrors() {
-        final Graphics2D g2d = (Graphics2D) this.graphics;
+    public void writeErrors(Graphics g) {
+        final Graphics2D g2d = (Graphics2D) g;
         final int screenW = this.getDisplayWidth();
         final int screenH = this.getDisplayHeight();
         final int halfW = screenW / 2;

@@ -8,7 +8,7 @@ import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.game.Map;
 import com.tuana9a.entities.enemy.Enemy;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.abilities.Skill;
 import com.tuana9a.utils.Timer;
@@ -39,11 +39,11 @@ public abstract class Animal extends MovingEntity
         this.allStateAnimations = new StateAnimation[Animal.STATE_NUMBER];
     }
     
-    public Animal(final GameState gameState, final int id, final double x, final double y) {
-        super(gameState, id, x, y);
+    public Animal(final GameScreen gameScreen, final int id, final double x, final double y) {
+        super(gameScreen, id, x, y);
         this.deadTime = new Timer();
         this.effectTime = new Timer();
-        this.vision = new AnimalVision(gameState, this);
+        this.vision = new AnimalVision(gameScreen, this);
         this.hand = new AnimalHand(this);
         this.initSkills();
     }
@@ -84,7 +84,7 @@ public abstract class Animal extends MovingEntity
         final int columnRightOrigin = (int)(right / 64.0);
         final int rowTopOrigin = (int)(top / 64.0);
         final int rowBottomOrigin = (int)(bottom / 64.0);
-        final Map map = this.gameState.getStage().getCurrentMap();
+        final Map map = this.gameScreen.getStage().getCurrentMap();
         final int rowTopCheck = (int)Math.floor((top + this.yMove) / 64.0);
         final int rowBottomCheck = (int)Math.floor((bottom + this.yMove) / 64.0);
         final int columnLeftCheck = (int)Math.floor((left + this.xMove) / 64.0);

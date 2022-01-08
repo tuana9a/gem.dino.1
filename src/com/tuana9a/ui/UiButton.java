@@ -7,16 +7,14 @@ package com.tuana9a.ui;
 import java.awt.Graphics2D;
 import java.awt.Graphics;
 
-import com.tuana9a.state.AppState;
-import com.tuana9a.ui.ActionListener;
+import com.tuana9a.screen.BaseScreen;
 import com.tuana9a.animation.UiAnimation;
-import com.tuana9a.ui.UiComponent;
 
 public class UiButton extends UiComponent {
     private final UiAnimation animation;
     private final ActionListener actionListener;
 
-    public UiButton(final AppState state, final double x, final double y, final int width, final int height, final UiAnimation animation, final ActionListener actionListener) {
+    public UiButton(final BaseScreen state, final double x, final double y, final int width, final int height, final UiAnimation animation, final ActionListener actionListener) {
         super(state, x, y, width, height);
         this.animation = animation;
         this.actionListener = actionListener;

@@ -6,16 +6,16 @@ package com.tuana9a.game;
 
 import com.tuana9a.App;
 import com.tuana9a.entities.Entity;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public class GameCamera {
     private double xOffset;
     private double yOffset;
     private final double speed;
-    private final GameState gameState;
+    private final GameScreen gameScreen;
 
-    public GameCamera(final GameState gameState) {
-        this.gameState = gameState;
+    public GameCamera(final GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
         this.speed = 4.0;
     }
 
@@ -45,16 +45,16 @@ public class GameCamera {
     }
 
     public void centerOnEntity(final Entity e) {
-        this.xOffset = e.x - this.gameState.getDisplayWidth() / 2.0 + e.width / 2.0;
-        this.yOffset = e.y - this.gameState.getDisplayHeight() / 2.0 + e.height / 2.0;
+        this.xOffset = e.x - this.gameScreen.getDisplayWidth() / 2.0 + e.width / 2.0;
+        this.yOffset = e.y - this.gameScreen.getDisplayHeight() / 2.0 + e.height / 2.0;
         this.checkBlankSpace();
     }
 
     public void checkBlankSpace() {
-        final int mapWidth = this.gameState.getStage().getCurrentMap().getMapPixelWidth();
-        final int mapHeight = this.gameState.getStage().getCurrentMap().getMapPixelHeight();
-        final int screenWidth = this.gameState.getDisplayWidth();
-        final int screenHeight = this.gameState.getDisplayHeight();
+        final int mapWidth = this.gameScreen.getStage().getCurrentMap().getMapPixelWidth();
+        final int mapHeight = this.gameScreen.getStage().getCurrentMap().getMapPixelHeight();
+        final int screenWidth = this.gameScreen.getDisplayWidth();
+        final int screenHeight = this.gameScreen.getDisplayHeight();
         final double maxOffsetX = mapWidth - screenWidth;
         final double maxOffsetY = mapHeight - screenHeight;
         if (this.xOffset < 0.0) {

@@ -2,13 +2,10 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.state;
+package com.tuana9a.screen;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.Point;
-import java.awt.Toolkit;
 
 import com.tuana9a.Display;
 import com.tuana9a.utils.Utility;
@@ -18,13 +15,13 @@ import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.App;
 
-public class MenuState extends AppState {
-    private static final MenuState instance = new MenuState();
+public class MenuScreen extends BaseScreen {
+    private static final MenuScreen instance = new MenuScreen();
 
-    private MenuState() {
+    private MenuScreen() {
     }
 
-    public static MenuState getInstance() {
+    public static MenuScreen getInstance() {
         return instance;
     }
 
@@ -47,9 +44,9 @@ public class MenuState extends AppState {
             @Override
             public void performAction() {
                 synchronized (app) {
-                    GameState gameState = GameState.getInstance();
-                    app.switchToState(gameState);
-                    gameState.startGame();
+                    GameScreen gameScreen = GameScreen.getInstance();
+                    app.switchToState(gameScreen);
+                    gameScreen.startGame();
                 }
             }
         });
@@ -108,9 +105,9 @@ public class MenuState extends AppState {
         if (!this.refreshTimer.isTime()) {
             return;
         }
+        resetFrame();
         this.refreshTimer.reset();
-        this.resetFrame();
-        this.uiManager.renderAll(this.graphics);
-        this.showFrame();
+        this.uiManager.renderAll(getGraphics());
+        showFrame();
     }
 }

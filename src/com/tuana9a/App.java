@@ -7,25 +7,26 @@ package com.tuana9a;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.input.MouseManager;
 import com.tuana9a.input.KeyboardManager;
-import com.tuana9a.state.LoadState;
-import com.tuana9a.state.MenuState;
-import com.tuana9a.state.AppState;
+import com.tuana9a.screen.LoadScreen;
+import com.tuana9a.screen.MenuScreen;
+import com.tuana9a.screen.BaseScreen;
+import com.tuana9a.utils.Timer;
 
 public class App implements Runnable {
-    private static final App instance = new App("GemDino", 1280, 720);
+    private static final App instance = new App();
 
     private boolean running;
-    public String tittle;
-    private AppState currentState;
-    private AppState lastState;
+    private BaseScreen currentState;
+    private BaseScreen lastState;
+    private Timer refreshTimer;
 
     public static App getInstance() {
         return instance;
     }
 
-    private App(final String tittle, int width, int height) {
+    private App() {
         this.running = false;
-        this.tittle = tittle;
+        this.refreshTimer = new Timer(2);
         Assets.firstLoad();
         Assets.loadEveryThingLeft();
         Display display = Display.getInstance();
@@ -39,20 +40,17 @@ public class App implements Runnable {
     @Override
     public void run() {
         this.running = true;
-        LoadState loadState = LoadState.getInstance();
-        this.switchToState(MenuState.getInstance());
-        this.switchToState(LoadState.getInstance());
-        loadState.initLoadState(Assets.loading);
+        LoadScreen loadScreen = LoadScreen.getInstance();
+        this.switchToState(MenuScreen.getInstance());
+        this.switchToState(LoadScreen.getInstance());
+        loadScreen.initLoadState(Assets.loading);
         while (this.running) {
-            synchronized (this) {
-                this.currentState.update();
-                this.currentState.render();
-            }
-            try {
-                // TODO: tobe clean
-                Thread.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (refreshTimer.isTime()) {
+                refreshTimer.reset();
+                synchronized (this) {
+                    this.currentState.update();
+                    this.currentState.render();
+                }
             }
         }
     }
@@ -71,7 +69,7 @@ public class App implements Runnable {
         return KeyboardManager.getInstance();
     }
 
-    public AppState getCurrentState() {
+    public BaseScreen getCurrentState() {
         return this.currentState;
     }
 
@@ -79,7 +77,7 @@ public class App implements Runnable {
         this.switchToState(this.lastState);
     }
 
-    public void switchToState(final AppState whichState) {
+    public void switchToState(final BaseScreen whichState) {
         synchronized (this) {
             if (this.currentState != whichState) {
                 this.lastState = this.currentState;

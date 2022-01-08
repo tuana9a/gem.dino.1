@@ -19,11 +19,11 @@ import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.Entity;
 import java.util.ArrayList;
 import com.tuana9a.entities.player.Player;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 
 public class EntityManager
 {
-    private final GameState gameState;
+    private final GameScreen gameScreen;
     private Player player;
     private final ArrayList<Entity> allEntities;
     private final ArrayList<Weapon> allWeapons;
@@ -31,8 +31,8 @@ public class EntityManager
     private AnimalHand playerHand;
     private static Comparator<Entity> compareY;
     
-    public EntityManager(final GameState gameState) {
-        this.gameState = gameState;
+    public EntityManager(final GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
         this.allEntities = new ArrayList<>(300);
         this.allWeapons = new ArrayList<>(10);
         this.allWeaponOuts = new ArrayList<>(150);
@@ -45,7 +45,7 @@ public class EntityManager
             return;
         }
         if (!app.getKeyboardManager().freeCamMode) {
-            this.gameState.getGameCamera().centerOnEntity(this.player);
+            this.gameScreen.getGameCamera().centerOnEntity(this.player);
         }
         for (int i = 0; i < this.allEntities.size(); ++i) {
             final Entity e = this.allEntities.get(i);

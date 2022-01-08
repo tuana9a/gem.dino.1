@@ -4,7 +4,7 @@
 
 package com.tuana9a.entities.weapon;
 
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.animation.MoveAnimation;
 import com.tuana9a.graphic.Assets;
@@ -43,8 +43,8 @@ public abstract class WeaponOut extends MovingEntity
         this.allStateAnimations = new StateAnimation[3];
     }
     
-    public WeaponOut(final GameState gameState, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
-        super(gameState, weaponOutId, fromWeapon.x, fromWeapon.y);
+    public WeaponOut(final GameScreen gameScreen, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
+        super(gameScreen, weaponOutId, fromWeapon.x, fromWeapon.y);
         this.state = 0;
         this.owner = owner;
         this.fromWeapon = fromWeapon;

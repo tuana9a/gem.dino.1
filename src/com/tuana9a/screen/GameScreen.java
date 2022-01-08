@@ -2,18 +2,15 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.state;
+package com.tuana9a.screen;
 
 import com.tuana9a.Display;
 import com.tuana9a.ui.ActionListener;
 import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.Point;
-import java.awt.Toolkit;
 
 import com.tuana9a.utils.Utility;
 import com.tuana9a.App;
@@ -23,14 +20,11 @@ import com.tuana9a.ui.UiProgressBar;
 import com.tuana9a.ui.UiNumber;
 import com.tuana9a.game.GameCamera;
 import com.tuana9a.game.Stage;
-import com.tuana9a.utils.Timer;
 
-public class GameState extends AppState {
-    private static final GameState instance = new GameState();
+public class GameScreen extends BaseScreen {
+    private static final GameScreen instance = new GameScreen();
 
-    private int fps;
     private boolean pauseGame;
-    private final Timer fpsTimer;
     private final Stage stage;
     private final GameCamera gameCamera;
     private UiNumber uiPayerHpNumber;
@@ -39,14 +33,11 @@ public class GameState extends AppState {
     private UiButton uiPause;
     private UiButton uiResume;
 
-    public static GameState getInstance() {
+    public static GameScreen getInstance() {
         return instance;
     }
 
-    private GameState() {
-        this.fpsTimer = new Timer();
-        this.fps = 100;
-        this.fpsTimer.deltaTime = 1000 / this.fps;
+    private GameScreen() {
         this.gameCamera = new GameCamera(this);
         this.stage = new Stage(this);
     }
@@ -84,17 +75,17 @@ public class GameState extends AppState {
         this.uiPause = new UiButton(this, screenW - 3 * buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.pauseButton), new ActionListener() {
             @Override
             public void performAction() {
-                GameState.this.pauseGame = true;
-                GameState.this.uiPause.hide();
-                GameState.this.uiResume.show();
+                GameScreen.this.pauseGame = true;
+                GameScreen.this.uiPause.hide();
+                GameScreen.this.uiResume.show();
             }
         });
         this.uiResume = new UiButton(this, screenW - 3 * buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.resumeButton), new ActionListener() {
             @Override
             public void performAction() {
-                GameState.this.pauseGame = false;
-                GameState.this.uiResume.hide();
-                GameState.this.uiPause.show();
+                GameScreen.this.pauseGame = false;
+                GameScreen.this.uiResume.hide();
+                GameScreen.this.uiPause.show();
             }
         });
         final UiButton uiReplay = new UiButton(this, screenW - 2 * buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.replayButton), new ActionListener() {
@@ -108,7 +99,7 @@ public class GameState extends AppState {
         final UiButton uiReturnToMenu = new UiButton(this, screenW - buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.returnMenuButton), new ActionListener() {
             @Override
             public void performAction() {
-                app.switchToState(MenuState.getInstance());
+                app.switchToState(MenuScreen.getInstance());
             }
         });
         this.uiGameOver = new UiImageStatic(this, 0.0, 0.0, display.getWidth(), display.getHeight(), Assets.gameOverImage);
@@ -123,7 +114,6 @@ public class GameState extends AppState {
         if (!this.refreshTimer.isTime()) {
             return;
         }
-        this.refreshTimer.reset();
         if (app.getKeyboardManager().freeCamMode) {
             this.getGameCamera().move();
         }
@@ -137,14 +127,15 @@ public class GameState extends AppState {
 
     @Override
     public void render() {
-        if (!this.fpsTimer.isTime()) {
+        if (!this.refreshTimer.isTime()) {
             return;
         }
-        this.fpsTimer.reset();
-        this.resetFrame();
-        this.stage.render(this.graphics);
-        this.uiManager.renderAll(this.graphics);
-        this.showFrame();
+        this.refreshTimer.reset();
+        resetFrame();
+        Graphics g = getGraphics();
+        this.stage.render(g);
+        this.uiManager.renderAll(g);
+        showFrame();
     }
 
     public void startGame() {
@@ -180,15 +171,6 @@ public class GameState extends AppState {
 
     public void notBossStage() {
         this.uiBossHpBar.hide();
-    }
-
-    public int getFps() {
-        return this.fps;
-    }
-
-    public void setFps(final int fps) {
-        this.fps = fps;
-        this.fpsTimer.deltaTime = 1000 / fps;
     }
 
     public GameCamera getGameCamera() {

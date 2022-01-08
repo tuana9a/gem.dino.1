@@ -12,7 +12,7 @@ import com.tuana9a.utils.Timer;
 
 import java.awt.Rectangle;
 
-import com.tuana9a.state.AppState;
+import com.tuana9a.screen.BaseScreen;
 
 public abstract class UiComponent {
     public static final int HIDDEN = -2;
@@ -21,7 +21,7 @@ public abstract class UiComponent {
     public static final int HOVER = 1;
     public static final int PRESS = 2;
     public static final int RELEASE = 3;
-    private final AppState currentAppState;
+    private final BaseScreen currentScreen;
     protected double x;
     protected double y;
     protected double xRatio;
@@ -34,16 +34,16 @@ public abstract class UiComponent {
     protected int status;
     public Timer typicalTime;
 
-    public UiComponent(final AppState currentAppState, final double x, final double y, final int width, final int height) {
-        this.currentAppState = currentAppState;
+    public UiComponent(final BaseScreen currentScreen, final double x, final double y, final int width, final int height) {
+        this.currentScreen = currentScreen;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.typicalTime = new Timer();
         this.setBounds(0, 0, width, height);
-        this.xRatio = (x + width / 2.0) / currentAppState.getDisplayWidth();
-        this.yRatio = (y + height / 2.0) / currentAppState.getDisplayHeight();
+        this.xRatio = (x + width / 2.0) / currentScreen.getDisplayWidth();
+        this.yRatio = (y + height / 2.0) / currentScreen.getDisplayHeight();
         this.status = 0;
     }
 
@@ -65,8 +65,8 @@ public abstract class UiComponent {
     }
 
     public void updateWhenScreenResize() {
-        this.x = this.xRatio * this.currentAppState.getDisplayWidth() - this.width / 2.0;
-        this.y = this.yRatio * this.currentAppState.getDisplayHeight() - this.height / 2.0;
+        this.x = this.xRatio * this.currentScreen.getDisplayWidth() - this.width / 2.0;
+        this.y = this.yRatio * this.currentScreen.getDisplayHeight() - this.height / 2.0;
     }
 
     public void checkMouseHover() {

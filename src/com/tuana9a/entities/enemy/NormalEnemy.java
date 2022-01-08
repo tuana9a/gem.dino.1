@@ -4,7 +4,7 @@
 
 package com.tuana9a.entities.enemy;
 
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.graphic.Assets;
 
@@ -18,7 +18,7 @@ public class NormalEnemy extends Enemy
         this.allStateAnimations[NormalEnemy.DEAD] = new StateAnimation(Assets.deadState, new double[][] { { 0.0, 0.0 }, { 0.0, 0.0 } }, this.width, this.height);
     }
     
-    public NormalEnemy(final GameState gameState, final int enemyId, final double x, final double y) {
-        super(gameState, enemyId, x, y);
+    public NormalEnemy(final GameScreen gameScreen, final int enemyId, final double x, final double y) {
+        super(gameScreen, enemyId, x, y);
     }
 }

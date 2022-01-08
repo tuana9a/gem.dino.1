@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import com.tuana9a.utils.Algebra;
 import com.tuana9a.entities.Entity;
-import com.tuana9a.state.GameState;
+import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.animation.MoveAnimation;
 import com.tuana9a.graphic.Assets;
@@ -71,8 +71,8 @@ public abstract class Weapon extends StaticEntity {
         this.allStateAnimations = new StateAnimation[5];
     }
 
-    public Weapon(final GameState gameState, final int weaponId, final double x, final double y) {
-        super(gameState, weaponId, x, y);
+    public Weapon(final GameScreen gameScreen, final int weaponId, final double x, final double y) {
+        super(gameScreen, weaponId, x, y);
         if (isBow(weaponId)) {
             this.updateRotate(1.5707963267948966);
         } else {
@@ -81,8 +81,8 @@ public abstract class Weapon extends StaticEntity {
         this.state = 0;
     }
 
-    public Weapon(final GameState gameState, final int weaponId, final Animal owner) {
-        super(gameState, weaponId, owner.x + owner.width / 2.0, owner.y + owner.height / 2.0);
+    public Weapon(final GameScreen gameScreen, final int weaponId, final Animal owner) {
+        super(gameScreen, weaponId, owner.x + owner.width / 2.0, owner.y + owner.height / 2.0);
         this.updateRotate(0.0);
         owner.takeWeapon(this);
         this.moveDirect = owner.moveDirect;
@@ -141,7 +141,7 @@ public abstract class Weapon extends StaticEntity {
 
     public void attack() {
         this.state = 4;
-        this.gameState.getStage().getEntityManager().addAllEntities(this.typicalAttack());
+        this.gameScreen.getStage().getEntityManager().addAllEntities(this.typicalAttack());
     }
 
     private boolean aim(final Entity entity) {
@@ -167,7 +167,7 @@ public abstract class Weapon extends StaticEntity {
             this.attack();
             this.typicalTimer.reset();
         } else if (this.owner instanceof Enemy) {
-            final Player player = this.gameState.getStage().getPlayer();
+            final Player player = this.gameScreen.getStage().getPlayer();
             if (((Enemy) this.owner).reactionTimer.isTime(-500L) && this.owner.canSee(player) && this.aim(player)) {
                 this.attack();
                 this.typicalTimer.reset();
@@ -179,7 +179,7 @@ public abstract class Weapon extends StaticEntity {
         if (this.owner instanceof Player) {
             this.updateRadianRotateMouse();
         } else if (this.owner instanceof Enemy) {
-            final Player player = this.gameState.getStage().getPlayer();
+            final Player player = this.gameScreen.getStage().getPlayer();
             if (((Enemy) this.owner).reactionTimer.isTime(-500L)) {
                 if (this.owner.canSee(player)) {
                     this.updateRadianRotateScripted(player);
