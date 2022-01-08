@@ -5,23 +5,23 @@
 package com.tuana9a.game;
 
 import java.awt.Graphics;
-import com.tuana9a.game.entity.stay.TeleGate;
-import com.tuana9a.config.ConfigStaticObject;
-import com.tuana9a.game.entity.stay.StaticObject;
-import com.tuana9a.config.ConfigWeapon;
-import com.tuana9a.game.entity.weapon.Spear;
-import com.tuana9a.game.entity.weapon.Sword;
-import com.tuana9a.game.entity.weapon.Shoot;
-import com.tuana9a.game.entity.move.enemy.NormalEnemy;
-import com.tuana9a.game.entity.move.enemy.HardEnemy;
-import com.tuana9a.game.entity.move.enemy.Boss;
-import com.tuana9a.config.ConfigEnemy;
-import com.tuana9a.game.entity.move.enemy.Enemy;
+import com.tuana9a.entities.TeleGate;
+import com.tuana9a.configs.ConfigStaticObject;
+import com.tuana9a.entities.StaticObject;
+import com.tuana9a.configs.ConfigWeapon;
+import com.tuana9a.entities.weapon.Spear;
+import com.tuana9a.entities.weapon.Sword;
+import com.tuana9a.entities.weapon.Shoot;
+import com.tuana9a.entities.enemy.NormalEnemy;
+import com.tuana9a.entities.enemy.HardEnemy;
+import com.tuana9a.entities.enemy.Boss;
+import com.tuana9a.configs.ConfigEnemy;
+import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.App;
-import com.tuana9a.game.entity.weapon.Weapon;
-import com.tuana9a.utility.Loading;
-import com.tuana9a.game.entity.Entity;
-import com.tuana9a.game.entity.move.player.Player;
+import com.tuana9a.entities.weapon.Weapon;
+import com.tuana9a.utils.Loading;
+import com.tuana9a.entities.Entity;
+import com.tuana9a.entities.player.Player;
 import com.tuana9a.state.GameState;
 
 public class Stage

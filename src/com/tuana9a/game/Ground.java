@@ -8,7 +8,7 @@ import com.tuana9a.graphic.Assets;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import com.tuana9a.config.ConfigGround;
+import com.tuana9a.configs.ConfigGround;
 
 import java.awt.image.BufferedImage;
 
@@ -20,8 +20,8 @@ public class Ground
     public static Ground nullGround;
     public static Ground[] storage;
     public int id;
-    private BufferedImage texture;
-    private boolean walkable;
+    private final BufferedImage texture;
+    private final boolean walkable;
     
     public Ground(final int id, final BufferedImage texture) {
         this.id = id;

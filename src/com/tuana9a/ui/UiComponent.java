@@ -6,7 +6,7 @@ package com.tuana9a.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import com.tuana9a.utility.TimeSystem;
+import com.tuana9a.utils.TimeSystem;
 import java.awt.Rectangle;
 import com.tuana9a.state.AppState;
 
@@ -18,7 +18,7 @@ public abstract class UiComponent
     public static final int HOVER = 1;
     public static final int PRESS = 2;
     public static final int RELEASE = 3;
-    private AppState currentAppState;
+    private final AppState currentAppState;
     protected double x;
     protected double y;
     protected double xRatio;

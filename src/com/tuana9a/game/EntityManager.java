@@ -5,35 +5,35 @@
 package com.tuana9a.game;
 
 import java.util.Arrays;
-import com.tuana9a.game.entity.weapon.ShootOut;
+import com.tuana9a.entities.weapon.ShootOut;
 import java.awt.Graphics;
 
-import com.tuana9a.game.entity.move.enemy.Enemy;
-import com.tuana9a.game.entity.MovingEntity;
+import com.tuana9a.entities.enemy.Enemy;
+import com.tuana9a.entities.MovingEntity;
 import java.util.Comparator;
-import com.tuana9a.game.entity.move.AnimalHand;
-import com.tuana9a.game.entity.weapon.WeaponOut;
-import com.tuana9a.game.entity.weapon.Weapon;
-import com.tuana9a.game.entity.Entity;
+import com.tuana9a.entities.AnimalHand;
+import com.tuana9a.entities.weapon.WeaponOut;
+import com.tuana9a.entities.weapon.Weapon;
+import com.tuana9a.entities.Entity;
 import java.util.ArrayList;
-import com.tuana9a.game.entity.move.player.Player;
+import com.tuana9a.entities.player.Player;
 import com.tuana9a.state.GameState;
 
 public class EntityManager
 {
-    private GameState gameState;
+    private final GameState gameState;
     private Player player;
-    private ArrayList<Entity> allEntities;
-    private ArrayList<Weapon> allWeapons;
-    private ArrayList<WeaponOut> allWeaponOuts;
+    private final ArrayList<Entity> allEntities;
+    private final ArrayList<Weapon> allWeapons;
+    private final ArrayList<WeaponOut> allWeaponOuts;
     private AnimalHand playerHand;
     private static Comparator<Entity> compareY;
     
     public EntityManager(final GameState gameState) {
         this.gameState = gameState;
-        this.allEntities = new ArrayList<Entity>(300);
-        this.allWeapons = new ArrayList<Weapon>(10);
-        this.allWeaponOuts = new ArrayList<WeaponOut>(150);
+        this.allEntities = new ArrayList<>(300);
+        this.allWeapons = new ArrayList<>(10);
+        this.allWeaponOuts = new ArrayList<>(150);
     }
     
     public void updateAll() {

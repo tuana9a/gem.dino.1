@@ -4,21 +4,20 @@
 
 package com.tuana9a.game;
 
-import com.tuana9a.game.entity.Entity;
+import com.tuana9a.entities.Entity;
 import com.tuana9a.state.GameState;
 
-public class GameCamera
-{
+public class GameCamera {
     private double xOffset;
     private double yOffset;
-    private double speed;
-    private GameState gameState;
-    
+    private final double speed;
+    private final GameState gameState;
+
     public GameCamera(final GameState gameState) {
         this.gameState = gameState;
         this.speed = 4.0;
     }
-    
+
     public void move() {
         final boolean up = this.gameState.getKeyboardManager().up;
         final boolean down = this.gameState.getKeyboardManager().down;
@@ -42,13 +41,13 @@ public class GameCamera
         }
         this.checkBlankSpace();
     }
-    
+
     public void centerOnEntity(final Entity e) {
         this.xOffset = e.x - this.gameState.getDisplayWidth() / 2.0 + e.width / 2.0;
         this.yOffset = e.y - this.gameState.getDisplayHeight() / 2.0 + e.height / 2.0;
         this.checkBlankSpace();
     }
-    
+
     public void checkBlankSpace() {
         final int mapWidth = this.gameState.getStage().getCurrentMap().getMapPixelWidth();
         final int mapHeight = this.gameState.getStage().getCurrentMap().getMapPixelHeight();
@@ -58,14 +57,12 @@ public class GameCamera
         final double maxOffsetY = mapHeight - screenHeight;
         if (this.xOffset < 0.0) {
             this.xOffset = 0.0;
-        }
-        else if (this.xOffset > maxOffsetX) {
+        } else if (this.xOffset > maxOffsetX) {
             this.xOffset = maxOffsetX;
         }
         if (this.yOffset < 0.0) {
             this.yOffset = 0.0;
-        }
-        else if (this.yOffset > maxOffsetY) {
+        } else if (this.yOffset > maxOffsetY) {
             this.yOffset = maxOffsetY;
         }
         if (mapWidth < screenWidth) {
@@ -75,27 +72,27 @@ public class GameCamera
             this.yOffset = maxOffsetY / 2.0;
         }
     }
-    
+
     public int getCamRenderX(final double x) {
-        return (int)(x - this.getxOffset());
+        return (int) (x - this.getxOffset());
     }
-    
+
     public int getCamRenderY(final double y) {
-        return (int)(y - this.getyOffset());
+        return (int) (y - this.getyOffset());
     }
-    
+
     public double getxOffset() {
         return this.xOffset;
     }
-    
+
     public void setxOffset(final double xOffset) {
         this.xOffset = xOffset;
     }
-    
+
     public double getyOffset() {
         return this.yOffset;
     }
-    
+
     public void setyOffset(final double yOffset) {
         this.yOffset = yOffset;
     }

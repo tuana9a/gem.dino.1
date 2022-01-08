@@ -7,7 +7,7 @@ package com.tuana9a.state;
 import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.input.MouseManager;
 import com.tuana9a.ui.UiManager;
-import com.tuana9a.utility.TimeSystem;
+import com.tuana9a.utils.TimeSystem;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;

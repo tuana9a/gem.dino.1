@@ -4,15 +4,16 @@
 
 package com.tuana9a.game;
 
-import com.tuana9a.game.entity.move.Animal;
+import com.tuana9a.entities.Animal;
+
 import java.awt.Graphics;
-import com.tuana9a.utility.Utility;
-import com.tuana9a.utility.Loading;
+
+import com.tuana9a.utils.Utility;
+import com.tuana9a.utils.Loading;
 import com.tuana9a.state.GameState;
 
-public class Map
-{
-    private GameState gameState;
+public class Map {
+    private final GameState gameState;
     private int width;
     private int height;
     public String mapId;
@@ -30,11 +31,11 @@ public class Map
     public Loading loading;
     public static final int FULL_PROCESS = 10;
     public static final long TIME_SIMULATOR = 100L;
-    
+
     public Map(final GameState gameState) {
         this.gameState = gameState;
     }
-    
+
     public void loadMapById(String mapId) {
         final String filePath = "resources/map/map" + mapId + ".txt";
         String dataString = Utility.loadTextFile(filePath);
@@ -101,46 +102,44 @@ public class Map
                 }
             }
             this.loading.update();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             this.loading.onError("Fail to load " + filePath);
         }
     }
-    
+
     public void loadMapSimulator() {
     }
-    
+
     public void update() {
     }
-    
+
     public void render(final Graphics g) {
-        final int startColumn = (int)Math.max(0.0, this.gameState.getGameCamera().getxOffset() / 64.0);
-        final int endColumn = (int)Math.min(this.width, (this.gameState.getGameCamera().getxOffset() + this.gameState.getDisplayWidth()) / 64.0 + 1.0);
-        final int startRow = (int)Math.max(0.0, this.gameState.getGameCamera().getyOffset() / 64.0);
-        for (int endRow = (int)Math.min(this.height, (this.gameState.getGameCamera().getyOffset() + this.gameState.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
+        final int startColumn = (int) Math.max(0.0, this.gameState.getGameCamera().getxOffset() / 64.0);
+        final int endColumn = (int) Math.min(this.width, (this.gameState.getGameCamera().getxOffset() + this.gameState.getDisplayWidth()) / 64.0 + 1.0);
+        final int startRow = (int) Math.max(0.0, this.gameState.getGameCamera().getyOffset() / 64.0);
+        for (int endRow = (int) Math.min(this.height, (this.gameState.getGameCamera().getyOffset() + this.gameState.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
             for (int column = startColumn; column < endColumn; ++column) {
-                final int cameraRenderX = (int)(column * 64 - this.gameState.getGameCamera().getxOffset());
-                final int cameraRenderY = (int)(row * 64 - this.gameState.getGameCamera().getyOffset());
+                final int cameraRenderX = (int) (column * 64 - this.gameState.getGameCamera().getxOffset());
+                final int cameraRenderY = (int) (row * 64 - this.gameState.getGameCamera().getyOffset());
                 this.getGround(row, column).render(g, cameraRenderX, cameraRenderY);
             }
         }
     }
-    
+
     public Ground getGround(final int row, final int column) {
         try {
             final Ground ground = Ground.storage[this.mapArray[row][column]];
             return (ground == null) ? Ground.nullGround : ground;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return Ground.nullGround;
         }
     }
-    
+
     public boolean cantWalk(final int row, final int column) {
         return !this.getGround(row, column).isWalkable();
     }
-    
+
     public boolean canWalkX(final Animal a, final int rowTop, final int rowBottom, final int columnLeft, final int columnRight) {
         for (int row = rowTop; row <= rowBottom; ++row) {
             for (int col = columnLeft; col <= columnRight; ++col) {
@@ -151,7 +150,7 @@ public class Map
         }
         return true;
     }
-    
+
     public boolean canWalkY(final Animal a, final int rowTop, final int rowBottom, final int columnLeft, final int columnRight) {
         for (int row = rowTop; row <= rowBottom; ++row) {
             for (int col = columnLeft; col <= columnRight; ++col) {
@@ -162,24 +161,23 @@ public class Map
         }
         return true;
     }
-    
+
     public boolean canWalkX(final Animal a) {
         final double leftX = a.x + a.actualSize.x;
         final double rightX = leftX + a.actualSize.width;
         final double topY = a.y + a.actualSize.y;
         final double botY = topY + a.actualSize.height;
-        final int colLeft = (int)Math.floor((leftX + a.xMove) / 64.0);
-        final int colRight = (int)Math.floor((rightX + a.xMove) / 64.0);
-        final int rowTop = (int)Math.floor((topY + a.yMove) / 64.0);
-        final int rowBot = (int)Math.floor((botY + a.yMove) / 64.0);
+        final int colLeft = (int) Math.floor((leftX + a.xMove) / 64.0);
+        final int colRight = (int) Math.floor((rightX + a.xMove) / 64.0);
+        final int rowTop = (int) Math.floor((topY + a.yMove) / 64.0);
+        final int rowBot = (int) Math.floor((botY + a.yMove) / 64.0);
         for (int col = colLeft; col < colRight; ++col) {
             for (int row = rowTop; row < rowBot; ++row) {
                 if (this.cantWalk(row, col) && a.actualSize(a.xMove, 0.0).intersects(Ground.getRect(row, col))) {
                     final double minSpace = 1.0;
                     if (a.xMove > 0.0) {
                         a.x = colRight * 64 - a.actualSize.x - a.actualSize.width - minSpace;
-                    }
-                    else {
+                    } else {
                         a.x = (colLeft + 1) * 64 - a.actualSize.x + minSpace;
                     }
                     a.xMove = 0.0;
@@ -189,23 +187,22 @@ public class Map
         }
         return true;
     }
-    
+
     public boolean canWalkY(final Animal a) {
         final double leftX = a.x + a.actualSize.x;
         final double rightX = leftX + a.actualSize.width;
         final double topY = a.y + a.actualSize.y;
         final double botY = topY + a.actualSize.height;
-        final int colLeft = (int)((leftX + a.xMove) / 64.0);
-        final int colRight = (int)((rightX + a.xMove) / 64.0);
-        final int rowTop = (int)Math.floor((topY + a.yMove) / 64.0);
-        for (int rowBot = (int)Math.floor((botY + a.yMove) / 64.0), row = rowTop; row < rowBot; ++row) {
+        final int colLeft = (int) ((leftX + a.xMove) / 64.0);
+        final int colRight = (int) ((rightX + a.xMove) / 64.0);
+        final int rowTop = (int) Math.floor((topY + a.yMove) / 64.0);
+        for (int rowBot = (int) Math.floor((botY + a.yMove) / 64.0), row = rowTop; row < rowBot; ++row) {
             for (int col = colLeft; col < colRight; ++col) {
                 if (this.cantWalk(row, col) && a.actualSize(0.0, a.yMove).intersects(Ground.getRect(row, col))) {
                     final double minSpace = 1.0;
                     if (a.yMove > 0.0) {
                         a.y = rowBot * 64 - a.actualSize.y - a.actualSize.height - minSpace;
-                    }
-                    else {
+                    } else {
                         a.y = (rowTop + 1) * 64 - a.actualSize.y + minSpace;
                     }
                     a.yMove = 0.0;
@@ -215,52 +212,52 @@ public class Map
         }
         return true;
     }
-    
+
     public int[][] getMapArray() {
         return this.mapArray;
     }
-    
+
     public int getPlayerId() {
         return this.playerId;
     }
-    
+
     public int getStaticObjectNumber() {
         return this.staticObjectNumber;
     }
-    
+
     public int[][] getStaticObjectsInfo() {
         return this.staticObjectsInfo;
     }
-    
+
     public int getWeaponNumber() {
         return this.weaponNumber;
     }
-    
+
     public int[][] getWeaponsInfo() {
         return this.weaponsInfo;
     }
-    
+
     public int getEnemyNumber() {
         return this.enemyNumber;
     }
-    
+
     public int[][] getEnemiesInfo() {
         return this.enemiesInfo;
     }
-    
+
     public int getMapPixelWidth() {
         return this.width * 64;
     }
-    
+
     public int getMapPixelHeight() {
         return this.height * 64;
     }
-    
+
     public float getPixelSpawnX() {
-        return (float)(this.playerSpawnX * 64);
+        return (float) (this.playerSpawnX * 64);
     }
-    
+
     public float getPixelSpawnY() {
-        return (float)(this.playerSpawnY * 64);
+        return (float) (this.playerSpawnY * 64);
     }
 }

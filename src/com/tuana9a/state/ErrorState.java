@@ -6,7 +6,7 @@ package com.tuana9a.state;
 
 import java.awt.Graphics2D;
 
-import com.tuana9a.ui.statics.UiImageStatic;
+import com.tuana9a.ui.UiImageStatic;
 import com.tuana9a.graphic.Assets;
 
 import java.util.Arrays;
@@ -19,7 +19,7 @@ public class ErrorState extends AppState
     
     public ErrorState(final App app) {
         super(app);
-        this.errorMessages = new ArrayList<String>();
+        this.errorMessages = new ArrayList<>();
     }
     
     public void addErrors(final String... messages) {

@@ -6,13 +6,13 @@ package com.tuana9a.state;
 
 import java.util.ArrayList;
 
-import com.tuana9a.graphic.animation.UiAnimation;
+import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.App;
-import com.tuana9a.ui.transition.UiImageAnimation;
-import com.tuana9a.ui.transition.UiProgressBar;
-import com.tuana9a.utility.TimeSystem;
-import com.tuana9a.utility.Loading;
+import com.tuana9a.ui.UiImageAnimation;
+import com.tuana9a.ui.UiProgressBar;
+import com.tuana9a.utils.TimeSystem;
+import com.tuana9a.utils.Loading;
 
 public class LoadState extends AppState
 {

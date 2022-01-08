@@ -4,8 +4,8 @@
 
 package com.tuana9a.graphic;
 
-import com.tuana9a.utility.Utility;
-import com.tuana9a.utility.Loading;
+import com.tuana9a.utils.Utility;
+import com.tuana9a.utils.Loading;
 
 import java.awt.image.BufferedImage;
 

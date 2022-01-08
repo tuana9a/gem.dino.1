@@ -5,22 +5,22 @@
 package com.tuana9a.state;
 
 import com.tuana9a.ui.ActionListener;
-import com.tuana9a.graphic.animation.UiAnimation;
+import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.Point;
 import java.awt.Toolkit;
-import com.tuana9a.utility.Utility;
+import com.tuana9a.utils.Utility;
 import com.tuana9a.App;
-import com.tuana9a.ui.transition.UiButton;
-import com.tuana9a.ui.statics.UiImageStatic;
-import com.tuana9a.ui.transition.UiProgressBar;
-import com.tuana9a.ui.statics.UiNumber;
+import com.tuana9a.ui.UiButton;
+import com.tuana9a.ui.UiImageStatic;
+import com.tuana9a.ui.UiProgressBar;
+import com.tuana9a.ui.UiNumber;
 import com.tuana9a.game.GameCamera;
 import com.tuana9a.game.Stage;
-import com.tuana9a.utility.TimeSystem;
+import com.tuana9a.utils.TimeSystem;
 
 public class GameState extends AppState
 {

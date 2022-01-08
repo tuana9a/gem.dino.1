@@ -9,10 +9,10 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.Point;
 import java.awt.Toolkit;
-import com.tuana9a.utility.Utility;
-import com.tuana9a.ui.transition.UiButton;
+import com.tuana9a.utils.Utility;
+import com.tuana9a.ui.UiButton;
 import com.tuana9a.ui.ActionListener;
-import com.tuana9a.graphic.animation.UiAnimation;
+import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.App;
 
