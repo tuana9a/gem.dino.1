@@ -1,0 +1,75 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
+package com.tuana9a.game.entity.move;
+
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import com.tuana9a.game.entity.weapon.WeaponOut;
+import com.tuana9a.game.entity.weapon.Weapon;
+import com.tuana9a.utility.Algebra;
+import com.tuana9a.game.entity.Entity;
+import com.tuana9a.state.GameState;
+
+public class AnimalVision
+{
+    private Animal owner;
+    private int eyeSize;
+    private double maxDistance;
+    private GameState gameState;
+    private double x;
+    private double y;
+    
+    public AnimalVision(final GameState gameState, final Animal owner) {
+        this.eyeSize = 20;
+        this.maxDistance = 1000.0;
+        this.gameState = gameState;
+        this.owner = owner;
+    }
+    
+    public boolean canSee(final Entity otherEntity) {
+        this.x = this.owner.x + (this.owner.width - this.eyeSize) / 2.0;
+        this.y = this.owner.y + this.owner.actualSize.y;
+        final double desX = otherEntity.x + otherEntity.width / 2.0;
+        final double desY = otherEntity.y + otherEntity.actualSize.y;
+        if (Math.abs(desX - this.x) > this.maxDistance || Math.abs(desY - this.y) > this.maxDistance) {
+            return false;
+        }
+        final double radianToEntity = Algebra.getRotate(this.x, this.y, desX, desY);
+        double currentDis = 0.0;
+        final int speed = 20;
+        final double xMove = speed * Math.cos(radianToEntity);
+        final double yMove = speed * Math.sin(radianToEntity);
+        final ArrayList<Entity> allEntities = this.gameState.getStage().getEntityManager().getAllEntities();
+        do {
+            for (final Entity e : allEntities) {
+                if (e != null && e != this.owner && !(e instanceof Weapon)) {
+                    if (e instanceof WeaponOut) {
+                        continue;
+                    }
+                    if (this.collideWith(e)) {
+                        return e == otherEntity;
+                    }
+                    continue;
+                }
+            }
+            this.x += xMove;
+            this.y += yMove;
+            currentDis += speed;
+        } while (currentDis <= this.maxDistance);
+        return false;
+    }
+    
+    public void setMaxDistance(final double maxDistance) {
+        this.maxDistance = maxDistance;
+    }
+    
+    public double maxDis() {
+        return this.maxDistance;
+    }
+    
+    private boolean collideWith(final Entity e) {
+        return e != null && new Rectangle((int)this.x, (int)this.y, this.eyeSize, this.eyeSize).intersects(e.actualSize());
+    }
+}
