@@ -4,6 +4,7 @@
 
 package com.tuana9a.entities.enemy;
 
+import com.tuana9a.App;
 import com.tuana9a.utils.Algebra;
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.weapon.Spear;
@@ -15,14 +16,14 @@ import com.tuana9a.state.GameState;
 import com.tuana9a.animation.MoveAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.configs.ConfigEnemy;
-import com.tuana9a.utils.TimeSystem;
+import com.tuana9a.utils.Timer;
 import java.awt.Rectangle;
 import com.tuana9a.entities.Animal;
 
 public abstract class Enemy extends Animal
 {
     public Rectangle workingArea;
-    public TimeSystem reactionTimer;
+    public Timer reactionTimer;
     
     @Override
     protected void initCoreInfo(final int enemyId) {
@@ -38,7 +39,7 @@ public abstract class Enemy extends Animal
         this.holdingHand = ConfigEnemy.holdingHands[enemyId];
         this.shoulder = ConfigEnemy.shoulders[enemyId];
         this.moveAnimation = new MoveAnimation(Assets.enemies[enemyId]);
-        this.reactionTimer = new TimeSystem();
+        this.reactionTimer = new Timer();
         this.reactionTimer.deltaTime = ConfigEnemy.reactionTimers[enemyId];
         this.typicalTimer.deltaTime = ConfigEnemy.typicalTimers[enemyId];
         this.workingArea = new Rectangle((int)this.x, (int)this.y, ConfigEnemy.workDistances[enemyId], ConfigEnemy.workDistances[enemyId]);
@@ -129,12 +130,13 @@ public abstract class Enemy extends Animal
     }
     
     private void updateMoveKeyboard() {
+        App app = App.getInstance();
         this.xMove = 0.0;
         this.yMove = 0.0;
-        final boolean up = this.gameState.getKeyboardManager().up;
-        final boolean down = this.gameState.getKeyboardManager().down;
-        final boolean left = this.gameState.getKeyboardManager().left;
-        final boolean right = this.gameState.getKeyboardManager().right;
+        final boolean up = app.getKeyboardManager().up;
+        final boolean down = app.getKeyboardManager().down;
+        final boolean left = app.getKeyboardManager().left;
+        final boolean right = app.getKeyboardManager().right;
         if (!up || !down) {
             if (up) {
                 this.yMove = -this.speed;

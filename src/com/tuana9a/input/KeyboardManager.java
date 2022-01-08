@@ -5,12 +5,14 @@
 package com.tuana9a.input;
 
 import java.awt.event.KeyEvent;
+
 import com.tuana9a.App;
+
 import java.awt.event.KeyListener;
 
-public class KeyboardManager implements KeyListener
-{
-    private App app;
+public class KeyboardManager implements KeyListener {
+    private static final KeyboardManager instance= new KeyboardManager();
+
     private boolean[] keys;
     public boolean up;
     public boolean down;
@@ -34,12 +36,15 @@ public class KeyboardManager implements KeyListener
     public boolean workingAreaMode;
     public boolean rotationMode;
     public boolean freeCamMode;
-    
-    public KeyboardManager(final App app) {
-        this.app = app;
+
+    private KeyboardManager() {
         this.keys = new boolean[1000];
     }
-    
+
+    public static KeyboardManager getInstance() {
+        return instance;
+    }
+
     public void update() {
         this.fire = this.keys[32];
         this.takeWeapon = this.keys[69];
@@ -66,16 +71,16 @@ public class KeyboardManager implements KeyListener
         this.left = this.keys[37];
         this.right = this.keys[39];
     }
-    
+
     @Override
     public void keyPressed(final KeyEvent e) {
         try {
             this.keys[e.getKeyCode()] = true;
+        } catch (Exception ex) {
         }
-        catch (Exception ex) {}
         this.update();
     }
-    
+
     @Override
     public void keyReleased(final KeyEvent e) {
         try {
@@ -102,24 +107,24 @@ public class KeyboardManager implements KeyListener
                     break;
                 }
             }
+        } catch (Exception ex) {
         }
-        catch (Exception ex) {}
         this.update();
     }
-    
+
     @Override
     public void keyTyped(final KeyEvent e) {
         this.update();
     }
-    
+
     public boolean takeWeapon() {
         return this.takeWeapon && !this.takeWeaponLast && (this.takeWeaponLast = true);
     }
-    
+
     public boolean switchWeapon() {
         return this.switchWeapon && !this.switchWeaponLast && (this.switchWeaponLast = true);
     }
-    
+
     public boolean dropWeapon() {
         return this.dropWeapon && !this.dropWeaponLast && (this.dropWeaponLast = true);
     }

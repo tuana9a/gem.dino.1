@@ -5,6 +5,8 @@
 package com.tuana9a.game;
 
 import java.util.Arrays;
+
+import com.tuana9a.App;
 import com.tuana9a.entities.weapon.ShootOut;
 import java.awt.Graphics;
 
@@ -37,11 +39,12 @@ public class EntityManager
     }
     
     public void updateAll() {
+        App app = App.getInstance();
         this.player.update();
         if (this.player == null) {
             return;
         }
-        if (!this.gameState.getKeyboardManager().freeCamMode) {
+        if (!app.getKeyboardManager().freeCamMode) {
             this.gameState.getGameCamera().centerOnEntity(this.player);
         }
         for (int i = 0; i < this.allEntities.size(); ++i) {
@@ -98,6 +101,7 @@ public class EntityManager
     }
     
     public void renderAll(final Graphics g) {
+        App app = App.getInstance();
         if (this.player == null) {
             return;
         }
@@ -115,10 +119,10 @@ public class EntityManager
                 e.render(g);
             }
         }
-        if (this.gameState.getKeyboardManager().rotationMode && this.playerHand != null) {
+        if (app.getKeyboardManager().rotationMode && this.playerHand != null) {
             this.playerHand.renderSelectedWeapon(g);
         }
-        if (this.gameState.getKeyboardManager().innerBoundMode) {
+        if (app.getKeyboardManager().innerBoundMode) {
             for (final WeaponOut wo : this.allWeaponOuts) {
                 if (wo == null) {
                     continue;

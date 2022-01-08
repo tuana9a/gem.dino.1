@@ -12,7 +12,7 @@ import com.tuana9a.entities.weapon.Shoot;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.configs.ConfigEnemy;
 import com.tuana9a.abilities.SkillSpawnChild;
-import com.tuana9a.utils.TimeSystem;
+import com.tuana9a.utils.Timer;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.state.GameState;
@@ -34,7 +34,7 @@ public class Boss extends Enemy
     @Override
     protected void initSkills() {
         super.initSkills();
-        this.skillTimers[Boss.DEAD] = new TimeSystem(5000L);
+        this.skillTimers[Boss.DEAD] = new Timer(5000L);
         this.skills[Boss.DEAD] = new SkillSpawnChild(this) {
             @Override
             public void perform() {

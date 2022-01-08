@@ -4,6 +4,7 @@
 
 package com.tuana9a.entities;
 
+import com.tuana9a.App;
 import com.tuana9a.utils.Algebra;
 
 import java.awt.Color;
@@ -16,7 +17,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.animation.MoveAnimation;
-import com.tuana9a.utils.TimeSystem;
+import com.tuana9a.utils.Timer;
 import com.tuana9a.state.GameState;
 
 public abstract class Entity
@@ -30,7 +31,7 @@ public abstract class Entity
     public int moveDirect;
     public int width;
     public int height;
-    public TimeSystem typicalTimer;
+    public Timer typicalTimer;
     public MoveAnimation moveAnimation;
     public StateAnimation[] allStateAnimations;
     public ArrayList<Entity> intersectEntities;
@@ -63,7 +64,7 @@ public abstract class Entity
     }
     
     public Entity(final GameState gameState, final int id, final double x, final double y) {
-        this.typicalTimer = new TimeSystem();
+        this.typicalTimer = new Timer();
         this.gameState = gameState;
         this.id = id;
         this.state = 0;
@@ -82,6 +83,7 @@ public abstract class Entity
     public abstract void update();
     
     public void render(final Graphics g) {
+        App app = App.getInstance();
         if (this.xCam + this.actualSize.x + this.actualSize.width < 0.0 || this.xCam > this.gameState.getDisplayWidth() || this.yCam + this.actualSize.y + this.actualSize.height < 0.0 || this.yCam + this.actualSize.y > this.gameState.getDisplayHeight()) {
             return;
         }
@@ -104,19 +106,19 @@ public abstract class Entity
         if (this.radianRotateMain > 9.42477796076938 || this.radianRotateMain < -9.42477796076938) {
             System.out.println(this.getClass().getName().replaceAll(".+\\.", "") + " radian overflow " + this.radianRotateMain);
         }
-        if (this.gameState.getKeyboardManager().outBoundMode) {
+        if (app.getKeyboardManager().outBoundMode) {
             this.renderOuterBound(g);
         }
-        if (this instanceof Enemy && this.gameState.getKeyboardManager().workingAreaMode) {
+        if (this instanceof Enemy && app.getKeyboardManager().workingAreaMode) {
             this.renderWorkingArea(g);
         }
-        if (this instanceof Enemy && this.gameState.getKeyboardManager().workingAreaMode) {
+        if (this instanceof Enemy && app.getKeyboardManager().workingAreaMode) {
             this.renderEyeDistance(g);
         }
-        if (this.gameState.getKeyboardManager().innerBoundMode) {
+        if (app.getKeyboardManager().innerBoundMode) {
             this.renderInnerBound(g);
         }
-        if (this.gameState.getKeyboardManager().rotationMode) {
+        if (app.getKeyboardManager().rotationMode) {
             this.renderRotation(g);
         }
     }

@@ -4,45 +4,54 @@
 
 package com.tuana9a;
 
+import com.tuana9a.state.ErrorState;
+import com.tuana9a.state.GameState;
+import com.tuana9a.state.LoadState;
+import com.tuana9a.state.MenuState;
+
 import java.awt.Toolkit;
 import java.awt.Canvas;
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.Dimension;
 
-public class Display
-{
-    private static int MAX_WIDTH;
-    private static int MAX_HEIGHT;
-    private static int PRE_WIDTH;
-    private static int PRE_HEIGHT;
-    private static Dimension[] screenResolution;
-    private int currentRes;
+public class Display {
+    private static final Display instance = new Display("GemDino", 1280, 720);
+
+    private final int MAX_WIDTH;
+    private final int MAX_HEIGHT;
+    private final int PRE_WIDTH;
+    private final int PRE_HEIGHT;
+
     private boolean fullScreen;
-    private App app;
-    private JFrame jFrame;
-    private Canvas canvas;
+    private final JFrame jFrame;
+    private final Canvas canvas;
     private String tittle;
     private int width;
     private int height;
-    
-    public Display(final App app, final String tittle, final int width, final int height) {
-        this.app = app;
+
+    public Display(final String tittle, final int width, final int height) {
         this.tittle = tittle;
         this.width = width;
         this.height = height;
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Display.MAX_WIDTH = screenSize.width;
-        Display.MAX_HEIGHT = screenSize.height;
-        Display.PRE_WIDTH = width;
-        Display.PRE_HEIGHT = height;
-        (this.jFrame = new JFrame(tittle)).setDefaultCloseOperation(3);
+        this.MAX_WIDTH = screenSize.width;
+        this.MAX_HEIGHT = screenSize.height;
+        this.PRE_WIDTH = width;
+        this.PRE_HEIGHT = height;
+        this.jFrame = new JFrame(tittle);
+        this.jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.jFrame.setResizable(false);
-        (this.canvas = new Canvas()).setFocusable(false);
+        this.canvas = new Canvas();
+        this.canvas.setFocusable(false);
         this.resize(width, height);
         this.jFrame.add(this.canvas);
         this.jFrame.setVisible(true);
     }
-    
+
+    public static Display getInstance() {
+        return instance;
+    }
+
     private void resize(final int width, final int height) {
         this.width = width;
         this.height = height;
@@ -51,23 +60,14 @@ public class Display
         this.jFrame.pack();
         this.jFrame.setLocationRelativeTo(null);
     }
-    
+
     private void updateUiPositionWhenResize() {
-        this.app.menuState.getUiManager().updateAllWhenScreenResize();
-        this.app.gameState.getUiManager().updateAllWhenScreenResize();
-        this.app.errorState.getUiManager().updateAllWhenScreenResize();
-        this.app.loadState.getUiManager().updateAllWhenScreenResize();
+        MenuState.getInstance().getUiManager().updateAllWhenScreenResize();
+        GameState.getInstance().getUiManager().updateAllWhenScreenResize();
+        ErrorState.getInstance().getUiManager().updateAllWhenScreenResize();
+        LoadState.getInstance().getUiManager().updateAllWhenScreenResize();
     }
-    
-    public void toggleScreenSize() {
-        final Dimension d = Display.screenResolution[this.currentRes++];
-        this.resize(d.width, d.height);
-        ++this.currentRes;
-        if (this.currentRes > Display.screenResolution.length) {
-            this.currentRes = 0;
-        }
-    }
-    
+
     public void fullScreen() {
         if (this.fullScreen) {
             return;
@@ -76,11 +76,11 @@ public class Display
         this.jFrame.dispose();
         this.jFrame.setUndecorated(true);
         this.jFrame.setExtendedState(6);
-        this.resize(Display.MAX_WIDTH, Display.MAX_HEIGHT);
+        this.resize(this.MAX_WIDTH, this.MAX_HEIGHT);
         this.jFrame.setVisible(true);
         this.updateUiPositionWhenResize();
     }
-    
+
     public void exitFullScreen() {
         if (!this.fullScreen) {
             return;
@@ -89,28 +89,32 @@ public class Display
         this.jFrame.dispose();
         this.jFrame.setUndecorated(false);
         this.jFrame.setExtendedState(0);
-        this.resize(Display.PRE_WIDTH, Display.PRE_HEIGHT);
+        this.resize(this.PRE_WIDTH, this.PRE_HEIGHT);
         this.jFrame.setVisible(true);
         this.updateUiPositionWhenResize();
     }
-    
+
     public int getWidth() {
         return this.width;
     }
-    
+
     public int getHeight() {
         return this.height;
     }
-    
+
     public Canvas getCanvas() {
         return this.canvas;
     }
-    
+
     public JFrame getFrame() {
         return this.jFrame;
     }
-    
-    static {
-        Display.screenResolution = new Dimension[] { new Dimension(900, 600), new Dimension(1280, 720), new Dimension(1920, 1080) };
+
+    public String getTittle() {
+        return tittle;
+    }
+
+    public void setTittle(String tittle) {
+        this.tittle = tittle;
     }
 }

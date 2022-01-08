@@ -16,6 +16,6 @@ public class TeleGate extends StaticObject
     }
     
     public void teleToNewMap() {
-        this.gameState.getStage().teleToNewMap(this.mapId);
+        this.gameState.getStage().teleportToNewMap(this.mapId);
     }
 }

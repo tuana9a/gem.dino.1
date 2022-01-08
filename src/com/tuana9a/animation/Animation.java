@@ -4,7 +4,7 @@
 
 package com.tuana9a.animation;
 
-import com.tuana9a.utils.TimeSystem;
+import com.tuana9a.utils.Timer;
 
 public abstract class Animation
 {
@@ -14,7 +14,7 @@ public abstract class Animation
     protected int animationKind;
     protected int currentIndex;
     protected int maxIndex;
-    protected TimeSystem updateImageTimer;
+    protected Timer updateImageTimer;
     
     public void update() {
         if (this.updateImageTimer.isTime()) {
@@ -27,13 +27,13 @@ public abstract class Animation
     }
     
     public Animation() {
-        this.updateImageTimer = new TimeSystem(100L);
+        this.updateImageTimer = new Timer(100L);
         this.animationKind = 1;
         this.maxIndex = 0;
     }
     
     public Animation(final int updateSpeed) {
-        this.updateImageTimer = new TimeSystem(updateSpeed);
+        this.updateImageTimer = new Timer(updateSpeed);
         this.animationKind = 1;
         this.maxIndex = 0;
     }

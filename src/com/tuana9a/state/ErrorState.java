@@ -10,26 +10,29 @@ import com.tuana9a.ui.UiImageStatic;
 import com.tuana9a.graphic.Assets;
 
 import java.util.Arrays;
-import com.tuana9a.App;
 import java.util.ArrayList;
 
-public class ErrorState extends AppState
-{
+public class ErrorState extends AppState {
+    private static final ErrorState instance = new ErrorState();
+
     public ArrayList<String> errorMessages;
-    
-    public ErrorState(final App app) {
-        super(app);
+
+    private ErrorState() {
         this.errorMessages = new ArrayList<>();
     }
-    
+
+    public static ErrorState getInstance() {
+        return instance;
+    }
+
     public void addErrors(final String... messages) {
         this.errorMessages.addAll(Arrays.asList(messages));
     }
-    
+
     public void addErrors(final ArrayList<String> ls) {
         this.errorMessages.addAll(ls);
     }
-    
+
     @Override
     public void initUi() {
         final int screenW = this.getDisplayWidth();
@@ -47,24 +50,24 @@ public class ErrorState extends AppState
         final UiImageStatic errorIcon = new UiImageStatic(this, halfW - iconSize / 2.0, minSpace, iconSize, iconSize, Assets.error);
         this.uiManager.addAllUiComponent(errorIcon);
     }
-    
+
     @Override
     public void update() {
     }
-    
+
     @Override
     public void render() {
         if (!this.refreshTimer.isTime()) {
             return;
         }
-        this.clearOldFrameAndRenewIt();
-        this.uiManager.renderAll(this.g);
+        this.resetFrame();
+        this.uiManager.renderAll(this.graphics);
         this.writeErrors();
-        this.showFrameToScreen();
+        this.showFrame();
     }
-    
+
     public void writeErrors() {
-        final Graphics2D g2d = (Graphics2D)this.g;
+        final Graphics2D g2d = (Graphics2D) this.graphics;
         final int screenW = this.getDisplayWidth();
         final int screenH = this.getDisplayHeight();
         final int halfW = screenW / 2;

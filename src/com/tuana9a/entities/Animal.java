@@ -11,7 +11,7 @@ import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.state.GameState;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.abilities.Skill;
-import com.tuana9a.utils.TimeSystem;
+import com.tuana9a.utils.Timer;
 
 public abstract class Animal extends MovingEntity
 {
@@ -24,13 +24,13 @@ public abstract class Animal extends MovingEntity
     public int[][] shoulder;
     protected AnimalVision vision;
     protected AnimalHand hand;
-    public TimeSystem deadTime;
-    public TimeSystem effectTime;
-    public TimeSystem[] skillTimers;
+    public Timer deadTime;
+    public Timer effectTime;
+    public Timer[] skillTimers;
     public Skill[] skills;
     
     protected void initSkills() {
-        this.skillTimers = new TimeSystem[Animal.STATE_NUMBER];
+        this.skillTimers = new Timer[Animal.STATE_NUMBER];
         this.skills = new Skill[Animal.STATE_NUMBER];
     }
     
@@ -41,8 +41,8 @@ public abstract class Animal extends MovingEntity
     
     public Animal(final GameState gameState, final int id, final double x, final double y) {
         super(gameState, id, x, y);
-        this.deadTime = new TimeSystem();
-        this.effectTime = new TimeSystem();
+        this.deadTime = new Timer();
+        this.effectTime = new Timer();
         this.vision = new AnimalVision(gameState, this);
         this.hand = new AnimalHand(this);
         this.initSkills();
