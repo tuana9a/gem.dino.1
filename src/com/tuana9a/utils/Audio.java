@@ -6,24 +6,24 @@ package com.tuana9a.utils;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
+
 import com.tuana9a.App;
+
 import java.io.File;
 
-public class Audio
-{
+public class Audio {
     String fileName;
     File f;
-    
+
     public Audio(final String fileName) {
         try {
             this.fileName = fileName;
             this.f = new File(App.class.getResource(fileName).toURI());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public void play() {
         new Thread(() -> {
             try {
@@ -32,8 +32,7 @@ public class Audio
                 clip.start();
                 Thread.sleep(1000L);
                 clip.close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();

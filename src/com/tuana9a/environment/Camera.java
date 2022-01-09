@@ -2,21 +2,25 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.game;
+package com.tuana9a.environment;
 
 import com.tuana9a.App;
 import com.tuana9a.entities.Entity;
 import com.tuana9a.screen.GameScreen;
 
-public class GameCamera {
+public class Camera {
+    private static final Camera instance = new Camera();
+
     private double xOffset;
     private double yOffset;
     private final double speed;
-    private final GameScreen gameScreen;
 
-    public GameCamera(final GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
+    private Camera() {
         this.speed = 4.0;
+    }
+
+    public static Camera getInstance() {
+        return instance;
     }
 
     public void move() {
@@ -45,16 +49,18 @@ public class GameCamera {
     }
 
     public void centerOnEntity(final Entity e) {
-        this.xOffset = e.x - this.gameScreen.getDisplayWidth() / 2.0 + e.width / 2.0;
-        this.yOffset = e.y - this.gameScreen.getDisplayHeight() / 2.0 + e.height / 2.0;
+        GameScreen gameScreen = GameScreen.getInstance();
+        this.xOffset = e.x - gameScreen.getDisplayWidth() / 2.0 + e.width / 2.0;
+        this.yOffset = e.y - gameScreen.getDisplayHeight() / 2.0 + e.height / 2.0;
         this.checkBlankSpace();
     }
 
     public void checkBlankSpace() {
-        final int mapWidth = this.gameScreen.getStage().getCurrentMap().getMapPixelWidth();
-        final int mapHeight = this.gameScreen.getStage().getCurrentMap().getMapPixelHeight();
-        final int screenWidth = this.gameScreen.getDisplayWidth();
-        final int screenHeight = this.gameScreen.getDisplayHeight();
+        GameScreen gameScreen = GameScreen.getInstance();
+        final int mapWidth = gameScreen.getStage().getCurrentMap().getMapPixelWidth();
+        final int mapHeight = gameScreen.getStage().getCurrentMap().getMapPixelHeight();
+        final int screenWidth = gameScreen.getDisplayWidth();
+        final int screenHeight = gameScreen.getDisplayHeight();
         final double maxOffsetX = mapWidth - screenWidth;
         final double maxOffsetY = mapHeight - screenHeight;
         if (this.xOffset < 0.0) {

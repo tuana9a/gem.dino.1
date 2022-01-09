@@ -2,10 +2,11 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.game;
+package com.tuana9a.environment;
 
 import java.awt.Graphics;
 
+import com.tuana9a.entities.EntityManager;
 import com.tuana9a.entities.TeleGate;
 import com.tuana9a.configs.ConfigStaticObject;
 import com.tuana9a.entities.StaticObject;
@@ -27,9 +28,9 @@ import com.tuana9a.entities.player.Player;
 import com.tuana9a.screen.GameScreen;
 
 public class Stage {
-    private GameScreen gameScreen;
+    private final GameScreen gameScreen;
     private final Map currentMap;
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
     private Player player;
 
     public Stage(final GameScreen gameScreen) {

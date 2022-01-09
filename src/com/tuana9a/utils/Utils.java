@@ -28,7 +28,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 
-public class Utility {
+public class Utils {
     public static int[] integerToArray(int num) {
         int length = String.valueOf(num).length();
         final int[] result = new int[length];

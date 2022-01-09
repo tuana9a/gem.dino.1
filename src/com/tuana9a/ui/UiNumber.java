@@ -4,7 +4,7 @@
 
 package com.tuana9a.ui;
 
-import com.tuana9a.utils.Utility;
+import com.tuana9a.utils.Utils;
 import java.awt.Graphics;
 import com.tuana9a.screen.BaseScreen;
 import java.awt.image.BufferedImage;
@@ -21,7 +21,7 @@ public class UiNumber extends UiComponent
     
     @Override
     public void render(final Graphics g) {
-        final int[] digitArray = Utility.integerToArray(this.number);
+        final int[] digitArray = Utils.integerToArray(this.number);
         for (int length = digitArray.length, i = 0; i < length; ++i) {
             g.drawImage(this.imagesNumbers[digitArray[i]], (int)(this.x + i * 64 / 2), (int)this.y, 64, 64, null);
         }

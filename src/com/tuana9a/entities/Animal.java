@@ -6,11 +6,11 @@ package com.tuana9a.entities;
 
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.weapon.WeaponOut;
-import com.tuana9a.game.Map;
+import com.tuana9a.environment.Map;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.StateAnimation;
-import com.tuana9a.abilities.Skill;
+import com.tuana9a.abilities.BaseAbility;
 import com.tuana9a.utils.Timer;
 
 public abstract class Animal extends MovingEntity
@@ -27,11 +27,11 @@ public abstract class Animal extends MovingEntity
     public Timer deadTime;
     public Timer effectTime;
     public Timer[] skillTimers;
-    public Skill[] skills;
+    public BaseAbility[] abilities;
     
     protected void initSkills() {
         this.skillTimers = new Timer[Animal.STATE_NUMBER];
-        this.skills = new Skill[Animal.STATE_NUMBER];
+        this.abilities = new BaseAbility[Animal.STATE_NUMBER];
     }
     
     @Override

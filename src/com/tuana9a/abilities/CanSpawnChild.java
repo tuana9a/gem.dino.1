@@ -6,9 +6,8 @@ package com.tuana9a.abilities;
 
 import com.tuana9a.entities.Animal;
 
-public abstract class SkillSpawnChild extends Skill
-{
-    public SkillSpawnChild(final Animal owner) {
+public abstract class CanSpawnChild extends BaseAbility {
+    public CanSpawnChild(final Animal owner) {
         super(owner);
     }
 }

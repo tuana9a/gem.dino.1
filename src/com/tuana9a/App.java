@@ -27,8 +27,7 @@ public class App implements Runnable {
     private App() {
         this.running = false;
         this.refreshTimer = new Timer(2);
-        Assets.firstLoad();
-        Assets.loadEveryThingLeft();
+        Assets.loadAll();
         Display display = Display.getInstance();
         KeyboardManager keyboardManager = KeyboardManager.getInstance();
         MouseManager mouseManager = MouseManager.getInstance();
@@ -51,6 +50,12 @@ public class App implements Runnable {
                     this.currentState.update();
                     this.currentState.render();
                 }
+            }
+            // TODO: need to optimize
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

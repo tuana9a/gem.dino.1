@@ -4,16 +4,15 @@
 
 package com.tuana9a.utils;
 
-public class Algebra
-{
+public class Algebra {
     public static double rotateX(final double xOld, final double yOld, final double radian) {
         return xOld * Math.cos(radian) - yOld * Math.sin(radian);
     }
-    
+
     public static double rotateY(final double xOld, final double yOld, final double radian) {
         return xOld * Math.sin(radian) + yOld * Math.cos(radian);
     }
-    
+
     public static double getRotate(final double sourceX, final double sourceY, final double desX, final double desY) {
         final double deltaX = desX - sourceX;
         final double deltaY = desY - sourceY;

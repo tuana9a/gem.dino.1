@@ -2,13 +2,13 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.game;
+package com.tuana9a.environment;
 
 import com.tuana9a.entities.Animal;
 
 import java.awt.Graphics;
 
-import com.tuana9a.utils.Utility;
+import com.tuana9a.utils.Utils;
 import com.tuana9a.utils.Loading;
 import com.tuana9a.screen.GameScreen;
 
@@ -38,7 +38,7 @@ public class Map {
 
     public void loadMapById(String mapId) {
         final String filePath = "resources/map/map" + mapId + ".txt";
-        String dataString = Utility.loadTextFile(filePath);
+        String dataString = Utils.loadTextFile(filePath);
         if (dataString == null || dataString.equals("")) {
             this.loading.onError("Fail to load " + filePath);
             return;
@@ -115,13 +115,14 @@ public class Map {
     }
 
     public void render(final Graphics g) {
-        final int startColumn = (int) Math.max(0.0, this.gameScreen.getGameCamera().getxOffset() / 64.0);
-        final int endColumn = (int) Math.min(this.width, (this.gameScreen.getGameCamera().getxOffset() + this.gameScreen.getDisplayWidth()) / 64.0 + 1.0);
-        final int startRow = (int) Math.max(0.0, this.gameScreen.getGameCamera().getyOffset() / 64.0);
-        for (int endRow = (int) Math.min(this.height, (this.gameScreen.getGameCamera().getyOffset() + this.gameScreen.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
+        final Camera camera = Camera.getInstance();
+        final int startColumn = (int) Math.max(0.0, camera.getxOffset() / 64.0);
+        final int endColumn = (int) Math.min(this.width, (camera.getxOffset() + this.gameScreen.getDisplayWidth()) / 64.0 + 1.0);
+        final int startRow = (int) Math.max(0.0, camera.getyOffset() / 64.0);
+        for (int endRow = (int) Math.min(this.height, (camera.getyOffset() + this.gameScreen.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
             for (int column = startColumn; column < endColumn; ++column) {
-                final int cameraRenderX = (int) (column * 64 - this.gameScreen.getGameCamera().getxOffset());
-                final int cameraRenderY = (int) (row * 64 - this.gameScreen.getGameCamera().getyOffset());
+                final int cameraRenderX = (int) (column * 64 - camera.getxOffset());
+                final int cameraRenderY = (int) (row * 64 - camera.getyOffset());
                 this.getGround(row, column).render(g, cameraRenderX, cameraRenderY);
             }
         }

@@ -5,7 +5,7 @@
 package com.tuana9a.ui;
 
 import java.awt.Graphics;
-import com.tuana9a.utils.Utility;
+import com.tuana9a.utils.Utils;
 import com.tuana9a.screen.BaseScreen;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -32,7 +32,7 @@ public class UiProgressBar extends UiComponent
         this.leftBarImg = leftBar;
         this.midBarImg = midBar;
         this.rightBarImg = rightBar;
-        this.barColor = Utility.getColor(midBar);
+        this.barColor = Utils.getColor(midBar);
     }
     
     public void initProcess(final int fullProcess, final int currentProcess) {

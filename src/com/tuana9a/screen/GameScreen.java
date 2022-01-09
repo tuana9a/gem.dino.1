@@ -12,21 +12,20 @@ import com.tuana9a.graphic.Assets;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import com.tuana9a.utils.Utility;
+import com.tuana9a.utils.Utils;
 import com.tuana9a.App;
 import com.tuana9a.ui.UiButton;
 import com.tuana9a.ui.UiImageStatic;
 import com.tuana9a.ui.UiProgressBar;
 import com.tuana9a.ui.UiNumber;
-import com.tuana9a.game.GameCamera;
-import com.tuana9a.game.Stage;
+import com.tuana9a.environment.Camera;
+import com.tuana9a.environment.Stage;
 
 public class GameScreen extends BaseScreen {
     private static final GameScreen instance = new GameScreen();
 
     private boolean pauseGame;
     private final Stage stage;
-    private final GameCamera gameCamera;
     private UiNumber uiPayerHpNumber;
     private UiProgressBar uiBossHpBar;
     private UiImageStatic uiGameOver;
@@ -38,13 +37,12 @@ public class GameScreen extends BaseScreen {
     }
 
     private GameScreen() {
-        this.gameCamera = new GameCamera(this);
         this.stage = new Stage(this);
     }
 
     @Override
     public void changeCursor() {
-        final BufferedImage img = Utility.loadImg("resources/ui/cursor/ui_select.png");
+        final BufferedImage img = Utils.loadImg("resources/ui/cursor/ui_select.png");
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
         final Dimension d = toolkit.getBestCursorSize(32, 32);
         final Cursor cursor = toolkit.createCustomCursor(img, new Point(d.width / 2, d.height / 2), "img");
@@ -115,7 +113,7 @@ public class GameScreen extends BaseScreen {
             return;
         }
         if (app.getKeyboardManager().freeCamMode) {
-            this.getGameCamera().move();
+            Camera.getInstance().move();
         }
         this.stage.updateEveryRelCamAll();
         this.uiManager.updateAll();
@@ -171,10 +169,6 @@ public class GameScreen extends BaseScreen {
 
     public void notBossStage() {
         this.uiBossHpBar.hide();
-    }
-
-    public GameCamera getGameCamera() {
-        return this.gameCamera;
     }
 
     public Stage getStage() {

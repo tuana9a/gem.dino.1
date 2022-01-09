@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.tuana9a.Display;
-import com.tuana9a.utils.Utility;
+import com.tuana9a.utils.Utils;
 import com.tuana9a.ui.UiButton;
 import com.tuana9a.ui.ActionListener;
 import com.tuana9a.animation.UiAnimation;
@@ -85,7 +85,7 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public void changeCursor() {
-        final BufferedImage img = Utility.loadImg("resources/ui/cursor/ui_pointer.png");
+        final BufferedImage img = Utils.loadImg("resources/ui/cursor/ui_pointer.png");
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
         final Dimension d = toolkit.getBestCursorSize(32, 32);
         final Cursor cursor = toolkit.createCustomCursor(img, new Point(d.width / 2, d.height / 2), "img");
