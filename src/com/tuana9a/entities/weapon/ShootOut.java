@@ -4,6 +4,7 @@
 
 package com.tuana9a.entities.weapon;
 
+import com.tuana9a.entities.EntityManager;
 import com.tuana9a.entities.StaticObject;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.graphic.Assets;
@@ -44,8 +45,9 @@ public class ShootOut extends WeaponOut
     
     @Override
     protected void typicalUpdate() {
+        EntityManager entityManager = EntityManager.getInstance();
         if (this.hitEntity != null) {
-            if (!this.gameScreen.getStage().getEntityManager().isManage(this.hitEntity)) {
+            if (!entityManager.isManage(this.hitEntity)) {
                 this.state = 2;
             }
             this.updatePosition(this.hitEntity.x + this.hitDeltaX, this.hitEntity.y + this.hitDeltaY);

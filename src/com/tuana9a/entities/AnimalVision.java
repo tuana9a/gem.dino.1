@@ -6,27 +6,27 @@ package com.tuana9a.entities;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.utils.Algebra;
 import com.tuana9a.screen.GameScreen;
 
-public class AnimalVision
-{
+public class AnimalVision {
     private final Animal owner;
     private final int eyeSize;
     private double maxDistance;
     private final GameScreen gameScreen;
     private double x;
     private double y;
-    
+
     public AnimalVision(final GameScreen gameScreen, final Animal owner) {
         this.eyeSize = 20;
         this.maxDistance = 1000.0;
         this.gameScreen = gameScreen;
         this.owner = owner;
     }
-    
+
     public boolean canSee(final Entity otherEntity) {
         this.x = this.owner.x + (this.owner.width - this.eyeSize) / 2.0;
         this.y = this.owner.y + this.owner.actualSize.y;
@@ -40,7 +40,8 @@ public class AnimalVision
         final int speed = 20;
         final double xMove = speed * Math.cos(radianToEntity);
         final double yMove = speed * Math.sin(radianToEntity);
-        final ArrayList<Entity> allEntities = this.gameScreen.getStage().getEntityManager().getAllEntities();
+        final EntityManager entityManager = EntityManager.getInstance();
+        final ArrayList<Entity> allEntities = entityManager.getEntities();
         do {
             for (final Entity e : allEntities) {
                 if (e != null && e != this.owner && !(e instanceof Weapon)) {
@@ -58,16 +59,16 @@ public class AnimalVision
         } while (currentDis <= this.maxDistance);
         return false;
     }
-    
+
     public void setMaxDistance(final double maxDistance) {
         this.maxDistance = maxDistance;
     }
-    
+
     public double maxDis() {
         return this.maxDistance;
     }
-    
+
     private boolean collideWith(final Entity e) {
-        return e != null && new Rectangle((int)this.x, (int)this.y, this.eyeSize, this.eyeSize).intersects(e.actualSize());
+        return e != null && new Rectangle((int) this.x, (int) this.y, this.eyeSize, this.eyeSize).intersects(e.actualSize());
     }
 }

@@ -30,21 +30,21 @@ import com.tuana9a.screen.GameScreen;
 public class Stage {
     private final GameScreen gameScreen;
     private final Map currentMap;
-    private final EntityManager entityManager;
     private Player player;
 
     public Stage(final GameScreen gameScreen) {
         this.gameScreen = gameScreen;
-        this.entityManager = new EntityManager(gameScreen);
         this.currentMap = new Map(gameScreen);
     }
 
     public void resetEntityManagerAll() {
-        this.entityManager.nullEveryThing();
+        EntityManager entityManager = EntityManager.getInstance();
+        entityManager.nullEveryThing();
     }
 
     public void resetEntityManagerExceptPlayer() {
-        this.entityManager.nullEveryThingExceptPlayer();
+        EntityManager entityManager = EntityManager.getInstance();
+        entityManager.nullEveryThingExceptPlayer();
     }
 
     public void resetPlayer() {
@@ -56,15 +56,16 @@ public class Stage {
     }
 
     public void replay() {
+        EntityManager entityManager = EntityManager.getInstance();
         this.player.dropAllWeapon();
         this.resetEntityManagerAll();
         this.player.updatePosition(this.currentMap.getPixelSpawnX(), this.currentMap.getPixelSpawnY());
         this.player.reborn();
         this.gameScreen.updateUiPayerHp(this.player.getHealth());
-        this.entityManager.addEntity(this.player);
-        this.entityManager.setPlayer(this.player);
+        entityManager.addEntity(this.player);
+        entityManager.setPlayer(this.player);
         this.initEntitiesWithMap();
-        this.entityManager.updateAll();
+        entityManager.updateAll();
     }
 
     public void newGame(final Player newPlayer, final String mapId) {
@@ -78,6 +79,7 @@ public class Stage {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                EntityManager entityManager = EntityManager.getInstance();
                 if (mapId == null || mapId.equals("")) {
                     Stage.this.initMapById("1");
                 } else {
@@ -95,13 +97,13 @@ public class Stage {
                     Stage.this.player.updatePosition(Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
                     for (final Weapon w : Stage.this.player.getHand().getAllWeapons()) {
                         if (w != null) {
-                            Stage.this.entityManager.addEntity(w);
+                            entityManager.addEntity(w);
                         }
                     }
                 }
-                Stage.this.entityManager.setPlayer(Stage.this.player);
-                Stage.this.entityManager.addEntity(Stage.this.player);
-                Stage.this.entityManager.updateAll();
+                entityManager.setPlayer(Stage.this.player);
+                entityManager.addEntity(Stage.this.player);
+                entityManager.updateAll();
             }
         }).start();
     }
@@ -117,20 +119,21 @@ public class Stage {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                EntityManager entityManager = EntityManager.getInstance();
                 if (mapId == null || mapId.equals("")) {
                     Stage.this.initMapById("1");
                 } else {
                     Stage.this.initMapById(mapId);
                 }
                 Stage.this.player.updatePosition(Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
-                Stage.this.entityManager.setPlayer(Stage.this.player);
-                Stage.this.entityManager.addEntity(Stage.this.player);
+                entityManager.setPlayer(Stage.this.player);
+                entityManager.addEntity(Stage.this.player);
                 for (final Weapon w : Stage.this.player.getHand().getAllWeapons()) {
                     if (w != null) {
-                        Stage.this.entityManager.addEntity(w);
+                        entityManager.addEntity(w);
                     }
                 }
-                Stage.this.entityManager.updateAll();
+                entityManager.updateAll();
             }
         }).start();
     }
@@ -142,6 +145,7 @@ public class Stage {
 
     public void initEntitiesWithMap() {
         this.gameScreen.notBossStage();
+        EntityManager entityManager = EntityManager.getInstance();
         final int enemyNumber = this.currentMap.getEnemyNumber();
         final int[][] enemiesInfo = this.currentMap.getEnemiesInfo();
         final Enemy[] enemies = new Enemy[enemyNumber];
@@ -190,28 +194,27 @@ public class Stage {
                 statics[k] = new StaticObject(this.gameScreen, info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]]);
             }
         }
-        this.entityManager.addAllEntities(new Entity[][]{enemies, enemyWeapons, aloneWeapons, statics});
+        entityManager.addAllEntities(new Entity[][]{enemies, enemyWeapons, aloneWeapons, statics});
     }
 
     public void update() {
-        this.entityManager.updateAll();
+        EntityManager entityManager = EntityManager.getInstance();
+        entityManager.updateAll();
     }
 
     public void updateEveryRelCamAll() {
-        this.entityManager.updateAllEveryRelCam();
+        EntityManager entityManager = EntityManager.getInstance();
+        entityManager.updateAllEveryRelCam();
     }
 
     public void render(final Graphics g) {
+        EntityManager entityManager = EntityManager.getInstance();
         this.currentMap.render(g);
-        this.entityManager.renderAll(g);
+        entityManager.renderAll(g);
     }
 
     public Map getCurrentMap() {
         return this.currentMap;
-    }
-
-    public EntityManager getEntityManager() {
-        return this.entityManager;
     }
 
     public Player getPlayer() {

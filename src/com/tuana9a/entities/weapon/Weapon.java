@@ -5,6 +5,7 @@
 package com.tuana9a.entities.weapon;
 
 import com.tuana9a.App;
+import com.tuana9a.entities.EntityManager;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.entities.player.Player;
 
@@ -140,8 +141,9 @@ public abstract class Weapon extends StaticEntity {
     protected abstract void typicalUpdate();
 
     public void attack() {
+        EntityManager entityManager = EntityManager.getInstance();
         this.state = 4;
-        this.gameScreen.getStage().getEntityManager().addAllEntities(this.typicalAttack());
+        entityManager.addAllEntities(this.typicalAttack());
     }
 
     private boolean aim(final Entity entity) {

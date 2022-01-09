@@ -7,13 +7,12 @@ package com.tuana9a.entities;
 import java.util.Arrays;
 
 import com.tuana9a.App;
+import com.tuana9a.constants.Comparators;
 import com.tuana9a.entities.weapon.ShootOut;
 
 import java.awt.Graphics;
 
 import com.tuana9a.entities.enemy.Enemy;
-
-import java.util.Comparator;
 
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.weapon.Weapon;
@@ -22,22 +21,24 @@ import java.util.ArrayList;
 
 import com.tuana9a.entities.player.Player;
 import com.tuana9a.environment.Camera;
-import com.tuana9a.screen.GameScreen;
 
 public class EntityManager {
-    private final GameScreen gameScreen;
-    private Player player;
-    private final ArrayList<Entity> allEntities;
-    private final ArrayList<Weapon> allWeapons;
-    private final ArrayList<WeaponOut> allWeaponOuts;
-    private AnimalHand playerHand;
-    private static Comparator<Entity> compareY;
+    private static final EntityManager instance = new EntityManager();
 
-    public EntityManager(final GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
-        this.allEntities = new ArrayList<>(300);
-        this.allWeapons = new ArrayList<>(10);
-        this.allWeaponOuts = new ArrayList<>(150);
+    private Player player;
+    private AnimalHand playerHand;
+    private final ArrayList<Entity> entities;
+    private final ArrayList<Weapon> weapons;
+    private final ArrayList<WeaponOut> weaponOuts;
+
+    private EntityManager() {
+        this.entities = new ArrayList<>(100);
+        this.weapons = new ArrayList<>(10);
+        this.weaponOuts = new ArrayList<>(200);
+    }
+
+    public static EntityManager getInstance() {
+        return instance;
     }
 
     public void updateAll() {
@@ -50,8 +51,7 @@ public class EntityManager {
         if (!app.getKeyboardManager().freeCamMode) {
             camera.centerOnEntity(this.player);
         }
-        for (int i = 0; i < this.allEntities.size(); ++i) {
-            final Entity e = this.allEntities.get(i);
+        for (final Entity e : this.entities) {
             if (e != null) {
                 if (e instanceof MovingEntity) {
                     final MovingEntity eActive = (MovingEntity) e;
@@ -76,24 +76,22 @@ public class EntityManager {
                 }
             }
         }
-        for (int i = 0; i < this.allWeapons.size(); ++i) {
-            final Weapon w = this.allWeapons.get(i);
+        for (final Weapon w : this.weapons) {
             if (w != null) {
                 w.update();
             }
         }
-        for (int i = 0; i < this.allWeaponOuts.size(); ++i) {
-            final WeaponOut wo = this.allWeaponOuts.get(i);
+        for (final WeaponOut wo : this.weaponOuts) {
             if (wo != null) {
                 wo.update();
             }
         }
-        this.allEntities.sort(EntityManager.compareY);
-        this.allWeaponOuts.sort(EntityManager.compareY);
+        this.entities.sort(Comparators.compareY);
+        this.weaponOuts.sort(Comparators.compareY);
     }
 
     public void updateAllEveryRelCam() {
-        for (final Entity e : this.allEntities) {
+        for (final Entity e : this.entities) {
             if (e == null) {
                 continue;
             }
@@ -107,13 +105,13 @@ public class EntityManager {
         if (this.player == null) {
             return;
         }
-        for (final WeaponOut wo : this.allWeaponOuts) {
+        for (final WeaponOut wo : this.weaponOuts) {
             if (wo == null) {
                 continue;
             }
             wo.render(g);
         }
-        for (final Entity e : this.allEntities) {
+        for (final Entity e : this.entities) {
             if (e != null) {
                 if (e instanceof WeaponOut) {
                     continue;
@@ -125,7 +123,7 @@ public class EntityManager {
             this.playerHand.renderSelectedWeapon(g);
         }
         if (app.getKeyboardManager().innerBoundMode) {
-            for (final WeaponOut wo : this.allWeaponOuts) {
+            for (final WeaponOut wo : this.weaponOuts) {
                 if (wo == null) {
                     continue;
                 }
@@ -138,8 +136,7 @@ public class EntityManager {
         if (e instanceof ShootOut && ((ShootOut) e).isHit()) {
             return;
         }
-        for (int i = 0; i < this.allEntities.size(); ++i) {
-            final Entity other = this.allEntities.get(i);
+        for (final Entity other : this.entities) {
             if (other != null) {
                 if (other != e) {
                     if (e.isCollideWith(e.xMove, e.yMove, other)) {
@@ -151,28 +148,28 @@ public class EntityManager {
     }
 
     public boolean isManage(final Entity e) {
-        return this.allEntities.contains(e);
+        return this.entities.contains(e);
     }
 
     public void removeEntity(final Entity e) {
-        this.allEntities.set(this.allEntities.indexOf(e), null);
+        this.entities.set(this.entities.indexOf(e), null);
         if (e instanceof WeaponOut) {
-            this.allWeaponOuts.set(this.allWeaponOuts.indexOf(e), null);
+            this.weaponOuts.set(this.weaponOuts.indexOf(e), null);
         } else if (e instanceof Weapon) {
-            this.allWeapons.set(this.allWeapons.indexOf(e), null);
+            this.weapons.set(this.weapons.indexOf(e), null);
         }
     }
 
     public void eraseEveryThing() {
-        this.allEntities.clear();
-        this.allWeapons.clear();
-        this.allWeaponOuts.clear();
+        this.entities.clear();
+        this.weapons.clear();
+        this.weaponOuts.clear();
         this.player = null;
         this.playerHand = null;
     }
 
     public void nullEveryThing() {
-        for (final Entity e : this.allEntities) {
+        for (final Entity e : this.entities) {
             this.removeEntity(e);
         }
         this.player = null;
@@ -180,33 +177,33 @@ public class EntityManager {
     }
 
     public void nullEveryThingExceptPlayer() {
-        for (final Entity e : this.allEntities) {
+        for (final Entity e : this.entities) {
             this.removeEntity(e);
         }
     }
 
     public void addEntity(final Entity e) {
-        int index = this.allEntities.indexOf(null);
+        int index = this.entities.indexOf(null);
         if (index != -1) {
-            this.allEntities.set(index, e);
+            this.entities.set(index, e);
         } else {
-            this.allEntities.add(e);
+            this.entities.add(e);
         }
         if (e instanceof WeaponOut) {
             final WeaponOut weaponOut = (WeaponOut) e;
-            index = this.allWeaponOuts.indexOf(null);
+            index = this.weaponOuts.indexOf(null);
             if (index != -1) {
-                this.allWeaponOuts.set(this.allWeaponOuts.indexOf(null), weaponOut);
+                this.weaponOuts.set(this.weaponOuts.indexOf(null), weaponOut);
             } else {
-                this.allWeaponOuts.add(weaponOut);
+                this.weaponOuts.add(weaponOut);
             }
         } else if (e instanceof Weapon) {
             final Weapon weapon = (Weapon) e;
-            index = this.allWeapons.indexOf(null);
+            index = this.weapons.indexOf(null);
             if (index != -1) {
-                this.allWeapons.set(this.allWeapons.indexOf(null), weapon);
+                this.weapons.set(this.weapons.indexOf(null), weapon);
             } else {
-                this.allWeapons.add(weapon);
+                this.weapons.add(weapon);
             }
         }
     }
@@ -227,8 +224,8 @@ public class EntityManager {
         }
     }
 
-    public ArrayList<Entity> getAllEntities() {
-        return this.allEntities;
+    public ArrayList<Entity> getEntities() {
+        return this.entities;
     }
 
     public Player getPlayer() {
@@ -240,21 +237,4 @@ public class EntityManager {
         this.playerHand = player.getHand();
     }
 
-    static {
-        EntityManager.compareY = new Comparator<Entity>() {
-            @Override
-            public int compare(final Entity o1, final Entity o2) {
-                if (o1 == null && o2 == null) {
-                    return 0;
-                }
-                if (o1 == null) {
-                    return -1;
-                }
-                if (o2 == null) {
-                    return 1;
-                }
-                return Double.compare(o1.y + o1.actualSize.y + o1.actualSize.height, o2.y + o2.actualSize.y + o2.actualSize.height);
-            }
-        };
-    }
 }
