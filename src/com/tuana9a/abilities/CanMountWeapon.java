@@ -2,40 +2,44 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.entities;
+package com.tuana9a.abilities;
 
 import java.awt.Graphics;
+
+import com.tuana9a.entities.Animal;
 import com.tuana9a.entities.weapon.Weapon;
 
-public class AnimalHand
-{
+// TODO: redesign: linh động trong rel position so với animal
+//  có thể sẽ không cần chuyển position khi nhân vật quay người
+//  nếu muốn xoay thì cần thêm cơ chế detect và checking ...
+public class CanMountWeapon {
     public final int MAX_USING = 2;
     private final int maxUsing;
     private final Weapon[] weapons;
     private int selectedWeapon;
     private final Animal owner;
-    
+
     public void printSlotInfo() {
         System.out.println("========================");
         System.out.println("selected: " + this.selectedWeapon);
         System.out.println("slot (0): " + this.weapons[0]);
         System.out.println("slot (1): " + this.weapons[1]);
     }
-    
-    public AnimalHand(final Animal owner) {
+
+    public CanMountWeapon(final Animal owner) {
         this.owner = owner;
         this.maxUsing = 2;
         this.weapons = new Weapon[this.maxUsing];
         this.selectedWeapon = 0;
     }
-    
-    public AnimalHand(final Animal owner, final int maxUsing) {
+
+    public CanMountWeapon(final Animal owner, final int maxUsing) {
         this.owner = owner;
         this.maxUsing = maxUsing;
         this.weapons = new Weapon[maxUsing];
         this.selectedWeapon = 0;
     }
-    
+
     public void takeWeapon(final Weapon weapon) {
         if (weapon.owner != null) {
             return;
@@ -60,7 +64,7 @@ public class AnimalHand
         this.dropWeapon();
         this.weapons[this.selectedWeapon] = weapon;
     }
-    
+
     public void dropWeapon() {
         if (this.weapons[this.selectedWeapon] == null) {
             return;
@@ -71,7 +75,7 @@ public class AnimalHand
         w.setOwner(null);
         this.weapons[this.selectedWeapon] = null;
     }
-    
+
     public void dropWeapon(final Weapon w) {
         if (w.owner != this.owner) {
             return;
@@ -87,7 +91,7 @@ public class AnimalHand
             }
         }
     }
-    
+
     public void stealWeapon(final Weapon w) {
         if (this.isFull()) {
             return;
@@ -97,7 +101,7 @@ public class AnimalHand
         }
         this.takeWeapon(w);
     }
-    
+
     public void dropAllWeapon() {
         for (int i = 0; i < this.maxUsing; ++i) {
             if (this.weapons[i] != null) {
@@ -109,7 +113,7 @@ public class AnimalHand
             }
         }
     }
-    
+
     public void switchWeapon() {
         if (this.weapons[this.selectedWeapon] != null) {
             this.weapons[this.selectedWeapon].updateState(2);
@@ -122,7 +126,7 @@ public class AnimalHand
             this.weapons[this.selectedWeapon].updateState(3);
         }
     }
-    
+
     public void switchWeapon(final int i) {
         if (this.weapons[this.selectedWeapon] != null) {
             this.weapons[this.selectedWeapon].updateState(2);
@@ -135,7 +139,7 @@ public class AnimalHand
             this.weapons[this.selectedWeapon].updateState(3);
         }
     }
-    
+
     public boolean isFull() {
         int count = 0;
         for (final Weapon w : this.weapons) {
@@ -145,23 +149,23 @@ public class AnimalHand
         }
         return count == this.maxUsing;
     }
-    
+
     public Weapon getSelectedWeapon() {
         return this.weapons[this.selectedWeapon];
     }
-    
+
     public boolean hasWeapon(final int id) {
         return this.weapons[id] != null;
     }
-    
+
     public Animal owner() {
         return this.owner;
     }
-    
+
     public Weapon[] getAllWeapons() {
         return this.weapons;
     }
-    
+
     public void renderSelectedWeapon(final Graphics g) {
         if (this.weapons[this.selectedWeapon] == null) {
             return;

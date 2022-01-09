@@ -6,7 +6,7 @@ package com.tuana9a.entities;
 
 import java.util.Arrays;
 
-import com.tuana9a.App;
+import com.tuana9a.abilities.CanMountWeapon;
 import com.tuana9a.constants.Comparators;
 import com.tuana9a.entities.weapon.ShootOut;
 
@@ -27,7 +27,7 @@ public class EntityManager {
     private static final EntityManager instance = new EntityManager();
 
     private Player player;
-    private AnimalHand playerHand;
+    private CanMountWeapon playerHand;
     private final ArrayList<Entity> entities;
     private final ArrayList<Weapon> weapons;
     private final ArrayList<WeaponOut> weaponOuts;

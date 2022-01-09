@@ -2,28 +2,28 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.entities;
+package com.tuana9a.abilities;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import com.tuana9a.entities.Animal;
+import com.tuana9a.entities.Entity;
+import com.tuana9a.entities.EntityManager;
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.utils.Algebra;
-import com.tuana9a.screen.GameScreen;
 
-public class AnimalVision {
+public class CanSee {
     private final Animal owner;
     private final int eyeSize;
     private double maxDistance;
-    private final GameScreen gameScreen;
     private double x;
     private double y;
 
-    public AnimalVision(final GameScreen gameScreen, final Animal owner) {
+    public CanSee(final Animal owner) {
         this.eyeSize = 20;
         this.maxDistance = 1000.0;
-        this.gameScreen = gameScreen;
         this.owner = owner;
     }
 

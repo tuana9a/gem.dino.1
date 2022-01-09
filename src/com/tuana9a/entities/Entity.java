@@ -4,26 +4,19 @@
 
 package com.tuana9a.entities;
 
-import com.tuana9a.App;
-import com.tuana9a.environment.Camera;
-import com.tuana9a.input.KeyboardManager;
-import com.tuana9a.utils.Algebra;
-
-import java.awt.Color;
-
-import com.tuana9a.entities.weapon.WeaponOut;
+import com.tuana9a.animation.MoveAnimation;
+import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.entities.weapon.Weapon;
-
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-
-import com.tuana9a.animation.StateAnimation;
-import com.tuana9a.animation.MoveAnimation;
-import com.tuana9a.utils.Timer;
+import com.tuana9a.entities.weapon.WeaponOut;
+import com.tuana9a.environment.Camera;
+import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.screen.GameScreen;
+import com.tuana9a.utils.Algebra;
+import com.tuana9a.utils.Timer;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public abstract class Entity {
     public static final int STAY_DIRECT = 0;
@@ -88,9 +81,11 @@ public abstract class Entity {
 
     public void render(final Graphics g) {
         KeyboardManager keyboardManager = KeyboardManager.getInstance();
-        if (this.xCam + this.actualSize.x + this.actualSize.width < 0.0 || this.xCam > this.gameScreen.getDisplayWidth() || this.yCam + this.actualSize.y + this.actualSize.height < 0.0 || this.yCam + this.actualSize.y > this.gameScreen.getDisplayHeight()) {
-            return;
-        }
+        if (this.xCam + this.actualSize.x + this.actualSize.width < 0.0) return;
+        if (this.xCam > this.gameScreen.getDisplayWidth()) return;
+        if (this.yCam + this.actualSize.y + this.actualSize.height < 0.0) return;
+        if (this.yCam + this.actualSize.y > this.gameScreen.getDisplayHeight()) return;
+
         final Graphics2D g2d = (Graphics2D) g.create();
         if (this.moveDirect == 1) {
             g2d.rotate(this.radianRotateMain, this.xRotateCam, this.yRotateCam);
@@ -107,16 +102,10 @@ public abstract class Entity {
             }
         }
         if (this.radianRotateMain > 9.42477796076938 || this.radianRotateMain < -9.42477796076938) {
-            System.out.println(this.getClass().getName().replaceAll(".+\\.", "") + " radian overflow " + this.radianRotateMain);
+            System.out.println(this.getClass().getName() + " radian overflow " + this.radianRotateMain);
         }
         if (keyboardManager.outBoundMode) {
             this.renderOuterBound(g);
-        }
-        if (this instanceof Enemy && keyboardManager.workingAreaMode) {
-            this.renderWorkingArea(g);
-        }
-        if (this instanceof Enemy && keyboardManager.workingAreaMode) {
-            this.renderEyeDistance(g);
         }
         if (keyboardManager.innerBoundMode) {
             this.renderInnerBound(g);
