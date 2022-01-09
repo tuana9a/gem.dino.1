@@ -9,6 +9,7 @@ import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.TeleGate;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.Entity;
+import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.animation.MoveAnimation;
@@ -47,14 +48,14 @@ public class Player extends Animal {
     }
 
     private void updateMoveKeyboard() {
-        App app = App.getInstance();
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
         final double n = 0.0;
         this.yMove = n;
         this.xMove = n;
-        final boolean up = app.getKeyboardManager().w;
-        final boolean down = app.getKeyboardManager().s;
-        final boolean left = app.getKeyboardManager().a;
-        final boolean right = app.getKeyboardManager().d;
+        final boolean up = keyboardManager.w;
+        final boolean down = keyboardManager.s;
+        final boolean left = keyboardManager.a;
+        final boolean right = keyboardManager.d;
         if (!up || !down) {
             if (up) {
                 this.yMove = -this.speed;
@@ -83,16 +84,15 @@ public class Player extends Animal {
 
     @Override
     protected void updateInteract() {
-        App app = App.getInstance();
-        if (app.getKeyboardManager().dropWeapon()) {
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        if (keyboardManager.dropWeapon()) {
             this.dropWeapon();
         }
-        if (app.getKeyboardManager().switchWeapon()) {
+        if (keyboardManager.switchWeapon()) {
             this.switchWeapon();
         }
-        for (int i = 0; i < this.intersectEntities.size(); ++i) {
-            final Entity e = this.intersectEntities.get(i);
-            if (e instanceof Weapon && app.getKeyboardManager().takeWeapon()) {
+        for (final Entity e : this.intersectEntities) {
+            if (e instanceof Weapon && keyboardManager.takeWeapon()) {
                 this.takeWeapon((Weapon) e);
             } else if (e instanceof TeleGate) {
                 ((TeleGate) e).teleToNewMap();

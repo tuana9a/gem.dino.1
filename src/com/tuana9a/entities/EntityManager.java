@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import com.tuana9a.entities.player.Player;
 import com.tuana9a.environment.Camera;
+import com.tuana9a.input.KeyboardManager;
 
 public class EntityManager {
     private static final EntityManager instance = new EntityManager();
@@ -42,13 +43,13 @@ public class EntityManager {
     }
 
     public void updateAll() {
-        App app = App.getInstance();
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
         final Camera camera = Camera.getInstance();
         this.player.update();
         if (this.player == null) {
             return;
         }
-        if (!app.getKeyboardManager().freeCamMode) {
+        if (!keyboardManager.freeCamMode) {
             camera.centerOnEntity(this.player);
         }
         for (final Entity e : this.entities) {
@@ -101,7 +102,7 @@ public class EntityManager {
     }
 
     public void renderAll(final Graphics g) {
-        App app = App.getInstance();
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
         if (this.player == null) {
             return;
         }
@@ -119,10 +120,10 @@ public class EntityManager {
                 e.render(g);
             }
         }
-        if (app.getKeyboardManager().rotationMode && this.playerHand != null) {
+        if (keyboardManager.rotationMode && this.playerHand != null) {
             this.playerHand.renderSelectedWeapon(g);
         }
-        if (app.getKeyboardManager().innerBoundMode) {
+        if (keyboardManager.innerBoundMode) {
             for (final WeaponOut wo : this.weaponOuts) {
                 if (wo == null) {
                     continue;

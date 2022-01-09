@@ -6,6 +6,7 @@ package com.tuana9a.entities;
 
 import com.tuana9a.App;
 import com.tuana9a.environment.Camera;
+import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.utils.Algebra;
 
 import java.awt.Color;
@@ -86,7 +87,7 @@ public abstract class Entity {
     public abstract void update();
 
     public void render(final Graphics g) {
-        App app = App.getInstance();
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
         if (this.xCam + this.actualSize.x + this.actualSize.width < 0.0 || this.xCam > this.gameScreen.getDisplayWidth() || this.yCam + this.actualSize.y + this.actualSize.height < 0.0 || this.yCam + this.actualSize.y > this.gameScreen.getDisplayHeight()) {
             return;
         }
@@ -108,19 +109,19 @@ public abstract class Entity {
         if (this.radianRotateMain > 9.42477796076938 || this.radianRotateMain < -9.42477796076938) {
             System.out.println(this.getClass().getName().replaceAll(".+\\.", "") + " radian overflow " + this.radianRotateMain);
         }
-        if (app.getKeyboardManager().outBoundMode) {
+        if (keyboardManager.outBoundMode) {
             this.renderOuterBound(g);
         }
-        if (this instanceof Enemy && app.getKeyboardManager().workingAreaMode) {
+        if (this instanceof Enemy && keyboardManager.workingAreaMode) {
             this.renderWorkingArea(g);
         }
-        if (this instanceof Enemy && app.getKeyboardManager().workingAreaMode) {
+        if (this instanceof Enemy && keyboardManager.workingAreaMode) {
             this.renderEyeDistance(g);
         }
-        if (app.getKeyboardManager().innerBoundMode) {
+        if (keyboardManager.innerBoundMode) {
             this.renderInnerBound(g);
         }
-        if (app.getKeyboardManager().rotationMode) {
+        if (keyboardManager.rotationMode) {
             this.renderRotation(g);
         }
     }

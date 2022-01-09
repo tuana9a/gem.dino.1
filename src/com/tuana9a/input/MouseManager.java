@@ -64,6 +64,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseExited(final MouseEvent e) {
-        App.getInstance().getKeyboardManager().update();
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        keyboardManager.update();
     }
 }

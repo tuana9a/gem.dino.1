@@ -6,6 +6,7 @@ package com.tuana9a.environment;
 
 import com.tuana9a.App;
 import com.tuana9a.entities.Entity;
+import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.screen.GameScreen;
 
 public class Camera {
@@ -24,11 +25,11 @@ public class Camera {
     }
 
     public void move() {
-        App app = App.getInstance();
-        final boolean up = app.getKeyboardManager().up;
-        final boolean down = app.getKeyboardManager().down;
-        final boolean left = app.getKeyboardManager().left;
-        final boolean right = app.getKeyboardManager().right;
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        final boolean up = keyboardManager.up;
+        final boolean down = keyboardManager.down;
+        final boolean left = keyboardManager.left;
+        final boolean right = keyboardManager.right;
         if (!up || !down) {
             if (up) {
                 this.yOffset -= this.speed;

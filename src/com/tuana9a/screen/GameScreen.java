@@ -5,6 +5,7 @@
 package com.tuana9a.screen;
 
 import com.tuana9a.Display;
+import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.ui.ActionListener;
 import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
@@ -108,11 +109,11 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void update() {
-        App app = App.getInstance();
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
         if (!this.refreshTimer.isTime()) {
             return;
         }
-        if (app.getKeyboardManager().freeCamMode) {
+        if (keyboardManager.freeCamMode) {
             Camera.getInstance().move();
         }
         this.stage.updateEveryRelCamAll();

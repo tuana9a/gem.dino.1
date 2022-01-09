@@ -8,6 +8,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import com.tuana9a.App;
+import com.tuana9a.input.KeyboardManager;
+import com.tuana9a.input.MouseManager;
 import com.tuana9a.utils.Timer;
 
 import java.awt.Rectangle;
@@ -51,8 +53,8 @@ public abstract class UiComponent {
     }
 
     public void render(final Graphics g) {
-        App app = App.getInstance();
-        if (app.getKeyboardManager().innerBoundMode) {
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        if (keyboardManager.innerBoundMode) {
             this.renderInnerBound(g);
         }
     }
@@ -70,9 +72,9 @@ public abstract class UiComponent {
     }
 
     public void checkMouseHover() {
-        App app = App.getInstance();
-        final int mouseX = app.getMouseManager().getX();
-        final int mouseY = app.getMouseManager().getY();
+        MouseManager mouseManager = MouseManager.getInstance();
+        final int mouseX = mouseManager.getX();
+        final int mouseY = mouseManager.getY();
         if (new Rectangle((int) (this.x + this.bounds.x), (int) (this.y + this.bounds.y), this.bounds.width, this.bounds.height).contains(mouseX, mouseY)) {
             this.hovering = true;
             if (!this.pressing) {

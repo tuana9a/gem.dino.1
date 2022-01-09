@@ -11,6 +11,8 @@ import com.tuana9a.entities.player.Player;
 
 import java.util.ArrayList;
 
+import com.tuana9a.input.KeyboardManager;
+import com.tuana9a.input.MouseManager;
 import com.tuana9a.utils.Algebra;
 import com.tuana9a.entities.Entity;
 import com.tuana9a.screen.GameScreen;
@@ -161,11 +163,11 @@ public abstract class Weapon extends StaticEntity {
     protected abstract ArrayList<Entity> typicalAttack();
 
     private void updateTypicalAttack() {
-        App app = App.getInstance();
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
         if (!this.typicalTimer.isTime()) {
             return;
         }
-        if (this.owner instanceof Player && app.getKeyboardManager().fire) {
+        if (this.owner instanceof Player && keyboardManager.fire) {
             this.attack();
             this.typicalTimer.reset();
         } else if (this.owner instanceof Enemy) {
@@ -199,9 +201,9 @@ public abstract class Weapon extends StaticEntity {
     }
 
     private void updateRadianRotateMouse() {
-        App app = App.getInstance();
-        final double mouseX = app.getMouseManager().getX();
-        final double mouseY = app.getMouseManager().getY();
+        MouseManager mouseManager = MouseManager.getInstance();
+        final double mouseX = mouseManager.getX();
+        final double mouseY = mouseManager.getY();
         final double radianToMouse = Algebra.getRotate(this.xRotateCam, this.yRotateCam, mouseX, mouseY);
         final double minDelta = 0.031415926535897934;
         final double approximate = 2.0;

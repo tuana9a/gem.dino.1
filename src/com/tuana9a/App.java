@@ -18,7 +18,7 @@ public class App implements Runnable {
     private boolean running;
     private BaseScreen currentState;
     private BaseScreen lastState;
-    private Timer refreshTimer;
+    private final Timer refreshTimer;
 
     public static App getInstance() {
         return instance;
@@ -62,16 +62,6 @@ public class App implements Runnable {
 
     public void stop() {
         this.running = false;
-    }
-
-    // TODO: clean up
-    public MouseManager getMouseManager() {
-        return MouseManager.getInstance();
-    }
-
-    // TODO: clean up
-    public KeyboardManager getKeyboardManager() {
-        return KeyboardManager.getInstance();
     }
 
     public BaseScreen getCurrentState() {

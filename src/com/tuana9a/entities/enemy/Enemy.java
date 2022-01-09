@@ -5,6 +5,7 @@
 package com.tuana9a.entities.enemy;
 
 import com.tuana9a.App;
+import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.utils.Algebra;
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.weapon.Spear;
@@ -130,13 +131,13 @@ public abstract class Enemy extends Animal
     }
     
     private void updateMoveKeyboard() {
-        App app = App.getInstance();
+        KeyboardManager keyboardManager = KeyboardManager.getInstance();
         this.xMove = 0.0;
         this.yMove = 0.0;
-        final boolean up = app.getKeyboardManager().up;
-        final boolean down = app.getKeyboardManager().down;
-        final boolean left = app.getKeyboardManager().left;
-        final boolean right = app.getKeyboardManager().right;
+        final boolean up = keyboardManager.up;
+        final boolean down = keyboardManager.down;
+        final boolean left = keyboardManager.left;
+        final boolean right = keyboardManager.right;
         if (!up || !down) {
             if (up) {
                 this.yMove = -this.speed;
