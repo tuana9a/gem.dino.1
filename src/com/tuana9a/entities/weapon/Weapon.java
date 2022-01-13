@@ -5,7 +5,6 @@
 package com.tuana9a.entities.weapon;
 
 import com.tuana9a.engine.EntityManager;
-import com.tuana9a.engine.GameWorld;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.entities.player.Player;
 
@@ -20,7 +19,7 @@ import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.animation.MoveAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.configs.ConfigWeapon;
-import com.tuana9a.utils.Audio;
+import com.tuana9a.utils.Sound;
 import com.tuana9a.entities.Animal;
 import com.tuana9a.entities.StaticEntity;
 
@@ -44,7 +43,7 @@ public abstract class Weapon extends StaticEntity {
     public double radianRecoil;
     public double radianRecoilAmount;
     public double radianRecoilRegen;
-    protected Audio attackSound;
+    protected Sound attackSound;
 
     @Override
     protected void initCoreInfo(final int weaponId) {
@@ -341,7 +340,7 @@ public abstract class Weapon extends StaticEntity {
         this.owner = owner;
     }
 
-    public void setAttackSound(final Audio attackSound) {
+    public void setAttackSound(final Sound attackSound) {
         this.attackSound = attackSound;
     }
 }

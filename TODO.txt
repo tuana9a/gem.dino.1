@@ -1,10 +1,15 @@
 - phần loop game mình đang không control được, để thread.sleep lại ngon hơn không có ?
-- thêm queue sử lý sự kiện để loop chính của chương trình sử lý
+
 - design pattern ability move, shoot, see
   + move với map, move tự do, kế thừa generic owner là <T>
+
 - design lại map và ground object, giờ background là một ảnh
   + các object trên map sẽ được khai báo
   + sử dụng dạng json cấu hình trước
+
 - hay thêm maven nhỉ để xử lý json
+
 - trái phải, state nên dùng enum cho đỡ nhớ nhớ quên quên, việc select state cũng dùng hash table chứ không dùng mảng hoặc cấu trúc tương đương
+
 - desing lại cơ chế input, keyboard, ...
+

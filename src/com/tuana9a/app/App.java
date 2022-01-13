@@ -8,7 +8,7 @@ import com.tuana9a.graphic.Assets;
 import com.tuana9a.input.MouseManager;
 import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.interfaces.ActionEvent;
-import com.tuana9a.screen.LoadScreen;
+import com.tuana9a.screen.LoadingScreen;
 import com.tuana9a.screen.MenuScreen;
 import com.tuana9a.screen.BaseScreen;
 import com.tuana9a.utils.Timer;
@@ -40,10 +40,9 @@ public class App implements Runnable {
     @Override
     public void run() {
         this.running = true;
-        LoadScreen loadScreen = LoadScreen.getInstance();
-        this.switchToState(MenuScreen.getInstance());
-        this.switchToState(LoadScreen.getInstance());
-        loadScreen.initLoadState(Assets.loading);
+        MenuScreen menuScreen = MenuScreen.getInstance();
+        this.switchToState(menuScreen);
+        this.switchToState(menuScreen);
         while (this.running) {
             if (refreshTimer.isTime()) {
                 refreshTimer.reset();

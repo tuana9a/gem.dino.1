@@ -13,7 +13,7 @@ import com.tuana9a.engine.GameMap;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.StateAnimation;
-import com.tuana9a.abilities.BaseAbility;
+import com.tuana9a.abilities.BaseSkill;
 import com.tuana9a.utils.Timer;
 
 public abstract class Animal extends MovingEntity {
@@ -29,11 +29,11 @@ public abstract class Animal extends MovingEntity {
     public Timer deadTime;
     public Timer effectTime;
     public Timer[] skillTimers;
-    public BaseAbility[] abilities;
+    public BaseSkill[] abilities;
 
     protected void initSkills() {
         this.skillTimers = new Timer[Animal.STATE_NUMBER];
-        this.abilities = new BaseAbility[Animal.STATE_NUMBER];
+        this.abilities = new BaseSkill[Animal.STATE_NUMBER];
     }
 
     @Override

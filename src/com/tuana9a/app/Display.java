@@ -6,7 +6,7 @@ package com.tuana9a.app;
 
 import com.tuana9a.screen.ErrorScreen;
 import com.tuana9a.screen.GameScreen;
-import com.tuana9a.screen.LoadScreen;
+import com.tuana9a.screen.LoadingScreen;
 import com.tuana9a.screen.MenuScreen;
 
 import java.awt.*;
@@ -78,7 +78,7 @@ public class Display {
         MenuScreen.getInstance().getUiManager().updateAllWhenScreenResize();
         GameScreen.getInstance().getUiManager().updateAllWhenScreenResize();
         ErrorScreen.getInstance().getUiManager().updateAllWhenScreenResize();
-        LoadScreen.getInstance().getUiManager().updateAllWhenScreenResize();
+        LoadingScreen.getInstance().getUiManager().updateAllWhenScreenResize();
     }
 
     public void fullScreen() {

@@ -14,18 +14,18 @@ import com.tuana9a.entities.weapon.Sword;
 import com.tuana9a.entities.weapon.Shoot;
 import com.tuana9a.entities.enemy.NormalEnemy;
 import com.tuana9a.entities.enemy.HardEnemy;
-import com.tuana9a.entities.enemy.Boss;
+import com.tuana9a.entities.enemy.SpawnChildBoss;
 import com.tuana9a.configs.ConfigEnemy;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.app.App;
 import com.tuana9a.entities.weapon.Weapon;
-import com.tuana9a.screen.LoadScreen;
+import com.tuana9a.screen.LoadingScreen;
 import com.tuana9a.utils.Loading;
 import com.tuana9a.entities.player.Player;
 import com.tuana9a.screen.GameScreen;
 
 public class GameWorld {
-    private static final GameWorld instance= new GameWorld();
+    private static final GameWorld instance = new GameWorld();
     private Player player;
 
     private GameWorld() {
@@ -75,11 +75,11 @@ public class GameWorld {
         final GameMap gameMap = GameMap.getInstance();
         gameMap.loading = new Loading(10, 0, 100L);
         final App app = App.getInstance();
-        LoadScreen loadScreen = LoadScreen.getInstance();
-        app.switchToState(loadScreen);
-        loadScreen.initLoadState(gameMap.loading);
+        LoadingScreen loadingScreen = LoadingScreen.getInstance();
+        app.switchToState(loadingScreen);
+        loadingScreen.create(gameMap.loading);
         GameScreen gameScreen = GameScreen.getInstance();
-        new Thread(new Runnable() {
+        loadingScreen.getExecutorService().submit(new Runnable() {
             @Override
             public void run() {
                 EntityManager entityManager = EntityManager.getInstance();
@@ -108,7 +108,7 @@ public class GameWorld {
                 entityManager.addEntity(GameWorld.this.player);
                 entityManager.updateAll();
             }
-        }).start();
+        });
     }
 
     public void teleportToNewMap(final String mapId) {
@@ -117,10 +117,10 @@ public class GameWorld {
         final GameMap gameMap = GameMap.getInstance();
         gameMap.loading = new Loading(10, 0, 100L);
         final App app = App.getInstance();
-        LoadScreen loadScreen = LoadScreen.getInstance();
-        app.switchToState(loadScreen);
-        loadScreen.initLoadState(gameMap.loading);
-        new Thread(new Runnable() {
+        LoadingScreen loadingScreen = LoadingScreen.getInstance();
+        app.switchToState(loadingScreen);
+        loadingScreen.create(gameMap.loading);
+        loadingScreen.getExecutorService().submit(new Runnable() {
             @Override
             public void run() {
                 EntityManager entityManager = EntityManager.getInstance();
@@ -139,7 +139,7 @@ public class GameWorld {
                 }
                 entityManager.updateAll();
             }
-        }).start();
+        });
     }
 
     public void initMapById(final String mapId) {
@@ -161,7 +161,7 @@ public class GameWorld {
             final int[] info = enemiesInfo[i];
             if (Enemy.isBoss(info[0])) {
                 gameScreen.isBossStage(ConfigEnemy.healths[info[0]]);
-                enemies[i] = new Boss(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                enemies[i] = new SpawnChildBoss(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else if (Enemy.isHard(info[0])) {
                 enemies[i] = new HardEnemy(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else {

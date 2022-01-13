@@ -6,6 +6,8 @@ package com.tuana9a.screen;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
@@ -15,8 +17,8 @@ import com.tuana9a.ui.UiProgressBar;
 import com.tuana9a.utils.Timer;
 import com.tuana9a.utils.Loading;
 
-public class LoadScreen extends BaseScreen {
-    private static final LoadScreen instance = new LoadScreen();
+public class LoadingScreen extends BaseScreen {
+    private static final LoadingScreen instance = new LoadingScreen();
 
     public static final long MAX_TIME_OUT = 5000L;
     public Loading loading;
@@ -25,15 +27,17 @@ public class LoadScreen extends BaseScreen {
     public double destinationWidth;
     private UiProgressBar uiProgressBar;
     private UiImageAnimation uiProgressAnimation;
+    private ExecutorService executorService;
 
-    private LoadScreen() {
+    private LoadingScreen() {
+        this.executorService = Executors.newFixedThreadPool(4);
     }
 
-    public static LoadScreen getInstance() {
+    public static LoadingScreen getInstance() {
         return instance;
     }
 
-    public void initLoadState(final Loading loading) {
+    public void create(final Loading loading) {
         this.loading = loading;
         this.transitionWidth = 0.0;
         this.destinationWidth = 0.0;
@@ -111,5 +115,10 @@ public class LoadScreen extends BaseScreen {
     public void onComplete() {
         App app = App.getInstance();
         app.switchToLastState();
+    }
+
+    // getter setter
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 }

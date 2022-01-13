@@ -94,63 +94,25 @@ public class Assets {
     public static BufferedImage[][][] shotGunOutEffect;
     public static BufferedImage[][][] gatlingOutEffect;
     public static BufferedImage[][][] bowOutEffect;
-    public static Loading loading;
     public static final int FULL_PROCESS = 7;
     public static final long TIME_SIMULATOR = 100L;
 
     public static void loadAll() {
-        Assets.loading = new Loading(7, 0, 100L);
         try {
             Assets.nullImage = Utils.loadImg("resources/general/null1.png");
             Assets.error = Utils.loadImg("resources/general/error.png");
             loadAllUIs();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assets.loading.onError("<FAIL>     load Uis");
-        }
-        Assets.loading.update();
-        try {
             loadAllWeapons();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assets.loading.onError("<FAIL>     load weapons");
-        }
-        Assets.loading.update();
-        try {
             loadAllStateAnimations();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assets.loading.onError("<FAIL>     load emotes");
-        }
-        Assets.loading.update();
-        try {
             loadAllPlayers();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assets.loading.onError("<FAIL>     load players");
-        }
-        Assets.loading.update();
-        try {
             loadAllEnemies();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assets.loading.onError("<FAIL>     load enemies");
-        }
-        Assets.loading.update();
-        try {
             loadAllGrounds();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assets.loading.onError("<FAIL>     load grounds");
-        }
-        Assets.loading.update();
-        try {
             loadAllStaticObjects();
+
         } catch (Exception e) {
             e.printStackTrace();
-            Assets.loading.onError("<FAIL>     load statics");
         }
-        Assets.loading.update();
+
     }
 
     public static void loadAllUIs() {

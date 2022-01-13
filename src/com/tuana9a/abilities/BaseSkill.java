@@ -6,11 +6,11 @@ package com.tuana9a.abilities;
 
 import com.tuana9a.entities.Animal;
 
-public abstract class BaseAbility {
+public abstract class BaseSkill {
     public Animal fromAnimal;
     public static final long DEFAULT_SKILL_TIME = 5000L;
 
-    public BaseAbility(final Animal fromAnimal) {
+    public BaseSkill(final Animal fromAnimal) {
         this.fromAnimal = fromAnimal;
     }
 
