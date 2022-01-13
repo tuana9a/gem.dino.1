@@ -8,18 +8,18 @@ import com.tuana9a.entities.Entity;
 import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.screen.GameScreen;
 
-public class Camera {
-    private static final Camera instance = new Camera();
+public class GameCamera {
+    private static final GameCamera instance = new GameCamera();
 
     private double xOffset;
     private double yOffset;
     private final double speed;
 
-    private Camera() {
+    private GameCamera() {
         this.speed = 4.0;
     }
 
-    public static Camera getInstance() {
+    public static GameCamera getInstance() {
         return instance;
     }
 
@@ -57,8 +57,9 @@ public class Camera {
 
     public void checkBlankSpace() {
         GameScreen gameScreen = GameScreen.getInstance();
-        final int mapWidth = gameScreen.getStage().getCurrentMap().getMapPixelWidth();
-        final int mapHeight = gameScreen.getStage().getCurrentMap().getMapPixelHeight();
+        GameWorld gameWorld = GameWorld.getInstance();
+        final int mapWidth = gameWorld.getCurrentMap().getMapPixelWidth();
+        final int mapHeight = gameWorld.getCurrentMap().getMapPixelHeight();
         final int screenWidth = gameScreen.getDisplayWidth();
         final int screenHeight = gameScreen.getDisplayHeight();
         final double maxOffsetX = mapWidth - screenWidth;

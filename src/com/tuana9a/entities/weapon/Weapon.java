@@ -5,6 +5,7 @@
 package com.tuana9a.entities.weapon;
 
 import com.tuana9a.engine.EntityManager;
+import com.tuana9a.engine.GameWorld;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.entities.player.Player;
 
@@ -171,7 +172,8 @@ public abstract class Weapon extends StaticEntity {
             this.attack();
             this.typicalTimer.reset();
         } else if (this.owner instanceof Enemy) {
-            final Player player = gameScreen.getStage().getPlayer();
+            EntityManager entityManager = EntityManager.getInstance();
+            final Player player = entityManager.getPlayer();
             if (((Enemy) this.owner).reactionTimer.isTime(-500L) && this.owner.canSee(player) && this.aim(player)) {
                 this.attack();
                 this.typicalTimer.reset();
@@ -184,7 +186,8 @@ public abstract class Weapon extends StaticEntity {
         if (this.owner instanceof Player) {
             this.updateRadianRotateMouse();
         } else if (this.owner instanceof Enemy) {
-            final Player player = gameScreen.getStage().getPlayer();
+            final EntityManager entityManager = EntityManager.getInstance();
+            final Player player = entityManager.getPlayer();
             if (((Enemy) this.owner).reactionTimer.isTime(-500L)) {
                 if (this.owner.canSee(player)) {
                     this.updateRadianRotateScripted(player);

@@ -9,7 +9,7 @@ import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.weapon.WeaponOut;
-import com.tuana9a.engine.Camera;
+import com.tuana9a.engine.GameCamera;
 import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.screen.GameScreen;
 import com.tuana9a.utils.Algebra;
@@ -168,9 +168,9 @@ public abstract class Entity {
         final Graphics2D g2d = (Graphics2D) g.create();
         g2d.setColor(Color.RED);
         final Enemy e = (Enemy) this;
-        final Camera camera = Camera.getInstance();
-        final double x = camera.getCamRenderX(e.workingArea.x);
-        final double y = camera.getCamRenderY(e.workingArea.y);
+        final GameCamera gameCamera = GameCamera.getInstance();
+        final double x = gameCamera.getCamRenderX(e.workingArea.x);
+        final double y = gameCamera.getCamRenderY(e.workingArea.y);
         g2d.drawRect((int) x, (int) y, e.workingArea.width, e.workingArea.height);
     }
 
@@ -245,9 +245,9 @@ public abstract class Entity {
     }
 
     public void updatePositionCam() {
-        final Camera camera = Camera.getInstance();
-        this.xCam = camera.getCamRenderX(this.x);
-        this.yCam = camera.getCamRenderY(this.y);
+        final GameCamera gameCamera = GameCamera.getInstance();
+        this.xCam = gameCamera.getCamRenderX(this.x);
+        this.yCam = gameCamera.getCamRenderY(this.y);
         this.updateRotatePositionCam();
     }
 
@@ -262,9 +262,9 @@ public abstract class Entity {
     }
 
     public void updateRotatePositionCam() {
-        final Camera camera = Camera.getInstance();
-        this.xRotateCam = camera.getCamRenderX(this.x + this.xRotateRelX);
-        this.yRotateCam = camera.getCamRenderY(this.y + this.yRotateRelY);
+        final GameCamera gameCamera = GameCamera.getInstance();
+        this.xRotateCam = gameCamera.getCamRenderX(this.x + this.xRotateRelX);
+        this.yRotateCam = gameCamera.getCamRenderY(this.y + this.yRotateRelY);
     }
 
     public Rectangle actualSize(final double xOffset, final double yOffset) {

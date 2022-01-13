@@ -19,14 +19,13 @@ import com.tuana9a.ui.UiButton;
 import com.tuana9a.ui.UiImageStatic;
 import com.tuana9a.ui.UiProgressBar;
 import com.tuana9a.ui.UiNumber;
-import com.tuana9a.engine.Camera;
-import com.tuana9a.engine.Stage;
+import com.tuana9a.engine.GameCamera;
+import com.tuana9a.engine.GameWorld;
 
 public class GameScreen extends BaseScreen {
     private static final GameScreen instance = new GameScreen();
 
     private boolean pauseGame;
-    private final Stage stage;
     private UiNumber uiPayerHpNumber;
     private UiProgressBar uiBossHpBar;
     private UiImageStatic uiGameOver;
@@ -38,7 +37,6 @@ public class GameScreen extends BaseScreen {
     }
 
     private GameScreen() {
-        this.stage = new Stage(this);
     }
 
     @Override
@@ -114,14 +112,15 @@ public class GameScreen extends BaseScreen {
             return;
         }
         if (keyboardManager.freeCamMode) {
-            Camera.getInstance().move();
+            GameCamera.getInstance().move();
         }
-        this.stage.updateEveryRelCamAll();
+        GameWorld gameWorld = GameWorld.getInstance();
+        gameWorld.updateEveryRelCamAll();
         this.uiManager.updateAll();
         if (this.pauseGame) {
             return;
         }
-        this.stage.update();
+        gameWorld.update();
     }
 
     @Override
@@ -132,20 +131,23 @@ public class GameScreen extends BaseScreen {
         this.refreshTimer.reset();
         resetFrame();
         Graphics g = getGraphics();
-        this.stage.render(g);
+        GameWorld gameWorld = GameWorld.getInstance();
+        gameWorld.render(g);
         this.uiManager.renderAll(g);
         showFrame();
     }
 
     public void startGame() {
         this.uiResume.onRelease();
-        this.stage.newGame();
+        GameWorld gameWorld = GameWorld.getInstance();
+        gameWorld.newGame();
         this.uiGameOver.hide();
     }
 
     public void replayGame() {
         this.uiResume.onRelease();
-        this.stage.replay();
+        GameWorld gameWorld = GameWorld.getInstance();
+        gameWorld.replay();
         this.uiGameOver.hide();
     }
 
@@ -172,7 +174,4 @@ public class GameScreen extends BaseScreen {
         this.uiBossHpBar.hide();
     }
 
-    public Stage getStage() {
-        return this.stage;
-    }
 }

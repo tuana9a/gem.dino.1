@@ -24,14 +24,18 @@ import com.tuana9a.utils.Loading;
 import com.tuana9a.entities.player.Player;
 import com.tuana9a.screen.GameScreen;
 
-public class Stage {
-    private final GameScreen gameScreen;
-    private final Map currentMap;
+public class GameWorld {
+    private static final GameWorld instance= new GameWorld();
+
+    private final GameMap currentGameMap;
     private Player player;
 
-    public Stage(final GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
-        this.currentMap = new Map(gameScreen);
+    private GameWorld() {
+        this.currentGameMap = new GameMap();
+    }
+
+    public static GameWorld getInstance() {
+        return instance;
     }
 
     public void resetEntityManagerAll() {
@@ -54,11 +58,12 @@ public class Stage {
 
     public void replay() {
         EntityManager entityManager = EntityManager.getInstance();
+        GameScreen gameScreen = GameScreen.getInstance();
         this.player.dropAllWeapon();
         this.resetEntityManagerAll();
-        this.player.updatePosition(this.currentMap.getPixelSpawnX(), this.currentMap.getPixelSpawnY());
+        this.player.updatePosition(this.currentGameMap.getPixelSpawnX(), this.currentGameMap.getPixelSpawnY());
         this.player.reborn();
-        this.gameScreen.updateUiPayerHp(this.player.getHealth());
+        gameScreen.updateUiPayerHp(this.player.getHealth());
         entityManager.addEntity(this.player);
         entityManager.setPlayer(this.player);
         this.initEntitiesWithMap();
@@ -68,38 +73,39 @@ public class Stage {
     public void newGame(final Player newPlayer, final String mapId) {
         this.resetPlayer();
         this.resetEntityManagerAll();
-        this.currentMap.loading = new Loading(10, 0, 100L);
+        this.currentGameMap.loading = new Loading(10, 0, 100L);
         final App app = App.getInstance();
         LoadScreen loadScreen = LoadScreen.getInstance();
         app.switchToState(loadScreen);
-        loadScreen.initLoadState(this.currentMap.loading);
+        loadScreen.initLoadState(this.currentGameMap.loading);
+        GameScreen gameScreen = GameScreen.getInstance();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 EntityManager entityManager = EntityManager.getInstance();
                 if (mapId == null || mapId.equals("")) {
-                    Stage.this.initMapById("1");
+                    GameWorld.this.initMapById("1");
                 } else {
-                    Stage.this.initMapById(mapId);
+                    GameWorld.this.initMapById(mapId);
                 }
                 if (newPlayer == null) {
-                    final int playerId = Stage.this.currentMap.getPlayerId();
+                    final int playerId = GameWorld.this.currentGameMap.getPlayerId();
                     if (playerId == -1) {
-                        Stage.this.player = new Player(Stage.this.gameScreen, 0, Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
+                        GameWorld.this.player = new Player(gameScreen, 0, GameWorld.this.currentGameMap.getPixelSpawnX(), GameWorld.this.currentGameMap.getPixelSpawnY());
                     } else {
-                        Stage.this.player = new Player(Stage.this.gameScreen, playerId, Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
+                        GameWorld.this.player = new Player(gameScreen, playerId, GameWorld.this.currentGameMap.getPixelSpawnX(), GameWorld.this.currentGameMap.getPixelSpawnY());
                     }
                 } else {
-                    Stage.this.player = newPlayer;
-                    Stage.this.player.updatePosition(Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
-                    for (final Weapon w : Stage.this.player.getHand().getAllWeapons()) {
+                    GameWorld.this.player = newPlayer;
+                    GameWorld.this.player.updatePosition(GameWorld.this.currentGameMap.getPixelSpawnX(), GameWorld.this.currentGameMap.getPixelSpawnY());
+                    for (final Weapon w : GameWorld.this.player.getHand().getAllWeapons()) {
                         if (w != null) {
                             entityManager.addEntity(w);
                         }
                     }
                 }
-                entityManager.setPlayer(Stage.this.player);
-                entityManager.addEntity(Stage.this.player);
+                entityManager.setPlayer(GameWorld.this.player);
+                entityManager.addEntity(GameWorld.this.player);
                 entityManager.updateAll();
             }
         }).start();
@@ -108,24 +114,24 @@ public class Stage {
     public void teleportToNewMap(final String mapId) {
         this.resetEntityManagerAll();
         this.player.clearIntersects();
-        this.currentMap.loading = new Loading(10, 0, 100L);
+        this.currentGameMap.loading = new Loading(10, 0, 100L);
         final App app = App.getInstance();
         LoadScreen loadScreen = LoadScreen.getInstance();
         app.switchToState(loadScreen);
-        loadScreen.initLoadState(this.currentMap.loading);
+        loadScreen.initLoadState(this.currentGameMap.loading);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 EntityManager entityManager = EntityManager.getInstance();
                 if (mapId == null || mapId.equals("")) {
-                    Stage.this.initMapById("1");
+                    GameWorld.this.initMapById("1");
                 } else {
-                    Stage.this.initMapById(mapId);
+                    GameWorld.this.initMapById(mapId);
                 }
-                Stage.this.player.updatePosition(Stage.this.currentMap.getPixelSpawnX(), Stage.this.currentMap.getPixelSpawnY());
-                entityManager.setPlayer(Stage.this.player);
-                entityManager.addEntity(Stage.this.player);
-                for (final Weapon w : Stage.this.player.getHand().getAllWeapons()) {
+                GameWorld.this.player.updatePosition(GameWorld.this.currentGameMap.getPixelSpawnX(), GameWorld.this.currentGameMap.getPixelSpawnY());
+                entityManager.setPlayer(GameWorld.this.player);
+                entityManager.addEntity(GameWorld.this.player);
+                for (final Weapon w : GameWorld.this.player.getHand().getAllWeapons()) {
                     if (w != null) {
                         entityManager.addEntity(w);
                     }
@@ -136,21 +142,22 @@ public class Stage {
     }
 
     public void initMapById(final String mapId) {
-        this.currentMap.loadMapById(mapId);
+        this.currentGameMap.loadMapById(mapId);
         this.initEntitiesWithMap();
     }
 
     public void initEntitiesWithMap() {
-        this.gameScreen.notBossStage();
+        GameScreen gameScreen = GameScreen.getInstance();
+        gameScreen.notBossStage();
         EntityManager entityManager = EntityManager.getInstance();
-        final int enemyNumber = this.currentMap.getEnemyNumber();
-        final int[][] enemiesInfo = this.currentMap.getEnemiesInfo();
+        final int enemyNumber = this.currentGameMap.getEnemyNumber();
+        final int[][] enemiesInfo = this.currentGameMap.getEnemiesInfo();
         final Enemy[] enemies = new Enemy[enemyNumber];
         final Weapon[] enemyWeapons = new Weapon[enemyNumber];
         for (int i = 0; i < enemyNumber; ++i) {
             final int[] info = enemiesInfo[i];
             if (Enemy.isBoss(info[0])) {
-                this.gameScreen.isBossStage(ConfigEnemy.healths[info[0]]);
+                gameScreen.isBossStage(ConfigEnemy.healths[info[0]]);
                 enemies[i] = new Boss(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else if (Enemy.isHard(info[0])) {
                 enemies[i] = new HardEnemy(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
@@ -168,9 +175,9 @@ public class Stage {
                 enemyWeapons[i] = new Spear(randomWeaponId, enemies[i]);
             }
         }
-        final int weaponNumber = this.currentMap.getWeaponNumber();
+        final int weaponNumber = this.currentGameMap.getWeaponNumber();
         final Weapon[] aloneWeapons = new Weapon[weaponNumber];
-        final int[][] aloneWeaponsInfo = this.currentMap.getWeaponsInfo();
+        final int[][] aloneWeaponsInfo = this.currentGameMap.getWeaponsInfo();
         for (int j = 0; j < weaponNumber; ++j) {
             final int[] info2 = aloneWeaponsInfo[j];
             if (Weapon.isShootWeapon(info2[0])) {
@@ -181,12 +188,12 @@ public class Stage {
                 aloneWeapons[j] = new Spear(info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             }
         }
-        final StaticObject[] statics = new StaticObject[this.currentMap.getStaticObjectNumber() + 1];
-        final int[][] staticsInfo = this.currentMap.getStaticObjectsInfo();
+        final StaticObject[] statics = new StaticObject[this.currentGameMap.getStaticObjectNumber() + 1];
+        final int[][] staticsInfo = this.currentGameMap.getStaticObjectsInfo();
         for (int k = 0; k < staticsInfo.length; ++k) {
             final int[] info3 = staticsInfo[k];
             if (Ground.isTeleAbove(info3[0])) {
-                statics[k] = new TeleportGate(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], this.currentMap.nextMapId);
+                statics[k] = new TeleportGate(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], this.currentGameMap.nextMapId);
             } else {
                 statics[k] = new StaticObject(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]]);
             }
@@ -206,15 +213,12 @@ public class Stage {
 
     public void render(final Graphics g) {
         EntityManager entityManager = EntityManager.getInstance();
-        this.currentMap.render(g);
+        this.currentGameMap.render(g);
         entityManager.renderAll(g);
     }
 
-    public Map getCurrentMap() {
-        return this.currentMap;
+    public GameMap getCurrentMap() {
+        return this.currentGameMap;
     }
 
-    public Player getPlayer() {
-        return this.player;
-    }
 }

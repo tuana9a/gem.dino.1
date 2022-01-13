@@ -6,9 +6,10 @@ package com.tuana9a.entities;
 
 import com.tuana9a.abilities.CanMountWeapon;
 import com.tuana9a.abilities.CanSee;
+import com.tuana9a.engine.GameWorld;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.weapon.WeaponOut;
-import com.tuana9a.engine.Map;
+import com.tuana9a.engine.GameMap;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.screen.GameScreen;
 import com.tuana9a.animation.StateAnimation;
@@ -77,6 +78,7 @@ public abstract class Animal extends MovingEntity {
             this.moveDirect = 0;
         }
         final GameScreen gameScreen = GameScreen.getInstance();
+        final GameWorld gameWorld = GameWorld.getInstance();
         final double left = this.x + this.actualSize.x;
         final double right = left + this.actualSize.width;
         final double top = this.y + this.actualSize.y;
@@ -85,14 +87,14 @@ public abstract class Animal extends MovingEntity {
         final int columnRightOrigin = (int) (right / 64.0);
         final int rowTopOrigin = (int) (top / 64.0);
         final int rowBottomOrigin = (int) (bottom / 64.0);
-        final Map map = gameScreen.getStage().getCurrentMap();
+        final GameMap gameMap = gameWorld.getCurrentMap();
         final int rowTopCheck = (int) Math.floor((top + this.yMove) / 64.0);
         final int rowBottomCheck = (int) Math.floor((bottom + this.yMove) / 64.0);
         final int columnLeftCheck = (int) Math.floor((left + this.xMove) / 64.0);
         final int columnRightCheck = (int) Math.floor((right + this.xMove) / 64.0);
         final double minSpace = 1.0;
         if (this.xMove != 0.0) {
-            if (map.canWalkX(this, rowTopOrigin, rowBottomOrigin, columnLeftCheck, columnRightCheck)) {
+            if (gameMap.canWalkX(this, rowTopOrigin, rowBottomOrigin, columnLeftCheck, columnRightCheck)) {
                 this.x += this.xMove;
             } else {
                 if (this.xMove > 0.0) {
@@ -108,7 +110,7 @@ public abstract class Animal extends MovingEntity {
             }
         }
         if (this.yMove != 0.0) {
-            if (map.canWalkY(this, rowTopCheck, rowBottomCheck, columnLeftOrigin, columnRightOrigin)) {
+            if (gameMap.canWalkY(this, rowTopCheck, rowBottomCheck, columnLeftOrigin, columnRightOrigin)) {
                 this.y += this.yMove;
             } else {
                 if (this.yMove > 0.0) {

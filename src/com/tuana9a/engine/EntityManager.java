@@ -45,13 +45,13 @@ public class EntityManager {
 
     public void updateAll() {
         KeyboardManager keyboardManager = KeyboardManager.getInstance();
-        final Camera camera = Camera.getInstance();
+        final GameCamera gameCamera = GameCamera.getInstance();
         this.player.update();
         if (this.player == null) {
             return;
         }
         if (!keyboardManager.freeCamMode) {
-            camera.centerOnEntity(this.player);
+            gameCamera.centerOnEntity(this.player);
         }
         for (final Entity e : this.entities) {
             if (e != null) {

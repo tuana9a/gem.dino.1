@@ -5,6 +5,7 @@
 package com.tuana9a.entities.player;
 
 import com.tuana9a.app.ActionQueue;
+import com.tuana9a.engine.GameWorld;
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.TeleportGate;
 import com.tuana9a.entities.weapon.Weapon;
@@ -98,7 +99,8 @@ public class Player extends Animal {
                 ActionQueue actionQueue = ActionQueue.getInstance();
                 actionQueue.push(() -> {
                     GameScreen gameScreen = GameScreen.getInstance();
-                    gameScreen.getStage().teleportToNewMap(((TeleportGate) e).getMapId());
+                    GameWorld gameWorld = GameWorld.getInstance();
+                    gameWorld.teleportToNewMap(((TeleportGate) e).getMapId());
                 });
             }
         }
