@@ -58,8 +58,9 @@ public class GameCamera {
     public void checkBlankSpace() {
         GameScreen gameScreen = GameScreen.getInstance();
         GameWorld gameWorld = GameWorld.getInstance();
-        final int mapWidth = gameWorld.getCurrentMap().getMapPixelWidth();
-        final int mapHeight = gameWorld.getCurrentMap().getMapPixelHeight();
+        GameMap gameMap = GameMap.getInstance();
+        final int mapWidth = gameMap.getMapPixelWidth();
+        final int mapHeight = gameMap.getMapPixelHeight();
         final int screenWidth = gameScreen.getDisplayWidth();
         final int screenHeight = gameScreen.getDisplayHeight();
         final double maxOffsetX = mapWidth - screenWidth;

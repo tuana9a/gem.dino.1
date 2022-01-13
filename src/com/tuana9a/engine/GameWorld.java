@@ -26,12 +26,10 @@ import com.tuana9a.screen.GameScreen;
 
 public class GameWorld {
     private static final GameWorld instance= new GameWorld();
-
-    private final GameMap currentGameMap;
     private Player player;
 
     private GameWorld() {
-        this.currentGameMap = new GameMap();
+
     }
 
     public static GameWorld getInstance() {
@@ -59,9 +57,10 @@ public class GameWorld {
     public void replay() {
         EntityManager entityManager = EntityManager.getInstance();
         GameScreen gameScreen = GameScreen.getInstance();
+        GameMap gameMap = GameMap.getInstance();
         this.player.dropAllWeapon();
         this.resetEntityManagerAll();
-        this.player.updatePosition(this.currentGameMap.getPixelSpawnX(), this.currentGameMap.getPixelSpawnY());
+        this.player.updatePosition(gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
         this.player.reborn();
         gameScreen.updateUiPayerHp(this.player.getHealth());
         entityManager.addEntity(this.player);
@@ -73,11 +72,12 @@ public class GameWorld {
     public void newGame(final Player newPlayer, final String mapId) {
         this.resetPlayer();
         this.resetEntityManagerAll();
-        this.currentGameMap.loading = new Loading(10, 0, 100L);
+        final GameMap gameMap = GameMap.getInstance();
+        gameMap.loading = new Loading(10, 0, 100L);
         final App app = App.getInstance();
         LoadScreen loadScreen = LoadScreen.getInstance();
         app.switchToState(loadScreen);
-        loadScreen.initLoadState(this.currentGameMap.loading);
+        loadScreen.initLoadState(gameMap.loading);
         GameScreen gameScreen = GameScreen.getInstance();
         new Thread(new Runnable() {
             @Override
@@ -89,15 +89,15 @@ public class GameWorld {
                     GameWorld.this.initMapById(mapId);
                 }
                 if (newPlayer == null) {
-                    final int playerId = GameWorld.this.currentGameMap.getPlayerId();
+                    final int playerId = gameMap.getPlayerId();
                     if (playerId == -1) {
-                        GameWorld.this.player = new Player(gameScreen, 0, GameWorld.this.currentGameMap.getPixelSpawnX(), GameWorld.this.currentGameMap.getPixelSpawnY());
+                        GameWorld.this.player = new Player(gameScreen, 0, gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
                     } else {
-                        GameWorld.this.player = new Player(gameScreen, playerId, GameWorld.this.currentGameMap.getPixelSpawnX(), GameWorld.this.currentGameMap.getPixelSpawnY());
+                        GameWorld.this.player = new Player(gameScreen, playerId, gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
                     }
                 } else {
                     GameWorld.this.player = newPlayer;
-                    GameWorld.this.player.updatePosition(GameWorld.this.currentGameMap.getPixelSpawnX(), GameWorld.this.currentGameMap.getPixelSpawnY());
+                    GameWorld.this.player.updatePosition(gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
                     for (final Weapon w : GameWorld.this.player.getHand().getAllWeapons()) {
                         if (w != null) {
                             entityManager.addEntity(w);
@@ -114,11 +114,12 @@ public class GameWorld {
     public void teleportToNewMap(final String mapId) {
         this.resetEntityManagerAll();
         this.player.clearIntersects();
-        this.currentGameMap.loading = new Loading(10, 0, 100L);
+        final GameMap gameMap = GameMap.getInstance();
+        gameMap.loading = new Loading(10, 0, 100L);
         final App app = App.getInstance();
         LoadScreen loadScreen = LoadScreen.getInstance();
         app.switchToState(loadScreen);
-        loadScreen.initLoadState(this.currentGameMap.loading);
+        loadScreen.initLoadState(gameMap.loading);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -128,7 +129,7 @@ public class GameWorld {
                 } else {
                     GameWorld.this.initMapById(mapId);
                 }
-                GameWorld.this.player.updatePosition(GameWorld.this.currentGameMap.getPixelSpawnX(), GameWorld.this.currentGameMap.getPixelSpawnY());
+                GameWorld.this.player.updatePosition(gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
                 entityManager.setPlayer(GameWorld.this.player);
                 entityManager.addEntity(GameWorld.this.player);
                 for (final Weapon w : GameWorld.this.player.getHand().getAllWeapons()) {
@@ -142,7 +143,8 @@ public class GameWorld {
     }
 
     public void initMapById(final String mapId) {
-        this.currentGameMap.loadMapById(mapId);
+        GameMap gameMap = GameMap.getInstance();
+        gameMap.loadMapById(mapId);
         this.initEntitiesWithMap();
     }
 
@@ -150,8 +152,9 @@ public class GameWorld {
         GameScreen gameScreen = GameScreen.getInstance();
         gameScreen.notBossStage();
         EntityManager entityManager = EntityManager.getInstance();
-        final int enemyNumber = this.currentGameMap.getEnemyNumber();
-        final int[][] enemiesInfo = this.currentGameMap.getEnemiesInfo();
+        GameMap gameMap = GameMap.getInstance();
+        final int enemyNumber = gameMap.getEnemyNumber();
+        final int[][] enemiesInfo = gameMap.getEnemiesInfo();
         final Enemy[] enemies = new Enemy[enemyNumber];
         final Weapon[] enemyWeapons = new Weapon[enemyNumber];
         for (int i = 0; i < enemyNumber; ++i) {
@@ -175,9 +178,9 @@ public class GameWorld {
                 enemyWeapons[i] = new Spear(randomWeaponId, enemies[i]);
             }
         }
-        final int weaponNumber = this.currentGameMap.getWeaponNumber();
+        final int weaponNumber = gameMap.getWeaponNumber();
         final Weapon[] aloneWeapons = new Weapon[weaponNumber];
-        final int[][] aloneWeaponsInfo = this.currentGameMap.getWeaponsInfo();
+        final int[][] aloneWeaponsInfo = gameMap.getWeaponsInfo();
         for (int j = 0; j < weaponNumber; ++j) {
             final int[] info2 = aloneWeaponsInfo[j];
             if (Weapon.isShootWeapon(info2[0])) {
@@ -188,12 +191,12 @@ public class GameWorld {
                 aloneWeapons[j] = new Spear(info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             }
         }
-        final StaticObject[] statics = new StaticObject[this.currentGameMap.getStaticObjectNumber() + 1];
-        final int[][] staticsInfo = this.currentGameMap.getStaticObjectsInfo();
+        final StaticObject[] statics = new StaticObject[gameMap.getStaticObjectNumber() + 1];
+        final int[][] staticsInfo = gameMap.getStaticObjectsInfo();
         for (int k = 0; k < staticsInfo.length; ++k) {
             final int[] info3 = staticsInfo[k];
             if (Ground.isTeleAbove(info3[0])) {
-                statics[k] = new TeleportGate(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], this.currentGameMap.nextMapId);
+                statics[k] = new TeleportGate(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], gameMap.nextMapId);
             } else {
                 statics[k] = new StaticObject(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]]);
             }
@@ -213,12 +216,9 @@ public class GameWorld {
 
     public void render(final Graphics g) {
         EntityManager entityManager = EntityManager.getInstance();
-        this.currentGameMap.render(g);
+        GameMap gameMap = GameMap.getInstance();
+        gameMap.render(g);
         entityManager.renderAll(g);
-    }
-
-    public GameMap getCurrentMap() {
-        return this.currentGameMap;
     }
 
 }

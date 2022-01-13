@@ -14,6 +14,8 @@ import com.tuana9a.utils.Loading;
 import com.tuana9a.screen.GameScreen;
 
 public class GameMap {
+    private static final GameMap instance = new GameMap();
+
     private int width;
     private int height;
     public String mapId;
@@ -32,7 +34,11 @@ public class GameMap {
     public static final int FULL_PROCESS = 10;
     public static final long TIME_SIMULATOR = 100L;
 
-    public GameMap() {
+    private GameMap() {
+    }
+
+    public static GameMap getInstance() {
+        return instance;
     }
 
     public void loadMapById(String mapId) {
