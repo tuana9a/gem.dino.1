@@ -6,8 +6,6 @@ package com.tuana9a.input;
 
 import java.awt.event.KeyEvent;
 
-import com.tuana9a.App;
-
 import java.awt.event.KeyListener;
 
 public class KeyboardManager implements KeyListener {

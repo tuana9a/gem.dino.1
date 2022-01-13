@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import com.tuana9a.entities.Animal;
 import com.tuana9a.entities.Entity;
-import com.tuana9a.entities.EntityManager;
+import com.tuana9a.engine.EntityManager;
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.utils.Algebra;

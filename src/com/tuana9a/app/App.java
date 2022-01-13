@@ -2,11 +2,12 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a;
+package com.tuana9a.app;
 
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.input.MouseManager;
 import com.tuana9a.input.KeyboardManager;
+import com.tuana9a.interfaces.ActionEvent;
 import com.tuana9a.screen.LoadScreen;
 import com.tuana9a.screen.MenuScreen;
 import com.tuana9a.screen.BaseScreen;
@@ -46,9 +47,15 @@ public class App implements Runnable {
         while (this.running) {
             if (refreshTimer.isTime()) {
                 refreshTimer.reset();
+                final ActionQueue actionQueue = ActionQueue.getInstance();
                 synchronized (this) {
                     this.currentState.update();
                     this.currentState.render();
+                    ActionEvent event = actionQueue.pop();
+                    while (event != null) {
+                        event.perform();
+                        event = actionQueue.pop();
+                    }
                 }
             }
             // TODO: need to optimize

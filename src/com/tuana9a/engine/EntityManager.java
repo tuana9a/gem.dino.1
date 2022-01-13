@@ -2,12 +2,14 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.entities;
+package com.tuana9a.engine;
 
 import java.util.Arrays;
 
 import com.tuana9a.abilities.CanMountWeapon;
 import com.tuana9a.constants.Comparators;
+import com.tuana9a.entities.Entity;
+import com.tuana9a.entities.MovingEntity;
 import com.tuana9a.entities.weapon.ShootOut;
 
 import java.awt.Graphics;
@@ -20,7 +22,6 @@ import com.tuana9a.entities.weapon.Weapon;
 import java.util.ArrayList;
 
 import com.tuana9a.entities.player.Player;
-import com.tuana9a.environment.Camera;
 import com.tuana9a.input.KeyboardManager;
 
 public class EntityManager {

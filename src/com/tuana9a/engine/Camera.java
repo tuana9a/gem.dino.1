@@ -2,9 +2,8 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.environment;
+package com.tuana9a.engine;
 
-import com.tuana9a.App;
 import com.tuana9a.entities.Entity;
 import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.screen.GameScreen;

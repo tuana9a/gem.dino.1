@@ -4,7 +4,7 @@
 
 package com.tuana9a.entities.enemy;
 
-import com.tuana9a.entities.EntityManager;
+import com.tuana9a.engine.EntityManager;
 import com.tuana9a.entities.weapon.WeaponOut;
 import com.tuana9a.entities.Entity;
 import com.tuana9a.entities.weapon.Spear;
@@ -19,8 +19,8 @@ import com.tuana9a.graphic.Assets;
 import com.tuana9a.screen.GameScreen;
 
 public class Boss extends Enemy {
-    public Boss(final GameScreen gameScreen, final int enemyId, final double x, final double y) {
-        super(gameScreen, enemyId, x, y);
+    public Boss(final int enemyId, final double x, final double y) {
+        super(enemyId, x, y);
     }
 
     @Override
@@ -35,6 +35,7 @@ public class Boss extends Enemy {
     protected void initSkills() {
         super.initSkills();
         this.skillTimers[Boss.DEAD] = new Timer(5000L);
+        final GameScreen gameScreen = GameScreen.getInstance();
         this.abilities[Boss.DEAD] = new CanSpawnChild(this) {
             @Override
             public void perform() {
@@ -46,20 +47,20 @@ public class Boss extends Enemy {
                     final int randomId = (int) (Math.random() * 3.0 - 1.0);
                     final double temp = ConfigEnemy.widths[randomId] / 2.0;
                     if (Enemy.isHard(randomId)) {
-                        children[i] = new HardEnemy(Boss.this.gameScreen, randomId, startX - temp, startY);
+                        children[i] = new HardEnemy(randomId, startX - temp, startY);
                     } else {
-                        children[i] = new NormalEnemy(Boss.this.gameScreen, randomId, startX - temp, startY);
+                        children[i] = new NormalEnemy(randomId, startX - temp, startY);
                     }
                 }
                 final Weapon[] enemyWeapons = new Weapon[size];
                 for (int j = 0; j < size; ++j) {
                     final int randomWeaponId = j % 5;
                     if (Weapon.isShootWeapon(randomWeaponId)) {
-                        enemyWeapons[j] = new Shoot(Boss.this.gameScreen, randomWeaponId, children[j]);
+                        enemyWeapons[j] = new Shoot(randomWeaponId, children[j]);
                     } else if (Weapon.isSword(randomWeaponId)) {
-                        enemyWeapons[j] = new Sword(Boss.this.gameScreen, randomWeaponId, children[j]);
+                        enemyWeapons[j] = new Sword(randomWeaponId, children[j]);
                     } else if (Weapon.isSpear(randomWeaponId)) {
-                        enemyWeapons[j] = new Spear(Boss.this.gameScreen, randomWeaponId, children[j]);
+                        enemyWeapons[j] = new Spear(randomWeaponId, children[j]);
                     }
                 }
                 EntityManager entityManager = EntityManager.getInstance();
@@ -72,7 +73,8 @@ public class Boss extends Enemy {
     @Override
     public void hitBy(final WeaponOut wo) {
         super.hitBy(wo);
-        this.gameScreen.updateUiBossHp(this.health);
+        GameScreen gameScreen = GameScreen.getInstance();
+        gameScreen.updateUiBossHp(this.health);
     }
 
     @Override

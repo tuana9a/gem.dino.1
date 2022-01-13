@@ -4,7 +4,7 @@
 
 package com.tuana9a.screen;
 
-import com.tuana9a.Display;
+import com.tuana9a.app.Display;
 import com.tuana9a.ui.UiManager;
 import com.tuana9a.utils.Timer;
 

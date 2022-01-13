@@ -7,7 +7,6 @@ package com.tuana9a.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.tuana9a.App;
 import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.input.MouseManager;
 import com.tuana9a.utils.Timer;

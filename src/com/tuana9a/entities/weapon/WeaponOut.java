@@ -12,8 +12,7 @@ import com.tuana9a.configs.ConfigWeaponOut;
 import com.tuana9a.entities.Animal;
 import com.tuana9a.entities.MovingEntity;
 
-public abstract class WeaponOut extends MovingEntity
-{
+public abstract class WeaponOut extends MovingEntity {
     public static final int STATE_NUMBER = 3;
     public static final int MOVING = 0;
     public static final int HIT = 1;
@@ -21,14 +20,14 @@ public abstract class WeaponOut extends MovingEntity
     protected Weapon fromWeapon;
     protected Animal owner;
     public int damage;
-    
+
     @Override
     protected void initCoreInfo(final int weaponOutId) {
         this.setSize(ConfigWeaponOut.widths[weaponOutId], ConfigWeaponOut.heights[weaponOutId]);
         this.setActualSize(ConfigWeaponOut.boundX[weaponOutId], ConfigWeaponOut.boundY[weaponOutId], ConfigWeaponOut.boundWidth[weaponOutId], ConfigWeaponOut.boundHeight[weaponOutId]);
         this.initActualSizeOrigin();
     }
-    
+
     @Override
     protected void initOtherInfo(final int weaponOutId) {
         this.rotateRel = ConfigWeaponOut.rotateRels[weaponOutId];
@@ -37,14 +36,14 @@ public abstract class WeaponOut extends MovingEntity
         this.typicalTimer.deltaTime = ConfigWeaponOut.lifeTimeLimit[weaponOutId];
         this.moveAnimation = new MoveAnimation(Assets.weaponOuts[weaponOutId]);
     }
-    
+
     @Override
     protected void initStateAnimation() {
         this.allStateAnimations = new StateAnimation[3];
     }
-    
-    public WeaponOut(final GameScreen gameScreen, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
-        super(gameScreen, weaponOutId, fromWeapon.x, fromWeapon.y);
+
+    public WeaponOut(final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
+        super(weaponOutId, fromWeapon.x, fromWeapon.y);
         this.state = 0;
         this.owner = owner;
         this.fromWeapon = fromWeapon;
@@ -52,7 +51,7 @@ public abstract class WeaponOut extends MovingEntity
         this.updateRotateRelative();
         this.updateRotate(fromWeapon.radianRotateMain);
     }
-    
+
     @Override
     public void update() {
         this.updateInteract();
@@ -62,13 +61,13 @@ public abstract class WeaponOut extends MovingEntity
             this.state = 2;
         }
     }
-    
+
     protected abstract void typicalUpdate();
-    
+
     public boolean isMoving() {
         return this.state == 0;
     }
-    
+
     public boolean isTimeOut() {
         return this.state == 2;
     }

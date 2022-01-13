@@ -4,12 +4,11 @@
 
 package com.tuana9a.entities.weapon;
 
-import com.tuana9a.entities.EntityManager;
+import com.tuana9a.engine.EntityManager;
 import com.tuana9a.entities.StaticObject;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.entities.Animal;
-import com.tuana9a.screen.GameScreen;
 import com.tuana9a.entities.Entity;
 
 public class ShootOut extends WeaponOut
@@ -20,8 +19,8 @@ public class ShootOut extends WeaponOut
     protected double hitRadianRotate;
     protected int hitDirect;
     
-    public ShootOut(final GameScreen gameScreen, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
-        super(gameScreen, weaponOutId, fromWeapon, owner);
+    public ShootOut(final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
+        super(weaponOutId, fromWeapon, owner);
     }
     
     @Override

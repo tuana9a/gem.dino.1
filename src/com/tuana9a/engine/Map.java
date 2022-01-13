@@ -2,12 +2,13 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.environment;
+package com.tuana9a.engine;
 
 import com.tuana9a.entities.Animal;
 
 import java.awt.Graphics;
 
+import com.tuana9a.entities.Ground;
 import com.tuana9a.utils.Utils;
 import com.tuana9a.utils.Loading;
 import com.tuana9a.screen.GameScreen;

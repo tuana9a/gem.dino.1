@@ -4,9 +4,9 @@
 
 package com.tuana9a.entities.player;
 
-import com.tuana9a.App;
+import com.tuana9a.app.ActionQueue;
 import com.tuana9a.entities.weapon.WeaponOut;
-import com.tuana9a.entities.TeleGate;
+import com.tuana9a.entities.TeleportGate;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.Entity;
 import com.tuana9a.input.KeyboardManager;
@@ -43,7 +43,7 @@ public class Player extends Animal {
     }
 
     public Player(final GameScreen gameScreen, final int playerId, final double x, final double y) {
-        super(gameScreen, playerId, x, y);
+        super(playerId, x, y);
         gameScreen.updateUiPayerHp(this.health);
     }
 
@@ -94,8 +94,12 @@ public class Player extends Animal {
         for (final Entity e : this.intersectEntities) {
             if (e instanceof Weapon && keyboardManager.takeWeapon()) {
                 this.takeWeapon((Weapon) e);
-            } else if (e instanceof TeleGate) {
-                ((TeleGate) e).teleToNewMap();
+            } else if (e instanceof TeleportGate) {
+                ActionQueue actionQueue = ActionQueue.getInstance();
+                actionQueue.push(() -> {
+                    GameScreen gameScreen = GameScreen.getInstance();
+                    gameScreen.getStage().teleportToNewMap(((TeleportGate) e).getMapId());
+                });
             }
         }
         this.intersectEntities.clear();
@@ -104,7 +108,8 @@ public class Player extends Animal {
     @Override
     public void hitBy(final WeaponOut wo) {
         super.hitBy(wo);
-        this.gameScreen.updateUiPayerHp(this.health);
+        final GameScreen gameScreen = GameScreen.getInstance();
+        gameScreen.updateUiPayerHp(this.health);
     }
 
     @Override

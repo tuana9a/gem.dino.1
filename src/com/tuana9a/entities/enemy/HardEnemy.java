@@ -6,12 +6,11 @@ package com.tuana9a.entities.enemy;
 
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.graphic.Assets;
-import com.tuana9a.screen.GameScreen;
 
 public class HardEnemy extends Enemy
 {
-    public HardEnemy(final GameScreen gameScreen, final int enemyId, final double x, final double y) {
-        super(gameScreen, enemyId, x, y);
+    public HardEnemy(final int enemyId, final double x, final double y) {
+        super(enemyId, x, y);
     }
     
     @Override

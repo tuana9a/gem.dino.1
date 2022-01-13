@@ -7,17 +7,19 @@ package com.tuana9a.ui;
 import java.awt.Graphics2D;
 import java.awt.Graphics;
 
+import com.tuana9a.app.ActionQueue;
+import com.tuana9a.interfaces.ActionEvent;
 import com.tuana9a.screen.BaseScreen;
 import com.tuana9a.animation.UiAnimation;
 
 public class UiButton extends UiComponent {
     private final UiAnimation animation;
-    private final ActionListener actionListener;
+    private final ActionEvent actionEvent;
 
-    public UiButton(final BaseScreen state, final double x, final double y, final int width, final int height, final UiAnimation animation, final ActionListener actionListener) {
+    public UiButton(final BaseScreen state, final double x, final double y, final int width, final int height, final UiAnimation animation, final ActionEvent actionEvent) {
         super(state, x, y, width, height);
         this.animation = animation;
-        this.actionListener = actionListener;
+        this.actionEvent = actionEvent;
     }
 
     @Override
@@ -28,6 +30,7 @@ public class UiButton extends UiComponent {
 
     @Override
     public void onRelease() {
-        this.actionListener.performAction();
+        ActionQueue actionQueue = ActionQueue.getInstance();
+        actionQueue.push(this.actionEvent);
     }
 }

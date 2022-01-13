@@ -12,12 +12,12 @@ import com.tuana9a.entities.Animal;
 import com.tuana9a.screen.GameScreen;
 
 public class Spear extends Weapon {
-    public Spear(final GameScreen gameScreen, final int weaponId, final double x, final double y) {
-        super(gameScreen, weaponId, x, y);
+    public Spear(final int weaponId, final double x, final double y) {
+        super(weaponId, x, y);
     }
 
-    public Spear(final GameScreen gameScreen, final int weaponId, final Animal owner) {
-        super(gameScreen, weaponId, owner);
+    public Spear(final int weaponId, final Animal owner) {
+        super(weaponId, owner);
     }
 
     @Override
@@ -38,7 +38,8 @@ public class Spear extends Weapon {
     }
 
     public ArrayList<Entity> typicalAttack() {
-        final SpearOut melee = new SpearOut(this.gameScreen, this.id, this, this.owner);
+        final GameScreen gameScreen = GameScreen.getInstance();
+        final SpearOut melee = new SpearOut(this.id, this, this.owner);
         return new ArrayList<Entity>() {
             {
                 add(melee);

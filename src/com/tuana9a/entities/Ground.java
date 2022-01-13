@@ -2,7 +2,7 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.environment;
+package com.tuana9a.entities;
 
 import com.tuana9a.graphic.Assets;
 

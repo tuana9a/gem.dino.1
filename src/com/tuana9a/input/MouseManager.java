@@ -6,7 +6,7 @@ package com.tuana9a.input;
 
 import java.awt.event.MouseEvent;
 
-import com.tuana9a.App;
+import com.tuana9a.app.App;
 
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;

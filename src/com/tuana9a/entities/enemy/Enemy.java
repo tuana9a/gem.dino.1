@@ -4,7 +4,6 @@
 
 package com.tuana9a.entities.enemy;
 
-import com.tuana9a.App;
 import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.utils.Algebra;
 import com.tuana9a.entities.weapon.WeaponOut;
@@ -51,8 +50,8 @@ public abstract class Enemy extends Animal
         super.initStateAnimation();
     }
     
-    public Enemy(final GameScreen gameScreen, final int enemyId, final double x, final double y) {
-        super(gameScreen, enemyId, x, y);
+    public Enemy(final int enemyId, final double x, final double y) {
+        super(enemyId, x, y);
         this.vision.setMaxDistance(ConfigEnemy.eyeDistances[enemyId]);
     }
     
@@ -110,7 +109,8 @@ public abstract class Enemy extends Animal
             return;
         }
         this.typicalTimer.reset();
-        final Player player = this.gameScreen.getStage().getPlayer();
+        final GameScreen gameScreen = GameScreen.getInstance();
+        final Player player = gameScreen.getStage().getPlayer();
         if (this.canSee(player)) {
             this.updateMoveScripted(player);
             this.updateWorkingArea((int)(this.x - this.workingArea.width / 2), (int)(this.y - this.workingArea.height / 2), this.workingArea.width, this.workingArea.height);

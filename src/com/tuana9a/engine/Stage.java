@@ -2,14 +2,12 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a.environment;
+package com.tuana9a.engine;
 
 import java.awt.Graphics;
 
-import com.tuana9a.entities.EntityManager;
-import com.tuana9a.entities.TeleGate;
+import com.tuana9a.entities.*;
 import com.tuana9a.configs.ConfigStaticObject;
-import com.tuana9a.entities.StaticObject;
 import com.tuana9a.configs.ConfigWeapon;
 import com.tuana9a.entities.weapon.Spear;
 import com.tuana9a.entities.weapon.Sword;
@@ -19,11 +17,10 @@ import com.tuana9a.entities.enemy.HardEnemy;
 import com.tuana9a.entities.enemy.Boss;
 import com.tuana9a.configs.ConfigEnemy;
 import com.tuana9a.entities.enemy.Enemy;
-import com.tuana9a.App;
+import com.tuana9a.app.App;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.screen.LoadScreen;
 import com.tuana9a.utils.Loading;
-import com.tuana9a.entities.Entity;
 import com.tuana9a.entities.player.Player;
 import com.tuana9a.screen.GameScreen;
 
@@ -154,21 +151,21 @@ public class Stage {
             final int[] info = enemiesInfo[i];
             if (Enemy.isBoss(info[0])) {
                 this.gameScreen.isBossStage(ConfigEnemy.healths[info[0]]);
-                enemies[i] = new Boss(this.gameScreen, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                enemies[i] = new Boss(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else if (Enemy.isHard(info[0])) {
-                enemies[i] = new HardEnemy(this.gameScreen, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                enemies[i] = new HardEnemy(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else {
-                enemies[i] = new NormalEnemy(this.gameScreen, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                enemies[i] = new NormalEnemy(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             }
         }
         for (int i = 0; i < enemyNumber; ++i) {
             final int randomWeaponId = i % 5;
             if (Weapon.isShootWeapon(randomWeaponId)) {
-                enemyWeapons[i] = new Shoot(this.gameScreen, randomWeaponId, enemies[i]);
+                enemyWeapons[i] = new Shoot(randomWeaponId, enemies[i]);
             } else if (Weapon.isSword(randomWeaponId)) {
-                enemyWeapons[i] = new Sword(this.gameScreen, randomWeaponId, enemies[i]);
+                enemyWeapons[i] = new Sword(randomWeaponId, enemies[i]);
             } else if (Weapon.isSpear(randomWeaponId)) {
-                enemyWeapons[i] = new Spear(this.gameScreen, randomWeaponId, enemies[i]);
+                enemyWeapons[i] = new Spear(randomWeaponId, enemies[i]);
             }
         }
         final int weaponNumber = this.currentMap.getWeaponNumber();
@@ -177,11 +174,11 @@ public class Stage {
         for (int j = 0; j < weaponNumber; ++j) {
             final int[] info2 = aloneWeaponsInfo[j];
             if (Weapon.isShootWeapon(info2[0])) {
-                aloneWeapons[j] = new Shoot(this.gameScreen, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
+                aloneWeapons[j] = new Shoot(info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             } else if (Weapon.isSword(info2[0])) {
-                aloneWeapons[j] = new Sword(this.gameScreen, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
+                aloneWeapons[j] = new Sword(info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             } else if (Weapon.isSpear(info2[0])) {
-                aloneWeapons[j] = new Spear(this.gameScreen, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
+                aloneWeapons[j] = new Spear(info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             }
         }
         final StaticObject[] statics = new StaticObject[this.currentMap.getStaticObjectNumber() + 1];
@@ -189,9 +186,9 @@ public class Stage {
         for (int k = 0; k < staticsInfo.length; ++k) {
             final int[] info3 = staticsInfo[k];
             if (Ground.isTeleAbove(info3[0])) {
-                statics[k] = new TeleGate(this.gameScreen, info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], this.currentMap.nextMapId);
+                statics[k] = new TeleportGate(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], this.currentMap.nextMapId);
             } else {
-                statics[k] = new StaticObject(this.gameScreen, info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]]);
+                statics[k] = new StaticObject(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]]);
             }
         }
         entityManager.addAllEntities(new Entity[][]{enemies, enemyWeapons, aloneWeapons, statics});

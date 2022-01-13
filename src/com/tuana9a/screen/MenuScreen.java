@@ -7,13 +7,13 @@ package com.tuana9a.screen;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import com.tuana9a.Display;
+import com.tuana9a.app.Display;
 import com.tuana9a.utils.Utils;
 import com.tuana9a.ui.UiButton;
-import com.tuana9a.ui.ActionListener;
+import com.tuana9a.interfaces.ActionEvent;
 import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
-import com.tuana9a.App;
+import com.tuana9a.app.App;
 
 public class MenuScreen extends BaseScreen {
     private static final MenuScreen instance = new MenuScreen();
@@ -40,9 +40,9 @@ public class MenuScreen extends BaseScreen {
         final int barSize = 30;
         final int minSpace = 15;
         final App app = App.getInstance();
-        final UiButton startGame = new UiButton(this, halfW - buttonSize / 2.0, halfH - buttonSize / 2.0, buttonSize, buttonSize, new UiAnimation(Assets.newGameButton), new ActionListener() {
+        final UiButton startGame = new UiButton(this, halfW - buttonSize / 2.0, halfH - buttonSize / 2.0, buttonSize, buttonSize, new UiAnimation(Assets.newGameButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
                 synchronized (app) {
                     GameScreen gameScreen = GameScreen.getInstance();
                     app.switchToState(gameScreen);
@@ -50,33 +50,33 @@ public class MenuScreen extends BaseScreen {
                 }
             }
         });
-        final UiButton exit = new UiButton(this, screenW - minSpace - buttonSize, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.exitButton), new ActionListener() {
+        final UiButton exit = new UiButton(this, screenW - minSpace - buttonSize, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.exitButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
                 synchronized (app) {
                     System.exit(0);
                 }
             }
         });
-        final UiButton music = new UiButton(this, minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.musicButton), new ActionListener() {
+        final UiButton music = new UiButton(this, minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.musicButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
             }
         });
-        final UiButton sound = new UiButton(this, minSpace, minSpace + buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.soundButton), new ActionListener() {
+        final UiButton sound = new UiButton(this, minSpace, minSpace + buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.soundButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
             }
         });
-        final UiButton fullScreen = new UiButton(this, minSpace, minSpace + 2 * buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.largerScreenButton), new ActionListener() {
+        final UiButton fullScreen = new UiButton(this, minSpace, minSpace + 2 * buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.largerScreenButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
                 Display.getInstance().fullScreen();
             }
         });
-        final UiButton smallScreen = new UiButton(this, minSpace, minSpace + 3 * buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.smallerScreenButton), new ActionListener() {
+        final UiButton smallScreen = new UiButton(this, minSpace, minSpace + 3 * buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.smallerScreenButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
                 Display.getInstance().exitFullScreen();
             }
         });

@@ -7,7 +7,7 @@ package com.tuana9a.utils;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.AudioSystem;
 
-import com.tuana9a.App;
+import com.tuana9a.app.App;
 
 import java.io.File;
 

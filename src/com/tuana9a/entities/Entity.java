@@ -9,7 +9,7 @@ import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.entities.enemy.Enemy;
 import com.tuana9a.entities.weapon.Weapon;
 import com.tuana9a.entities.weapon.WeaponOut;
-import com.tuana9a.environment.Camera;
+import com.tuana9a.engine.Camera;
 import com.tuana9a.input.KeyboardManager;
 import com.tuana9a.screen.GameScreen;
 import com.tuana9a.utils.Algebra;
@@ -60,9 +60,8 @@ public abstract class Entity {
     protected void initStateAnimation() {
     }
 
-    public Entity(final GameScreen gameScreen, final int id, final double x, final double y) {
+    public Entity(final int id, final double x, final double y) {
         this.typicalTimer = new Timer();
-        this.gameScreen = gameScreen;
         this.id = id;
         this.state = 0;
         this.updatePosition(x, y);
@@ -81,10 +80,11 @@ public abstract class Entity {
 
     public void render(final Graphics g) {
         KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        GameScreen gameScreen = GameScreen.getInstance();
         if (this.xCam + this.actualSize.x + this.actualSize.width < 0.0) return;
-        if (this.xCam > this.gameScreen.getDisplayWidth()) return;
+        if (this.xCam > gameScreen.getDisplayWidth()) return;
         if (this.yCam + this.actualSize.y + this.actualSize.height < 0.0) return;
-        if (this.yCam + this.actualSize.y > this.gameScreen.getDisplayHeight()) return;
+        if (this.yCam + this.actualSize.y > gameScreen.getDisplayHeight()) return;
 
         final Graphics2D g2d = (Graphics2D) g.create();
         if (this.moveDirect == 1) {

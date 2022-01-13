@@ -2,7 +2,7 @@
 // Decompiled by Procyon v0.5.36
 // 
 
-package com.tuana9a;
+package com.tuana9a.app;
 
 import com.tuana9a.screen.ErrorScreen;
 import com.tuana9a.screen.GameScreen;

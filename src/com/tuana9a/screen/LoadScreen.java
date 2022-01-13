@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
-import com.tuana9a.App;
+import com.tuana9a.app.App;
 import com.tuana9a.ui.UiImageAnimation;
 import com.tuana9a.ui.UiProgressBar;
 import com.tuana9a.utils.Timer;

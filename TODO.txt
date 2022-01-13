@@ -6,3 +6,5 @@
   + các object trên map sẽ được khai báo
   + sử dụng dạng json cấu hình trước
 - hay thêm maven nhỉ để xử lý json
+- trái phải, state nên dùng enum cho đỡ nhớ nhớ quên quên, việc select state cũng dùng hash table chứ không dùng mảng hoặc cấu trúc tương đương
+- desing lại cơ chế input, keyboard, ...

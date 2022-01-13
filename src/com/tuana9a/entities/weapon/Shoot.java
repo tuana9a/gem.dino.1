@@ -5,67 +5,67 @@
 package com.tuana9a.entities.weapon;
 
 import java.util.Arrays;
+
 import com.tuana9a.utils.Algebra;
 import com.tuana9a.entities.Entity;
+
 import java.util.ArrayList;
+
 import com.tuana9a.configs.ConfigWeapon;
 import com.tuana9a.animation.StateAnimation;
 import com.tuana9a.graphic.Assets;
 import com.tuana9a.entities.Animal;
 import com.tuana9a.screen.GameScreen;
 
-public class Shoot extends Weapon
-{
-    public Shoot(final GameScreen gameScreen, final int weaponId, final double x, final double y) {
-        super(gameScreen, weaponId, x, y);
+public class Shoot extends Weapon {
+    public Shoot(final int weaponId, final double x, final double y) {
+        super(weaponId, x, y);
     }
-    
-    public Shoot(final GameScreen gameScreen, final int weaponId, final Animal owner) {
-        super(gameScreen, weaponId, owner);
+
+    public Shoot(final int weaponId, final Animal owner) {
+        super(weaponId, owner);
     }
-    
+
     @Override
     protected void initStateAnimation() {
         super.initStateAnimation();
         switch (this.id) {
             case 0: {
-                this.allStateAnimations[4] = new StateAnimation(Assets.shotGunSplash, new double[][] { { -this.width / 2.0, -4.0 }, { this.width / 2.0, -4.0 } }, this.width, this.height);
+                this.allStateAnimations[4] = new StateAnimation(Assets.shotGunSplash, new double[][]{{-this.width / 2.0, -4.0}, {this.width / 2.0, -4.0}}, this.width, this.height);
                 break;
             }
             case 2: {
                 final double temp = ConfigWeapon.accuracies[2];
-                this.allStateAnimations[3] = new StateAnimation(Assets.bowReload, new double[][] { { this.width / 4.0, 0.0 }, { -this.width / 4.0, 0.0 } }, new double[][] { { -2.0 * temp, -temp, 0.0, temp, 2.0 * temp }, { -2.0 * temp, -temp, 0.0, temp, 2.0 * temp } }, this.width, this.height);
+                this.allStateAnimations[3] = new StateAnimation(Assets.bowReload, new double[][]{{this.width / 4.0, 0.0}, {-this.width / 4.0, 0.0}}, new double[][]{{-2.0 * temp, -temp, 0.0, temp, 2.0 * temp}, {-2.0 * temp, -temp, 0.0, temp, 2.0 * temp}}, this.width, this.height);
                 break;
             }
             case 4: {
-                this.allStateAnimations[4] = new StateAnimation(Assets.gatlingSplash, new double[][] { { -this.width / 4.0, 0.0 }, { this.width / 4.0, 0.0 } }, this.width, this.height);
+                this.allStateAnimations[4] = new StateAnimation(Assets.gatlingSplash, new double[][]{{-this.width / 4.0, 0.0}, {this.width / 4.0, 0.0}}, this.width, this.height);
                 break;
             }
         }
     }
-    
+
     @Override
     protected void typicalUpdate() {
         if (this.moveDirect == 1) {
             if (this.isAttacking()) {
                 this.recoilX = ((this.recoilX > 0.0) ? (-this.recoilX) : this.recoilX) - this.recoilAmount;
-            }
-            else if (this.recoilX != 0.0) {
+            } else if (this.recoilX != 0.0) {
                 this.recoilX = ((this.recoilX > 0.0) ? (-this.recoilX) : this.recoilX) + this.recoilRegen;
             }
-        }
-        else if (this.moveDirect == 0) {
+        } else if (this.moveDirect == 0) {
             if (this.isAttacking()) {
                 this.recoilX = ((this.recoilX < 0.0) ? (-this.recoilX) : this.recoilX) + this.recoilAmount;
-            }
-            else if (this.recoilX != 0.0) {
+            } else if (this.recoilX != 0.0) {
                 this.recoilX = ((this.recoilX < 0.0) ? (-this.recoilX) : this.recoilX) - this.recoilRegen;
             }
         }
     }
-    
+
     public ArrayList<Entity> typicalAttack() {
-        final ShootOut bulletMain = new ShootOut(this.gameScreen, this.id, this, this.owner);
+        final GameScreen gameScreen = GameScreen.getInstance();
+        final ShootOut bulletMain = new ShootOut(this.id, this, this.owner);
         final double xRelTemp = this.actualSizeOriginW;
         final double yRelTemp = 0.0;
         final double xRelMain = Algebra.rotateX(xRelTemp, yRelTemp, this.radianRotateMain);
@@ -95,20 +95,19 @@ public class Shoot extends Weapon
                 final double bulletStartTopY = this.y + this.yRotateRelY + yRelTop - bulletMain.yRotateRelY;
                 final double bulletStartBotX = this.x + this.xRotateRelX + xRelBot - bulletMain.xRotateRelX;
                 final double bulletStartBotY = this.y + this.yRotateRelY + yRelBot - bulletMain.yRotateRelY;
-                bullet[i] = new ShootOut(this.gameScreen, this.id, this, this.owner);
+                bullet[i] = new ShootOut(this.id, this, this.owner);
                 bullet[i].xMove = bulletMain.speed * Math.cos(radianTop) * tempRatio;
                 bullet[i].yMove = bulletMain.speed * Math.sin(radianTop) * tempRatio;
                 bullet[i].updatePosition(bulletStartTopX, bulletStartTopY);
                 bullet[i].updateRotate(radianTop);
-                bullet[i + size] = new ShootOut(this.gameScreen, this.id, this, this.owner);
+                bullet[i + size] = new ShootOut(this.id, this, this.owner);
                 bullet[i + size].xMove = bulletMain.speed * Math.cos(radianBot) * tempRatio;
                 bullet[i + size].yMove = bulletMain.speed * Math.sin(radianBot) * tempRatio;
                 bullet[i + size].updatePosition(bulletStartBotX, bulletStartBotY);
                 bullet[i + size].updateRotate(radianBot);
             }
             bullets.addAll(Arrays.asList(bullet));
-        }
-        else if (isShotGun(this.id)) {
+        } else if (isShotGun(this.id)) {
             final double tempRatio = 1.0;
             final int size = 2;
             final int magazine = 2 * size;
@@ -116,20 +115,19 @@ public class Shoot extends Weapon
             for (int i = 0; i < size; ++i) {
                 final double radianTop = radianMain + (i + 1) * this.accuracy;
                 final double radianBot = radianMain - (i + 1) * this.accuracy;
-                bullet[i] = new ShootOut(this.gameScreen, this.id, this, this.owner);
+                bullet[i] = new ShootOut(this.id, this, this.owner);
                 bullet[i].xMove = bulletMain.speed * Math.cos(radianTop) * tempRatio;
                 bullet[i].yMove = bulletMain.speed * Math.sin(radianTop) * tempRatio;
                 bullet[i].updatePosition(bulletStartX, bulletStartY);
                 bullet[i].updateRotate(radianTop);
-                bullet[i + size] = new ShootOut(this.gameScreen, this.id, this, this.owner);
+                bullet[i + size] = new ShootOut(this.id, this, this.owner);
                 bullet[i + size].xMove = bulletMain.speed * Math.cos(radianBot) * tempRatio;
                 bullet[i + size].yMove = bulletMain.speed * Math.sin(radianBot) * tempRatio;
                 bullet[i + size].updatePosition(bulletStartX, bulletStartY);
                 bullet[i + size].updateRotate(radianBot);
             }
             bullets.addAll(Arrays.asList(bullet));
-        }
-        else if (isGatling(this.id)) {
+        } else if (isGatling(this.id)) {
             final double tempRatio = 0.9;
             final int size = 1;
             final int magazine = 2 * size;
@@ -145,12 +143,12 @@ public class Shoot extends Weapon
                 final double bulletStartTopY = this.y + this.yRotateRelY + yRelTop - bulletMain.yRotateRelY;
                 final double bulletStartBotX = this.x + this.xRotateRelX + xRelBot - bulletMain.xRotateRelX;
                 final double bulletStartBotY = this.y + this.yRotateRelY + yRelBot - bulletMain.yRotateRelY;
-                bullet[i] = new ShootOut(this.gameScreen, this.id, this, this.owner);
+                bullet[i] = new ShootOut(this.id, this, this.owner);
                 bullet[i].xMove = bulletMain.speed * Math.cos(radianTop) * tempRatio;
                 bullet[i].yMove = bulletMain.speed * Math.sin(radianTop) * tempRatio;
                 bullet[i].updatePosition(bulletStartTopX, bulletStartTopY);
                 bullet[i].updateRotate(radianTop);
-                bullet[i + size] = new ShootOut(this.gameScreen, this.id, this, this.owner);
+                bullet[i + size] = new ShootOut(this.id, this, this.owner);
                 bullet[i + size].xMove = bulletMain.speed * Math.cos(radianBot) * tempRatio;
                 bullet[i + size].yMove = bulletMain.speed * Math.sin(radianBot) * tempRatio;
                 bullet[i + size].updatePosition(bulletStartBotX, bulletStartBotY);

@@ -4,9 +4,9 @@
 
 package com.tuana9a.screen;
 
-import com.tuana9a.Display;
+import com.tuana9a.app.Display;
 import com.tuana9a.input.KeyboardManager;
-import com.tuana9a.ui.ActionListener;
+import com.tuana9a.interfaces.ActionEvent;
 import com.tuana9a.animation.UiAnimation;
 import com.tuana9a.graphic.Assets;
 
@@ -14,13 +14,13 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.tuana9a.utils.Utils;
-import com.tuana9a.App;
+import com.tuana9a.app.App;
 import com.tuana9a.ui.UiButton;
 import com.tuana9a.ui.UiImageStatic;
 import com.tuana9a.ui.UiProgressBar;
 import com.tuana9a.ui.UiNumber;
-import com.tuana9a.environment.Camera;
-import com.tuana9a.environment.Stage;
+import com.tuana9a.engine.Camera;
+import com.tuana9a.engine.Stage;
 
 public class GameScreen extends BaseScreen {
     private static final GameScreen instance = new GameScreen();
@@ -71,33 +71,33 @@ public class GameScreen extends BaseScreen {
         final UiImageStatic uiPlayerHpIcon = new UiImageStatic(this, minSpace, minSpace, iconSize, iconSize, Assets.playerHpIcon);
         this.uiPayerHpNumber = new UiNumber(this, iconSize + minSpace, minSpace, iconSize, Assets.imagesNumber);
         this.uiBossHpBar = new UiProgressBar(this, quarterW, minSpace + 10, halfW, barSize, Assets.bossHpBarLeft, Assets.bossHpBarMid, Assets.bossHpBarRight);
-        this.uiPause = new UiButton(this, screenW - 3 * buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.pauseButton), new ActionListener() {
+        this.uiPause = new UiButton(this, screenW - 3 * buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.pauseButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
                 GameScreen.this.pauseGame = true;
                 GameScreen.this.uiPause.hide();
                 GameScreen.this.uiResume.show();
             }
         });
-        this.uiResume = new UiButton(this, screenW - 3 * buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.resumeButton), new ActionListener() {
+        this.uiResume = new UiButton(this, screenW - 3 * buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.resumeButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
                 GameScreen.this.pauseGame = false;
                 GameScreen.this.uiResume.hide();
                 GameScreen.this.uiPause.show();
             }
         });
-        final UiButton uiReplay = new UiButton(this, screenW - 2 * buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.replayButton), new ActionListener() {
+        final UiButton uiReplay = new UiButton(this, screenW - 2 * buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.replayButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
                 synchronized (app) {
                     replayGame();
                 }
             }
         });
-        final UiButton uiReturnToMenu = new UiButton(this, screenW - buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.returnMenuButton), new ActionListener() {
+        final UiButton uiReturnToMenu = new UiButton(this, screenW - buttonSize - minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.returnMenuButton), new ActionEvent() {
             @Override
-            public void performAction() {
+            public void perform() {
                 app.switchToState(MenuScreen.getInstance());
             }
         });

@@ -4,15 +4,14 @@
 
 package com.tuana9a.entities.weapon;
 
+import com.tuana9a.entities.Animal;
 import com.tuana9a.entities.Entity;
 import com.tuana9a.utils.Algebra;
-import com.tuana9a.entities.Animal;
-import com.tuana9a.screen.GameScreen;
 
 public class SpearOut extends WeaponOut
 {
-    public SpearOut(final GameScreen gameScreen, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
-        super(gameScreen, weaponOutId, fromWeapon, owner);
+    public SpearOut(final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
+        super(weaponOutId, fromWeapon, owner);
     }
     
     @Override
