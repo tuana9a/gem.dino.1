@@ -1,5 +1,7 @@
 - phần loop game mình đang không control được, để thread.sleep lại ngon hơn không có ?
 
+- tích hợp khiên vào game, chuẩn hoá, cleanup từ từ từ entities
+
 - design pattern ability move, shoot, see
   + move với map, move tự do, kế thừa generic owner là <T>
 
