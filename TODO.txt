@@ -15,3 +15,5 @@
 
 - desing lại cơ chế input, keyboard, ...
 
+- giao diện chọn map khi vào trận để chọn map test, đỡ phải sửa code mất thời gian vcl
+
