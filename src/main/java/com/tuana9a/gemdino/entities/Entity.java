@@ -161,7 +161,7 @@ public abstract class Entity {
         g.fillOval((int) this.xRotateCam - r4, (int) this.yRotateCam - r4, r4 * 2, r4 * 2);
     }
 
-    public void renderWorkingArea(final Graphics g) {
+    public void renderWorkingArea(final Graphics g) { // TODO: strategy pattern
         final Graphics2D g2d = (Graphics2D) g.create();
         g2d.setColor(Color.RED);
         final Enemy e = (Enemy) this;

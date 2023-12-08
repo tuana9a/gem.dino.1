@@ -4,12 +4,17 @@ import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.entities.Entity;
 import com.tuana9a.gemdino.input.KeyboardManager;
 import com.tuana9a.gemdino.screen.GameScreen;
+import lombok.Getter;
+import lombok.Setter;
 
 public class GameCamera {
     private static final GameCamera instance = new GameCamera();
     private final App app;
-
+    @Setter
+    @Getter
     private double xOffset;
+    @Setter
+    @Getter
     private double yOffset;
     private final double speed;
 
@@ -18,7 +23,7 @@ public class GameCamera {
         this.speed = 4.0;
     }
 
-    public static GameCamera getInstance() {
+    public static GameCamera getInstance() { // TODO: cleanup
         return instance;
     }
 
@@ -80,26 +85,11 @@ public class GameCamera {
     }
 
     public int getCamRenderX(final double x) {
-        return (int) (x - this.getxOffset());
+        return (int) (x - this.getXOffset());
     }
 
     public int getCamRenderY(final double y) {
-        return (int) (y - this.getyOffset());
+        return (int) (y - this.getYOffset());
     }
 
-    public double getxOffset() {
-        return this.xOffset;
-    }
-
-    public void setxOffset(final double xOffset) {
-        this.xOffset = xOffset;
-    }
-
-    public double getyOffset() {
-        return this.yOffset;
-    }
-
-    public void setyOffset(final double yOffset) {
-        this.yOffset = yOffset;
-    }
 }

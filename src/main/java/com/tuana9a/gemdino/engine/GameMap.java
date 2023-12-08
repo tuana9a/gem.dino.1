@@ -118,14 +118,14 @@ public class GameMap {
     }
 
     public void render(final Graphics g) {
-        final GameCamera gameCamera = GameCamera.getInstance();
-        final int startColumn = (int) Math.max(0.0, gameCamera.getxOffset() / 64.0);
-        final int endColumn = (int) Math.min(this.width, (gameCamera.getxOffset() + app.getDisplayWidth()) / 64.0 + 1.0);
-        final int startRow = (int) Math.max(0.0, gameCamera.getyOffset() / 64.0);
-        for (int endRow = (int) Math.min(this.height, (gameCamera.getyOffset() + app.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
+        final GameCamera gameCamera = app.getGameCamera();
+        final int startColumn = (int) Math.max(0.0, gameCamera.getXOffset() / 64.0);
+        final int endColumn = (int) Math.min(this.width, (gameCamera.getXOffset() + app.getDisplayWidth()) / 64.0 + 1.0);
+        final int startRow = (int) Math.max(0.0, gameCamera.getYOffset() / 64.0);
+        for (int endRow = (int) Math.min(this.height, (gameCamera.getYOffset() + app.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
             for (int column = startColumn; column < endColumn; ++column) {
-                final int cameraRenderX = (int) (column * 64 - gameCamera.getxOffset());
-                final int cameraRenderY = (int) (row * 64 - gameCamera.getyOffset());
+                final int cameraRenderX = (int) (column * 64 - gameCamera.getXOffset());
+                final int cameraRenderY = (int) (row * 64 - gameCamera.getYOffset());
                 this.getGround(row, column).render(g, cameraRenderX, cameraRenderY);
             }
         }

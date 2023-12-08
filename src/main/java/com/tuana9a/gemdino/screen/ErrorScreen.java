@@ -1,13 +1,10 @@
 package com.tuana9a.gemdino.screen;
 
-import java.awt.*;
-
 import com.tuana9a.gemdino.app.App;
-import com.tuana9a.gemdino.graphic.Assets;
-import com.tuana9a.gemdino.ui.UiImageStatic;
 
-import java.util.Arrays;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ErrorScreen extends Screen {
@@ -41,8 +38,6 @@ public class ErrorScreen extends Screen {
         final int iconSize = 64;
         final int barSize = 30;
         final int minSpace = 15;
-        final UiImageStatic errorIcon = new UiImageStatic(this, halfW - iconSize / 2.0, minSpace, iconSize, iconSize, Assets.error);
-        this.uiManager.addAllUiComponent(errorIcon);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.tuana9a.gemdino.app;
 
+import com.tuana9a.gemdino.engine.GameCamera;
 import com.tuana9a.gemdino.interfaces.EventHandler;
 import com.tuana9a.gemdino.graphic.Assets;
 import com.tuana9a.gemdino.input.MouseManager;
@@ -25,17 +26,17 @@ public class App {
     private Screen previousScreen;
     private final Timer refreshTimer;
 
-    public App() {
+    public App(String title, int width, int height) {
         this.running = false;
         this.refreshTimer = new Timer(2);
         Assets.loadAll();
-        this.display = new Display(this, "GemDino", 1280, 720);
+        this.display = new Display(this, title, width, height);
         KeyboardManager keyboardManager = KeyboardManager.getInstance();
         MouseManager mouseManager = MouseManager.getInstance();
         display.getFrame().addKeyListener(keyboardManager);
         display.getCanvas().addMouseListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
-        this.errorScreen = new ErrorScreen();
+        this.errorScreen = new ErrorScreen(this);
         this.loadingScreen = new LoadingScreen(this);
         this.menuScreen = new MenuScreen(this);
         this.gameScreen = new GameScreen(this);
@@ -93,5 +94,9 @@ public class App {
 
     public int getDisplayHeight() {
         return this.display.getHeight();
+    }
+
+    public GameCamera getGameCamera() {
+        return this.gameScreen.getGameCamera();
     }
 }

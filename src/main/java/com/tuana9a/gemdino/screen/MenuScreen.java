@@ -1,15 +1,14 @@
 package com.tuana9a.gemdino.screen;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
-import com.tuana9a.gemdino.app.Display;
 import com.tuana9a.gemdino.animation.UiAnimation;
 import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.graphic.Assets;
 import com.tuana9a.gemdino.interfaces.EventHandler;
 import com.tuana9a.gemdino.ui.UiButton;
 import com.tuana9a.gemdino.utils.Utils;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class MenuScreen extends Screen {
     private final App app;

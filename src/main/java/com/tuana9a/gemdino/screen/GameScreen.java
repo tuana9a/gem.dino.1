@@ -13,21 +13,25 @@ import com.tuana9a.gemdino.ui.UiImageStatic;
 import com.tuana9a.gemdino.ui.UiNumber;
 import com.tuana9a.gemdino.ui.UiProgressBar;
 import com.tuana9a.gemdino.utils.Utils;
+import lombok.Getter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class GameScreen extends Screen {
-    private App app;
+    private final App app;
     private boolean pauseGame;
     private UiNumber uiPayerHpNumber;
     private UiProgressBar uiBossHpBar;
     private UiImageStatic uiGameOver;
     private UiButton uiPause;
     private UiButton uiResume;
+    @Getter
+    private final GameCamera gameCamera;
 
     public GameScreen(App app) {
         this.app = app;
+        this.gameCamera = new GameCamera(app);
     }
 
     @Override
@@ -102,7 +106,7 @@ public class GameScreen extends Screen {
             return;
         }
         if (keyboardManager.freeCamMode) {
-            GameCamera.getInstance().move();
+            this.gameCamera.move();
         }
         GameWorld gameWorld = GameWorld.getInstance();
         gameWorld.updateEveryRelCamAll();

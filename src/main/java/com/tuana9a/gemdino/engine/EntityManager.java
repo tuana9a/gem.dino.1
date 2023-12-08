@@ -3,6 +3,7 @@ package com.tuana9a.gemdino.engine;
 import java.util.Arrays;
 
 import com.tuana9a.gemdino.abilities.CanMountWeapon;
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.constants.Comparators;
 import com.tuana9a.gemdino.entities.Entity;
 import com.tuana9a.gemdino.entities.MovingEntity;
@@ -22,14 +23,15 @@ import com.tuana9a.gemdino.input.KeyboardManager;
 
 public class EntityManager {
     private static final EntityManager instance = new EntityManager();
-
+    private final App app;
     private Player player;
     private CanMountWeapon playerHand;
     private final ArrayList<Entity> entities;
     private final ArrayList<Weapon> weapons;
     private final ArrayList<WeaponOut> weaponOuts;
 
-    private EntityManager() {
+    private EntityManager(App app) {
+        this.app = app;
         this.entities = new ArrayList<>(100);
         this.weapons = new ArrayList<>(10);
         this.weaponOuts = new ArrayList<>(200);
@@ -41,7 +43,7 @@ public class EntityManager {
 
     public void updateAll() {
         KeyboardManager keyboardManager = KeyboardManager.getInstance();
-        final GameCamera gameCamera = GameCamera.getInstance();
+        final GameCamera gameCamera = app.getGameCamera();
         this.player.update();
         if (this.player == null) {
             return;
