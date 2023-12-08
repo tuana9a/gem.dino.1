@@ -1,21 +1,20 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.engine;
 
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.entities.Entity;
 import com.tuana9a.gemdino.input.KeyboardManager;
 import com.tuana9a.gemdino.screen.GameScreen;
 
 public class GameCamera {
     private static final GameCamera instance = new GameCamera();
+    private final App app;
 
     private double xOffset;
     private double yOffset;
     private final double speed;
 
-    private GameCamera() {
+    public GameCamera(App app) {
+        this.app = app;
         this.speed = 4.0;
     }
 
@@ -49,20 +48,17 @@ public class GameCamera {
     }
 
     public void centerOnEntity(final Entity e) {
-        GameScreen gameScreen = GameScreen.getInstance();
-        this.xOffset = e.x - gameScreen.getDisplayWidth() / 2.0 + e.width / 2.0;
-        this.yOffset = e.y - gameScreen.getDisplayHeight() / 2.0 + e.height / 2.0;
+        this.xOffset = e.x - app.getDisplayWidth() / 2.0 + e.width / 2.0;
+        this.yOffset = e.y - app.getDisplayHeight() / 2.0 + e.height / 2.0;
         this.checkBlankSpace();
     }
 
     public void checkBlankSpace() {
-        GameScreen gameScreen = GameScreen.getInstance();
-        GameWorld gameWorld = GameWorld.getInstance();
         GameMap gameMap = GameMap.getInstance();
         final int mapWidth = gameMap.getMapPixelWidth();
         final int mapHeight = gameMap.getMapPixelHeight();
-        final int screenWidth = gameScreen.getDisplayWidth();
-        final int screenHeight = gameScreen.getDisplayHeight();
+        final int screenWidth = app.getDisplayWidth();
+        final int screenHeight = app.getDisplayHeight();
         final double maxOffsetX = mapWidth - screenWidth;
         final double maxOffsetY = mapHeight - screenHeight;
         if (this.xOffset < 0.0) {

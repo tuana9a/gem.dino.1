@@ -1,19 +1,16 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.utils.Timer;
 import com.tuana9a.gemdino.input.KeyboardManager;
 import com.tuana9a.gemdino.input.MouseManager;
 
 import java.awt.Rectangle;
 
-import com.tuana9a.gemdino.screen.BaseScreen;
+import com.tuana9a.gemdino.screen.Screen;
 
 public abstract class UiComponent {
     public static final int HIDDEN = -2;
@@ -22,7 +19,8 @@ public abstract class UiComponent {
     public static final int HOVER = 1;
     public static final int PRESS = 2;
     public static final int RELEASE = 3;
-    private final BaseScreen currentScreen;
+    private final Screen currentScreen;
+    private final App app;
     protected double x;
     protected double y;
     protected double xRatio;
@@ -35,7 +33,8 @@ public abstract class UiComponent {
     protected int status;
     public Timer typicalTime;
 
-    public UiComponent(final BaseScreen currentScreen, final double x, final double y, final int width, final int height) {
+    public UiComponent(App app, final Screen currentScreen, final double x, final double y, final int width, final int height) {
+        this.app = app;
         this.currentScreen = currentScreen;
         this.x = x;
         this.y = y;
@@ -43,8 +42,8 @@ public abstract class UiComponent {
         this.height = height;
         this.typicalTime = new Timer();
         this.setBounds(0, 0, width, height);
-        this.xRatio = (x + width / 2.0) / currentScreen.getDisplayWidth();
-        this.yRatio = (y + height / 2.0) / currentScreen.getDisplayHeight();
+        this.xRatio = (x + width / 2.0) / app.getDisplayWidth();
+        this.yRatio = (y + height / 2.0) / app.getDisplayHeight();
         this.status = 0;
     }
 
@@ -66,8 +65,8 @@ public abstract class UiComponent {
     }
 
     public void updateWhenScreenResize() {
-        this.x = this.xRatio * this.currentScreen.getDisplayWidth() - this.width / 2.0;
-        this.y = this.yRatio * this.currentScreen.getDisplayHeight() - this.height / 2.0;
+        this.x = this.xRatio * app.getDisplayWidth() - this.width / 2.0;
+        this.y = this.yRatio * app.getDisplayHeight() - this.height / 2.0;
     }
 
     public void checkMouseHover() {

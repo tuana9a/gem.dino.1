@@ -1,20 +1,10 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.app;
-
-import com.tuana9a.gemdino.screen.ErrorScreen;
-import com.tuana9a.gemdino.screen.GameScreen;
-import com.tuana9a.gemdino.screen.LoadingScreen;
-import com.tuana9a.gemdino.screen.MenuScreen;
 
 import java.awt.*;
 import javax.swing.*;
 
 public class Display {
-    private static final Display instance = new Display("GemDino", 1280, 720);
-
+    private final App app;
     private String tittle;
     private int width;
     private int height;
@@ -30,7 +20,8 @@ public class Display {
     private Graphics graphics;
 
 
-    public Display(final String tittle, final int width, final int height) {
+    public Display(App app, final String tittle, final int width, final int height) {
+        this.app = app;
         this.tittle = tittle;
         this.width = width;
         this.height = height;
@@ -50,19 +41,13 @@ public class Display {
         this.canvas.createBufferStrategy(3);
     }
 
-    public static Display getInstance() {
-        return instance;
-    }
-
     public void resetFrame() {
-        Display display = Display.getInstance();
-        this.graphics = display.getCanvas().getBufferStrategy().getDrawGraphics();
-        this.graphics.clearRect(0, 0, display.getWidth(), display.getHeight());
+        this.graphics = this.getCanvas().getBufferStrategy().getDrawGraphics();
+        this.graphics.clearRect(0, 0, this.getWidth(), this.getHeight());
     }
 
     public void showFrame() {
-        Display display = Display.getInstance();
-        display.getCanvas().getBufferStrategy().show();
+        this.getCanvas().getBufferStrategy().show();
     }
 
     private void resize(final int width, final int height) {
@@ -75,10 +60,10 @@ public class Display {
     }
 
     private void updateUiPositionWhenResize() {
-        MenuScreen.getInstance().getUiManager().updateAllWhenScreenResize();
-        GameScreen.getInstance().getUiManager().updateAllWhenScreenResize();
-        ErrorScreen.getInstance().getUiManager().updateAllWhenScreenResize();
-        LoadingScreen.getInstance().getUiManager().updateAllWhenScreenResize();
+        app.getMenuScreen().getUiManager().updateAllWhenScreenResize();
+        app.getGameScreen().getUiManager().updateAllWhenScreenResize();
+        app.getErrorScreen().getUiManager().updateAllWhenScreenResize();
+        app.getLoadingScreen().getUiManager().updateAllWhenScreenResize();
     }
 
     public void fullScreen() {

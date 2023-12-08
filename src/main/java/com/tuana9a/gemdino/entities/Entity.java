@@ -1,11 +1,8 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.entities;
 
 import com.tuana9a.gemdino.animation.MoveAnimation;
 import com.tuana9a.gemdino.animation.StateAnimation;
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.entities.enemy.Enemy;
 import com.tuana9a.gemdino.entities.weapon.Weapon;
 import com.tuana9a.gemdino.entities.weapon.WeaponOut;
@@ -22,7 +19,7 @@ public abstract class Entity {
     public static final int STAY_DIRECT = 0;
     public static final int LEFT_DIRECT = 0;
     public static final int RIGHT_DIRECT = 1;
-    public GameScreen gameScreen;
+    protected final App app;
     protected int id;
     protected int state;
     public int moveDirect;
@@ -60,7 +57,8 @@ public abstract class Entity {
     protected void initStateAnimation() {
     }
 
-    public Entity(final int id, final double x, final double y) {
+    public Entity(App app, final int id, final double x, final double y) {
+        this.app = app;
         this.typicalTimer = new Timer();
         this.id = id;
         this.state = 0;
@@ -80,11 +78,10 @@ public abstract class Entity {
 
     public void render(final Graphics g) {
         KeyboardManager keyboardManager = KeyboardManager.getInstance();
-        GameScreen gameScreen = GameScreen.getInstance();
         if (this.xCam + this.actualSize.x + this.actualSize.width < 0.0) return;
-        if (this.xCam > gameScreen.getDisplayWidth()) return;
+        if (this.xCam > app.getDisplayWidth()) return;
         if (this.yCam + this.actualSize.y + this.actualSize.height < 0.0) return;
-        if (this.yCam + this.actualSize.y > gameScreen.getDisplayHeight()) return;
+        if (this.yCam + this.actualSize.y > app.getDisplayHeight()) return;
 
         final Graphics2D g2d = (Graphics2D) g.create();
         if (this.moveDirect == 1) {

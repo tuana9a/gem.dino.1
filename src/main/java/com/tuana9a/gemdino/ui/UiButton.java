@@ -1,25 +1,21 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.ui;
 
 import java.awt.Graphics2D;
 import java.awt.Graphics;
 
-import com.tuana9a.gemdino.app.ActionQueue;
-import com.tuana9a.gemdino.interfaces.ActionEvent;
-import com.tuana9a.gemdino.screen.BaseScreen;
+import com.tuana9a.gemdino.app.EventQueue;
+import com.tuana9a.gemdino.interfaces.EventHandler;
+import com.tuana9a.gemdino.screen.Screen;
 import com.tuana9a.gemdino.animation.UiAnimation;
 
 public class UiButton extends UiComponent {
     private final UiAnimation animation;
-    private final ActionEvent actionEvent;
+    private final EventHandler eventHandler;
 
-    public UiButton(final BaseScreen state, final double x, final double y, final int width, final int height, final UiAnimation animation, final ActionEvent actionEvent) {
+    public UiButton(final Screen state, final double x, final double y, final int width, final int height, final UiAnimation animation, final EventHandler eventHandler) {
         super(state, x, y, width, height);
         this.animation = animation;
-        this.actionEvent = actionEvent;
+        this.eventHandler = eventHandler;
     }
 
     @Override
@@ -30,7 +26,7 @@ public class UiButton extends UiComponent {
 
     @Override
     public void onRelease() {
-        ActionQueue actionQueue = ActionQueue.getInstance();
-        actionQueue.push(this.actionEvent);
+        EventQueue eventQueue = EventQueue.getInstance();
+        eventQueue.push(this.eventHandler);
     }
 }

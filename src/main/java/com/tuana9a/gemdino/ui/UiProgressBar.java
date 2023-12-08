@@ -1,13 +1,9 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.ui;
 
 import java.awt.Graphics;
 
 import com.tuana9a.gemdino.utils.Utils;
-import com.tuana9a.gemdino.screen.BaseScreen;
+import com.tuana9a.gemdino.screen.Screen;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -22,7 +18,7 @@ public class UiProgressBar extends UiComponent
     private int fullProgress;
     private int currentProgress;
     
-    public UiProgressBar(final BaseScreen state, final double x, final double y, final int width, final int height, final BufferedImage leftBarImg, final BufferedImage midBarImg, final BufferedImage rightBarImg) {
+    public UiProgressBar(final Screen state, final double x, final double y, final int width, final int height, final BufferedImage leftBarImg, final BufferedImage midBarImg, final BufferedImage rightBarImg) {
         super(state, x, y, width, height);
         this.sideBarWidth = height / 4;
         this.midBarFullWidth = width - 2 * this.sideBarWidth;

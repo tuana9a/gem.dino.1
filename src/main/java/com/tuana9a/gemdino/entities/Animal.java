@@ -1,11 +1,8 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.entities;
 
 import com.tuana9a.gemdino.abilities.CanMountWeapon;
 import com.tuana9a.gemdino.abilities.CanSee;
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.engine.GameWorld;
 import com.tuana9a.gemdino.entities.weapon.Weapon;
 import com.tuana9a.gemdino.entities.weapon.WeaponOut;
@@ -41,8 +38,8 @@ public abstract class Animal extends MovingEntity {
         this.allStateAnimations = new StateAnimation[Animal.STATE_NUMBER];
     }
 
-    public Animal(final int id, final double x, final double y) {
-        super(id, x, y);
+    public Animal(App app, final int id, final double x, final double y) {
+        super(app, id, x, y);
         this.deadTime = new Timer();
         this.effectTime = new Timer();
         this.vision = new CanSee(this);
@@ -77,8 +74,6 @@ public abstract class Animal extends MovingEntity {
         } else if (this.xMove < 0.0) {
             this.moveDirect = 0;
         }
-        final GameScreen gameScreen = GameScreen.getInstance();
-        final GameWorld gameWorld = GameWorld.getInstance();
         final double left = this.x + this.actualSize.x;
         final double right = left + this.actualSize.width;
         final double top = this.y + this.actualSize.y;

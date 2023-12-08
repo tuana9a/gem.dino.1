@@ -1,42 +1,36 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.screen;
 
 import java.awt.*;
 
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.graphic.Assets;
 import com.tuana9a.gemdino.ui.UiImageStatic;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ErrorScreen extends BaseScreen {
-    private static final ErrorScreen instance = new ErrorScreen();
+public class ErrorScreen extends Screen {
+    private final App app;
+    public List<String> errorMessages;
 
-    public ArrayList<String> errorMessages;
-
-    private ErrorScreen() {
+    public ErrorScreen(App app) {
+        this.app = app;
         this.errorMessages = new ArrayList<>();
-    }
-
-    public static ErrorScreen getInstance() {
-        return instance;
     }
 
     public void addErrors(final String... messages) {
         this.errorMessages.addAll(Arrays.asList(messages));
     }
 
-    public void addErrors(final ArrayList<String> ls) {
-        this.errorMessages.addAll(ls);
+    public void addErrors(final List<String> messages) {
+        this.errorMessages.addAll(messages);
     }
 
     @Override
     public void initUi() {
-        final int screenW = this.getDisplayWidth();
-        final int screenH = this.getDisplayHeight();
+        final int screenW = app.getDisplayWidth();
+        final int screenH = app.getDisplayHeight();
         final int halfW = screenW / 2;
         final int halfH = screenH / 2;
         final int quarterW = screenW / 4;
@@ -56,17 +50,17 @@ public class ErrorScreen extends BaseScreen {
         if (!this.refreshTimer.isTime()) {
             return;
         }
-        resetFrame();
-        Graphics g = getGraphics();
+        app.getDisplay().resetFrame();
+        Graphics g = app.getDisplay().getGraphics();
         this.uiManager.renderAll(g);
         this.writeErrors(g);
-        showFrame();
+        app.getDisplay().showFrame();
     }
 
     public void writeErrors(Graphics g) {
         final Graphics2D g2d = (Graphics2D) g;
-        final int screenW = this.getDisplayWidth();
-        final int screenH = this.getDisplayHeight();
+        final int screenW = app.getDisplayWidth();
+        final int screenH = app.getDisplayHeight();
         final int halfW = screenW / 2;
         final int halfH = screenH / 2;
         final int quarterW = screenW / 4;

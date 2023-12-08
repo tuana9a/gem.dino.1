@@ -1,12 +1,9 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.entities.enemy;
 
 import com.tuana9a.gemdino.abilities.BaseSkill;
 import com.tuana9a.gemdino.animation.StateAnimation;
-import com.tuana9a.gemdino.app.ActionQueue;
+import com.tuana9a.gemdino.app.App;
+import com.tuana9a.gemdino.app.EventQueue;
 import com.tuana9a.gemdino.configs.ConfigEnemy;
 import com.tuana9a.gemdino.engine.EntityManager;
 import com.tuana9a.gemdino.entities.weapon.*;
@@ -15,8 +12,8 @@ import com.tuana9a.gemdino.screen.GameScreen;
 import com.tuana9a.gemdino.utils.Timer;
 
 public class SpawnChildBoss extends Enemy {
-    public SpawnChildBoss(final int enemyId, final double x, final double y) {
-        super(enemyId, x, y);
+    public SpawnChildBoss(App app, final int enemyId, final double x, final double y) {
+        super(app, enemyId, x, y);
     }
 
     @Override
@@ -31,7 +28,6 @@ public class SpawnChildBoss extends Enemy {
     protected void initSkills() {
         super.initSkills();
         this.skillTimers[SpawnChildBoss.DEAD] = new Timer(5000L);
-        final GameScreen gameScreen = GameScreen.getInstance();
         this.abilities[SpawnChildBoss.DEAD] = new BaseSkill(this) {
             @Override
             public void perform() {
@@ -59,8 +55,8 @@ public class SpawnChildBoss extends Enemy {
                         enemyWeapons[j] = new Spear(randomWeaponId, children[j]);
                     }
                 }
-                ActionQueue actionQueue = ActionQueue.getInstance();
-                actionQueue.push(() -> {
+                EventQueue eventQueue = EventQueue.getInstance();
+                eventQueue.push(() -> {
                     EntityManager entityManager = EntityManager.getInstance();
                     entityManager.addAllEntities(children);
                     entityManager.addAllEntities(enemyWeapons);
@@ -72,7 +68,7 @@ public class SpawnChildBoss extends Enemy {
     @Override
     public void hitBy(final WeaponOut wo) {
         super.hitBy(wo);
-        GameScreen gameScreen = GameScreen.getInstance();
+        GameScreen gameScreen = app.getGameScreen();
         gameScreen.updateUiBossHp(this.health);
     }
 

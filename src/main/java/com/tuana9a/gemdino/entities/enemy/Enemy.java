@@ -1,9 +1,6 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.entities.enemy;
 
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.engine.EntityManager;
 import com.tuana9a.gemdino.animation.MoveAnimation;
 import com.tuana9a.gemdino.configs.ConfigEnemy;
@@ -50,8 +47,8 @@ public abstract class Enemy extends Animal {
         super.initStateAnimation();
     }
 
-    public Enemy(final int enemyId, final double x, final double y) {
-        super(enemyId, x, y);
+    public Enemy(App app, final int enemyId, final double x, final double y) {
+        super(app, enemyId, x, y);
         this.vision.setMaxDistance(ConfigEnemy.eyeDistances[enemyId]);
     }
 

@@ -1,10 +1,6 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.entities.player;
 
-import com.tuana9a.gemdino.app.ActionQueue;
+import com.tuana9a.gemdino.app.EventQueue;
 import com.tuana9a.gemdino.engine.GameWorld;
 import com.tuana9a.gemdino.entities.weapon.WeaponOut;
 import com.tuana9a.gemdino.entities.TeleportGate;
@@ -96,9 +92,8 @@ public class Player extends Animal {
             if (e instanceof Weapon && keyboardManager.takeWeapon()) {
                 this.takeWeapon((Weapon) e);
             } else if (e instanceof TeleportGate) {
-                ActionQueue actionQueue = ActionQueue.getInstance();
-                actionQueue.push(() -> {
-                    GameScreen gameScreen = GameScreen.getInstance();
+                EventQueue eventQueue = EventQueue.getInstance();
+                eventQueue.push(() -> {
                     GameWorld gameWorld = GameWorld.getInstance();
                     gameWorld.teleportToNewMap(((TeleportGate) e).getMapId());
                 });
@@ -110,7 +105,7 @@ public class Player extends Animal {
     @Override
     public void hitBy(final WeaponOut wo) {
         super.hitBy(wo);
-        final GameScreen gameScreen = GameScreen.getInstance();
+        final GameScreen gameScreen = app.getGameScreen();
         gameScreen.updateUiPayerHp(this.health);
     }
 

@@ -1,9 +1,6 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.engine;
 
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.entities.Animal;
 
 import java.awt.Graphics;
@@ -15,7 +12,7 @@ import com.tuana9a.gemdino.screen.GameScreen;
 
 public class GameMap {
     private static final GameMap instance = new GameMap();
-
+    private final App app;
     private int width;
     private int height;
     public String mapId;
@@ -34,7 +31,8 @@ public class GameMap {
     public static final int FULL_PROCESS = 10;
     public static final long TIME_SIMULATOR = 100L;
 
-    private GameMap() {
+    private GameMap(App app) {
+        this.app = app;
     }
 
     public static GameMap getInstance() {
@@ -121,11 +119,10 @@ public class GameMap {
 
     public void render(final Graphics g) {
         final GameCamera gameCamera = GameCamera.getInstance();
-        final GameScreen gameScreen = GameScreen.getInstance();
         final int startColumn = (int) Math.max(0.0, gameCamera.getxOffset() / 64.0);
-        final int endColumn = (int) Math.min(this.width, (gameCamera.getxOffset() + gameScreen.getDisplayWidth()) / 64.0 + 1.0);
+        final int endColumn = (int) Math.min(this.width, (gameCamera.getxOffset() + app.getDisplayWidth()) / 64.0 + 1.0);
         final int startRow = (int) Math.max(0.0, gameCamera.getyOffset() / 64.0);
-        for (int endRow = (int) Math.min(this.height, (gameCamera.getyOffset() + gameScreen.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
+        for (int endRow = (int) Math.min(this.height, (gameCamera.getyOffset() + app.getDisplayHeight()) / 64.0 + 1.0), row = startRow; row < endRow; ++row) {
             for (int column = startColumn; column < endColumn; ++column) {
                 final int cameraRenderX = (int) (column * 64 - gameCamera.getxOffset());
                 final int cameraRenderY = (int) (row * 64 - gameCamera.getyOffset());

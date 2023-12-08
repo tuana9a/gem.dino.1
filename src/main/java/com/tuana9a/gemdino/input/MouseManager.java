@@ -1,7 +1,3 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.input;
 
 import java.awt.event.MouseEvent;
@@ -13,11 +9,12 @@ import java.awt.event.MouseListener;
 
 public class MouseManager implements MouseListener, MouseMotionListener {
     private static final MouseManager instance = new MouseManager();
-
+    private App app;
     private int mouseX;
     private int mouseY;
 
-    private MouseManager() {
+    private MouseManager(App app) {
+        this.app = app;
     }
 
     public static MouseManager getInstance() {
@@ -26,12 +23,12 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(final MouseEvent e) {
-        App.getInstance().getCurrentScreen().getUiManager().checkMousePressAll();
+        app.getCurrentScreen().getUiManager().checkMousePressAll();
     }
 
     @Override
     public void mouseReleased(final MouseEvent e) {
-        App.getInstance().getCurrentScreen().getUiManager().checkMouseReleaseAll();
+        app.getCurrentScreen().getUiManager().checkMouseReleaseAll();
     }
 
     @Override

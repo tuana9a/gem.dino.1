@@ -1,7 +1,3 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.engine;
 
 import java.awt.Graphics;
@@ -29,10 +25,11 @@ import com.tuana9a.gemdino.screen.GameScreen;
 
 public class GameWorld {
     private static final GameWorld instance = new GameWorld();
+    private App app;
     private Player player;
 
-    private GameWorld() {
-
+    private GameWorld(App app) {
+        this.app = app;
     }
 
     public static GameWorld getInstance() {
@@ -59,7 +56,7 @@ public class GameWorld {
 
     public void replay() {
         EntityManager entityManager = EntityManager.getInstance();
-        GameScreen gameScreen = GameScreen.getInstance();
+        GameScreen gameScreen = app.getGameScreen();
         GameMap gameMap = GameMap.getInstance();
         this.player.dropAllWeapon();
         this.resetEntityManagerAll();
@@ -77,11 +74,10 @@ public class GameWorld {
         this.resetEntityManagerAll();
         final GameMap gameMap = GameMap.getInstance();
         gameMap.loading = new Loading(10, 0, 100L);
-        final App app = App.getInstance();
-        LoadingScreen loadingScreen = LoadingScreen.getInstance();
-        app.switchToState(loadingScreen);
+        LoadingScreen loadingScreen = app.getLoadingScreen();
+        app.switchScreen(loadingScreen);
         loadingScreen.create(gameMap.loading);
-        GameScreen gameScreen = GameScreen.getInstance();
+        GameScreen gameScreen = app.getGameScreen();
         loadingScreen.getExecutorService().submit(new Runnable() {
             @Override
             public void run() {
@@ -119,9 +115,8 @@ public class GameWorld {
         this.player.clearIntersects();
         final GameMap gameMap = GameMap.getInstance();
         gameMap.loading = new Loading(10, 0, 100L);
-        final App app = App.getInstance();
-        LoadingScreen loadingScreen = LoadingScreen.getInstance();
-        app.switchToState(loadingScreen);
+        LoadingScreen loadingScreen = app.getLoadingScreen();
+        app.switchScreen(loadingScreen);
         loadingScreen.create(gameMap.loading);
         loadingScreen.getExecutorService().submit(new Runnable() {
             @Override
@@ -152,7 +147,7 @@ public class GameWorld {
     }
 
     public void initEntitiesWithMap() {
-        GameScreen gameScreen = GameScreen.getInstance();
+        GameScreen gameScreen = app.getGameScreen();
         gameScreen.notBossStage();
         EntityManager entityManager = EntityManager.getInstance();
         GameMap gameMap = GameMap.getInstance();

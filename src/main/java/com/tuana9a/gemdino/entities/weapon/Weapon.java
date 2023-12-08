@@ -1,7 +1,3 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.entities.weapon;
 
 import com.tuana9a.gemdino.engine.EntityManager;
@@ -163,7 +159,6 @@ public abstract class Weapon extends StaticEntity {
 
     private void updateTypicalAttack() {
         KeyboardManager keyboardManager = KeyboardManager.getInstance();
-        GameScreen gameScreen = GameScreen.getInstance();
         if (!this.typicalTimer.isTime()) {
             return;
         }
@@ -181,7 +176,6 @@ public abstract class Weapon extends StaticEntity {
     }
 
     private void updateTypicalRotate() {
-        final GameScreen gameScreen = GameScreen.getInstance();
         if (this.owner instanceof Player) {
             this.updateRadianRotateMouse();
         } else if (this.owner instanceof Enemy) {

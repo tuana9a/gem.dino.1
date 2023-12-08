@@ -1,7 +1,3 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.entities.weapon;
 
 import com.tuana9a.gemdino.entities.Entity;
@@ -38,7 +34,6 @@ public class Spear extends Weapon {
     }
 
     public ArrayList<Entity> typicalAttack() {
-        final GameScreen gameScreen = GameScreen.getInstance();
         final SpearOut melee = new SpearOut(this.id, this, this.owner);
         return new ArrayList<Entity>() {
             {

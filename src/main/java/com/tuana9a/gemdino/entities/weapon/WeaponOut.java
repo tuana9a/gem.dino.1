@@ -1,9 +1,6 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.entities.weapon;
 
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.entities.Animal;
 import com.tuana9a.gemdino.entities.MovingEntity;
 import com.tuana9a.gemdino.animation.StateAnimation;
@@ -41,8 +38,8 @@ public abstract class WeaponOut extends MovingEntity {
         this.allStateAnimations = new StateAnimation[3];
     }
 
-    public WeaponOut(final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
-        super(weaponOutId, fromWeapon.x, fromWeapon.y);
+    public WeaponOut(App app, final int weaponOutId, final Weapon fromWeapon, final Animal owner) {
+        super(app, weaponOutId, fromWeapon.x, fromWeapon.y);
         this.state = 0;
         this.owner = owner;
         this.fromWeapon = fromWeapon;

@@ -1,13 +1,9 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.ui;
 
 import com.tuana9a.gemdino.utils.Utils;
 
 import java.awt.Graphics;
-import com.tuana9a.gemdino.screen.BaseScreen;
+import com.tuana9a.gemdino.screen.Screen;
 import java.awt.image.BufferedImage;
 
 public class UiNumber extends UiComponent
@@ -15,7 +11,7 @@ public class UiNumber extends UiComponent
     BufferedImage[] imagesNumbers;
     private int number;
     
-    public UiNumber(final BaseScreen state, final double x, final double y, final int height, final BufferedImage[] imagesNumbers) {
+    public UiNumber(final Screen state, final double x, final double y, final int height, final BufferedImage[] imagesNumbers) {
         super(state, x, y, 0, height);
         this.imagesNumbers = imagesNumbers;
     }

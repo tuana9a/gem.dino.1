@@ -1,7 +1,3 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.screen;
 
 import java.awt.*;
@@ -16,10 +12,10 @@ import com.tuana9a.gemdino.ui.UiImageAnimation;
 import com.tuana9a.gemdino.ui.UiProgressBar;
 import com.tuana9a.gemdino.utils.Loading;
 import com.tuana9a.gemdino.utils.Timer;
+import lombok.Getter;
 
-public class LoadingScreen extends BaseScreen {
-    private static final LoadingScreen instance = new LoadingScreen();
-
+public class LoadingScreen extends Screen {
+    private App app;
     public static final long MAX_TIME_OUT = 5000L;
     public Loading loading;
     public Timer loadTimeOut;
@@ -27,14 +23,12 @@ public class LoadingScreen extends BaseScreen {
     public double destinationWidth;
     private UiProgressBar uiProgressBar;
     private UiImageAnimation uiProgressAnimation;
+    @Getter
     private ExecutorService executorService;
 
-    private LoadingScreen() {
+    public LoadingScreen(App app) {
+        this.app = app;
         this.executorService = Executors.newFixedThreadPool(4);
-    }
-
-    public static LoadingScreen getInstance() {
-        return instance;
     }
 
     public void create(final Loading loading) {
@@ -47,8 +41,8 @@ public class LoadingScreen extends BaseScreen {
 
     @Override
     public void initUi() {
-        final int screenW = this.getDisplayWidth();
-        final int screenH = this.getDisplayHeight();
+        final int screenW = app.getDisplayWidth();
+        final int screenH = app.getDisplayHeight();
         final int halfW = screenW / 2;
         final int halfH = screenH / 2;
         final int quarterW = screenW / 4;
@@ -99,26 +93,19 @@ public class LoadingScreen extends BaseScreen {
             return;
         }
         this.refreshTimer.reset();
-        resetFrame();
-        Graphics g = getGraphics();
+        app.getDisplay().resetFrame();
+        Graphics g = app.getDisplay().getGraphics();
         this.uiManager.renderAll(g);
-        showFrame();
+        app.getDisplay().showFrame();
     }
 
-    public void onError(final ArrayList<String> messages) {
-        App app = App.getInstance();
-        ErrorScreen errorScreen = ErrorScreen.getInstance();
-        app.switchToState(errorScreen);
+    public void onError(final ArrayList<String> messages /* TODO: LinkedList instead */) {
+        ErrorScreen errorScreen = app.getErrorScreen();
+        app.switchScreen(errorScreen);
         errorScreen.addErrors(messages);
     }
 
     public void onComplete() {
-        App app = App.getInstance();
-        app.switchToLastState();
-    }
-
-    // getter setter
-    public ExecutorService getExecutorService() {
-        return executorService;
+        app.switchToLastScreen();
     }
 }

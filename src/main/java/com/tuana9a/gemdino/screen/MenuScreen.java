@@ -1,7 +1,3 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.screen;
 
 import java.awt.*;
@@ -11,24 +7,21 @@ import com.tuana9a.gemdino.app.Display;
 import com.tuana9a.gemdino.animation.UiAnimation;
 import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.graphic.Assets;
-import com.tuana9a.gemdino.interfaces.ActionEvent;
+import com.tuana9a.gemdino.interfaces.EventHandler;
 import com.tuana9a.gemdino.ui.UiButton;
 import com.tuana9a.gemdino.utils.Utils;
 
-public class MenuScreen extends BaseScreen {
-    private static final MenuScreen instance = new MenuScreen();
+public class MenuScreen extends Screen {
+    private final App app;
 
-    private MenuScreen() {
-    }
-
-    public static MenuScreen getInstance() {
-        return instance;
+    public MenuScreen(App app) {
+        this.app = app;
     }
 
     @Override
     public void initUi() {
-        final int screenW = this.getDisplayWidth();
-        final int screenH = this.getDisplayHeight();
+        final int screenW = app.getDisplayWidth();
+        final int screenH = app.getDisplayHeight();
         final int halfW = screenW / 2;
         final int halfH = screenH / 2;
         final int quarterW = screenW / 4;
@@ -39,18 +32,17 @@ public class MenuScreen extends BaseScreen {
         final int iconSize = 64;
         final int barSize = 30;
         final int minSpace = 15;
-        final App app = App.getInstance();
-        final UiButton startGame = new UiButton(this, halfW - buttonSize / 2.0, halfH - buttonSize / 2.0, buttonSize, buttonSize, new UiAnimation(Assets.newGameButton), new ActionEvent() {
+        final UiButton startGame = new UiButton(this, halfW - buttonSize / 2.0, halfH - buttonSize / 2.0, buttonSize, buttonSize, new UiAnimation(Assets.newGameButton), new EventHandler() {
             @Override
             public void perform() {
                 synchronized (app) {
-                    GameScreen gameScreen = GameScreen.getInstance();
-                    app.switchToState(gameScreen);
+                    GameScreen gameScreen = app.getGameScreen();
+                    app.switchScreen(gameScreen);
                     gameScreen.startGame();
                 }
             }
         });
-        final UiButton exit = new UiButton(this, screenW - minSpace - buttonSize, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.exitButton), new ActionEvent() {
+        final UiButton exit = new UiButton(this, screenW - minSpace - buttonSize, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.exitButton), new EventHandler() {
             @Override
             public void perform() {
                 synchronized (app) {
@@ -58,26 +50,26 @@ public class MenuScreen extends BaseScreen {
                 }
             }
         });
-        final UiButton music = new UiButton(this, minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.musicButton), new ActionEvent() {
+        final UiButton music = new UiButton(this, minSpace, minSpace, buttonSize, buttonSize, new UiAnimation(Assets.musicButton), new EventHandler() {
             @Override
             public void perform() {
             }
         });
-        final UiButton sound = new UiButton(this, minSpace, minSpace + buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.soundButton), new ActionEvent() {
+        final UiButton sound = new UiButton(this, minSpace, minSpace + buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.soundButton), new EventHandler() {
             @Override
             public void perform() {
             }
         });
-        final UiButton fullScreen = new UiButton(this, minSpace, minSpace + 2 * buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.largerScreenButton), new ActionEvent() {
+        final UiButton fullScreen = new UiButton(this, minSpace, minSpace + 2 * buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.largerScreenButton), new EventHandler() {
             @Override
             public void perform() {
-                Display.getInstance().fullScreen();
+                app.getDisplay().fullScreen();
             }
         });
-        final UiButton smallScreen = new UiButton(this, minSpace, minSpace + 3 * buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.smallerScreenButton), new ActionEvent() {
+        final UiButton smallScreen = new UiButton(this, minSpace, minSpace + 3 * buttonSize, buttonSize, buttonSize, new UiAnimation(Assets.smallerScreenButton), new EventHandler() {
             @Override
             public void perform() {
-                Display.getInstance().exitFullScreen();
+                app.getDisplay().exitFullScreen();
             }
         });
         this.uiManager.addAllUiComponent(startGame, exit, music, sound, fullScreen, smallScreen);
@@ -89,7 +81,7 @@ public class MenuScreen extends BaseScreen {
         final Toolkit toolkit = Toolkit.getDefaultToolkit();
         final Dimension d = toolkit.getBestCursorSize(32, 32);
         final Cursor cursor = toolkit.createCustomCursor(img, new Point(d.width / 2, d.height / 2), "img");
-        Display.getInstance().getCanvas().setCursor(cursor);
+        app.getDisplay().getCanvas().setCursor(cursor);
     }
 
     @Override
@@ -105,9 +97,9 @@ public class MenuScreen extends BaseScreen {
         if (!this.refreshTimer.isTime()) {
             return;
         }
-        resetFrame();
+        app.getDisplay().resetFrame();
         this.refreshTimer.reset();
-        this.uiManager.renderAll(getGraphics());
-        showFrame();
+        this.uiManager.renderAll(app.getDisplay().getGraphics());
+        app.getDisplay().showFrame();
     }
 }

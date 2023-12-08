@@ -1,7 +1,3 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package com.tuana9a.gemdino.entities.weapon;
 
 import java.util.Arrays;
@@ -64,7 +60,6 @@ public class Shoot extends Weapon {
     }
 
     public ArrayList<Entity> typicalAttack() {
-        final GameScreen gameScreen = GameScreen.getInstance();
         final ShootOut bulletMain = new ShootOut(this.id, this, this.owner);
         final double xRelTemp = this.actualSizeOriginW;
         final double yRelTemp = 0.0;
