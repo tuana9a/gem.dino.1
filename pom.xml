@@ -33,7 +33,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.tuana9a.gemdino.Main</mainClass>
+                            <mainClass>gemdinothegame.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
