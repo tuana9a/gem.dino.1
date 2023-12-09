@@ -33,7 +33,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>gemdinothegame.Main</mainClass>
+                            <mainClass>gemdino.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
