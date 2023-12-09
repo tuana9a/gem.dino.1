@@ -1,6 +1,9 @@
 package com.tuana9a.gemdino.app;
 
+import com.tuana9a.gemdino.engine.EntityManager;
 import com.tuana9a.gemdino.engine.GameCamera;
+import com.tuana9a.gemdino.engine.GameMap;
+import com.tuana9a.gemdino.engine.GameWorld;
 import com.tuana9a.gemdino.interfaces.EventHandler;
 import com.tuana9a.gemdino.graphic.Assets;
 import com.tuana9a.gemdino.input.MouseManager;
@@ -25,14 +28,20 @@ public class App {
     private Screen currentScreen;
     private Screen previousScreen;
     private final Timer refreshTimer;
+    @Getter
+    private final KeyboardManager keyboardManager;
+    @Getter
+    private final MouseManager mouseManager;
+    @Getter
+    private final EventQueue eventQueue;
 
     public App(String title, int width, int height) {
         this.running = false;
         this.refreshTimer = new Timer(2);
         Assets.loadAll();
         this.display = new Display(this, title, width, height);
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
-        MouseManager mouseManager = MouseManager.getInstance();
+        this.keyboardManager = new KeyboardManager();
+        this.mouseManager = new MouseManager(this);
         display.getFrame().addKeyListener(keyboardManager);
         display.getCanvas().addMouseListener(mouseManager);
         display.getCanvas().addMouseMotionListener(mouseManager);
@@ -40,6 +49,7 @@ public class App {
         this.loadingScreen = new LoadingScreen(this);
         this.menuScreen = new MenuScreen(this);
         this.gameScreen = new GameScreen(this);
+        this.eventQueue = new EventQueue();
     }
 
     public void run() {
@@ -57,7 +67,6 @@ public class App {
                 continue;
             }
             refreshTimer.reset();
-            final EventQueue eventQueue = EventQueue.getInstance();
             synchronized (this) { // TODO: is it possible to non-blocking
                 this.currentScreen.update();
                 this.currentScreen.render();
@@ -98,5 +107,17 @@ public class App {
 
     public GameCamera getGameCamera() {
         return this.gameScreen.getGameCamera();
+    }
+
+    public GameMap getGameMap() {
+        return this.gameScreen.getGameMap();
+    }
+
+    public GameWorld getGameWorld() {
+        return this.gameScreen.getGameWorld();
+    }
+
+    public EntityManager getEntityManager() {
+        return this.gameScreen.getGameWorld().getEntityManager();
     }
 }

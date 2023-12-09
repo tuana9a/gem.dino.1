@@ -11,7 +11,6 @@ import com.tuana9a.gemdino.utils.Loading;
 import com.tuana9a.gemdino.screen.GameScreen;
 
 public class GameMap {
-    private static final GameMap instance = new GameMap();
     private final App app;
     private int width;
     private int height;
@@ -31,12 +30,8 @@ public class GameMap {
     public static final int FULL_PROCESS = 10;
     public static final long TIME_SIMULATOR = 100L;
 
-    private GameMap(App app) {
+    public GameMap(App app) {
         this.app = app;
-    }
-
-    public static GameMap getInstance() {
-        return instance;
     }
 
     public void loadMapById(String mapId) {

@@ -1,5 +1,6 @@
 package com.tuana9a.gemdino.entities.player;
 
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.app.EventQueue;
 import com.tuana9a.gemdino.engine.GameWorld;
 import com.tuana9a.gemdino.entities.weapon.WeaponOut;
@@ -39,13 +40,13 @@ public class Player extends Animal {
         this.allStateAnimations[Player.HIT] = new StateAnimation(Assets.emoteFaceSad, new double[][]{{(this.width - 32) / 2.0f, -32.0}, {(this.width - 32) / 2.0f, -32.0}}, 32.0, 32.0);
     }
 
-    public Player(final GameScreen gameScreen, final int playerId, final double x, final double y) {
-        super(playerId, x, y);
-        gameScreen.updateUiPayerHp(this.health);
+    public Player(App app, final int playerId, final double x, final double y) {
+        super(app, playerId, x, y);
+        app.getGameScreen().updateUiPayerHp(this.health);
     }
 
     private void updateMoveKeyboard() {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         final double n = 0.0;
         this.yMove = n;
         this.xMove = n;
@@ -81,7 +82,7 @@ public class Player extends Animal {
 
     @Override
     protected void updateInteract() {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         if (keyboardManager.dropWeapon()) {
             this.dropWeapon();
         }
@@ -92,9 +93,9 @@ public class Player extends Animal {
             if (e instanceof Weapon && keyboardManager.takeWeapon()) {
                 this.takeWeapon((Weapon) e);
             } else if (e instanceof TeleportGate) {
-                EventQueue eventQueue = EventQueue.getInstance();
+                EventQueue eventQueue = app.getEventQueue();
                 eventQueue.push(() -> {
-                    GameWorld gameWorld = GameWorld.getInstance();
+                    GameWorld gameWorld = app.getGameWorld();
                     gameWorld.teleportToNewMap(((TeleportGate) e).getMapId());
                 });
             }

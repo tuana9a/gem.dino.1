@@ -82,7 +82,7 @@ public abstract class Animal extends MovingEntity {
         final int columnRightOrigin = (int) (right / 64.0);
         final int rowTopOrigin = (int) (top / 64.0);
         final int rowBottomOrigin = (int) (bottom / 64.0);
-        final GameMap gameMap = GameMap.getInstance();
+        final GameMap gameMap = app.getGameMap();
         final int rowTopCheck = (int) Math.floor((top + this.yMove) / 64.0);
         final int rowBottomCheck = (int) Math.floor((bottom + this.yMove) / 64.0);
         final int columnLeftCheck = (int) Math.floor((left + this.xMove) / 64.0);

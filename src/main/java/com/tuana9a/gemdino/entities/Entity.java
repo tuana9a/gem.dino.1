@@ -77,7 +77,7 @@ public abstract class Entity {
     public abstract void update();
 
     public void render(final Graphics g) {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         if (this.xCam + this.actualSize.x + this.actualSize.width < 0.0) return;
         if (this.xCam > app.getDisplayWidth()) return;
         if (this.yCam + this.actualSize.y + this.actualSize.height < 0.0) return;

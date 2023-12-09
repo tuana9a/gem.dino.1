@@ -6,15 +6,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class EventQueue {
-    private static final EventQueue instance = new EventQueue();
     private final Queue<EventHandler> queue;
 
-    private EventQueue() {
+    public EventQueue() {
         this.queue = new LinkedList<>();
-    }
-
-    public static EventQueue getInstance() {
-        return instance;
     }
 
     public synchronized EventHandler pop() {

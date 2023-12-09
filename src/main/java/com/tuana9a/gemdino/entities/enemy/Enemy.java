@@ -105,7 +105,7 @@ public abstract class Enemy extends Animal {
             return;
         }
         this.typicalTimer.reset();
-        final EntityManager entityManager = EntityManager.getInstance();
+        final EntityManager entityManager = app.getEntityManager();
         final Player player = entityManager.getPlayer();
         if (this.canSee(player)) {
             this.updateMoveScripted(player);
@@ -126,7 +126,7 @@ public abstract class Enemy extends Animal {
     }
 
     private void updateMoveKeyboard() {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         this.xMove = 0.0;
         this.yMove = 0.0;
         final boolean up = keyboardManager.up;

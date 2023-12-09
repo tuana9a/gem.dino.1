@@ -3,6 +3,7 @@ package com.tuana9a.gemdino.abilities;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.entities.Animal;
 import com.tuana9a.gemdino.entities.Entity;
 import com.tuana9a.gemdino.engine.EntityManager;
@@ -13,11 +14,13 @@ import com.tuana9a.gemdino.utils.Algebra;
 public class CanSee {
     private final Animal owner;
     private final int eyeSize;
+    private final App app;
     private double maxDistance;
     private double x;
     private double y;
 
-    public CanSee(final Animal owner) {
+    public CanSee(App app, final Animal owner) {
+        this.app = app;
         this.eyeSize = 20;
         this.maxDistance = 1000.0;
         this.owner = owner;
@@ -36,7 +39,7 @@ public class CanSee {
         final int speed = 20;
         final double xMove = speed * Math.cos(radianToEntity);
         final double yMove = speed * Math.sin(radianToEntity);
-        final EntityManager entityManager = EntityManager.getInstance();
+        final EntityManager entityManager = app.getEntityManager();
         final ArrayList<Entity> allEntities = entityManager.getEntities();
         do {
             for (final Entity e : allEntities) {

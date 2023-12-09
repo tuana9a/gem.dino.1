@@ -20,7 +20,7 @@ public abstract class UiComponent {
     public static final int PRESS = 2;
     public static final int RELEASE = 3;
     private final Screen currentScreen;
-    private final App app;
+    protected final App app;
     protected double x;
     protected double y;
     protected double xRatio;
@@ -51,7 +51,7 @@ public abstract class UiComponent {
     }
 
     public void render(final Graphics g) {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         if (keyboardManager.innerBoundMode) {
             this.renderInnerBound(g);
         }
@@ -70,7 +70,7 @@ public abstract class UiComponent {
     }
 
     public void checkMouseHover() {
-        MouseManager mouseManager = MouseManager.getInstance();
+        MouseManager mouseManager = app.getMouseManager();
         final int mouseX = mouseManager.getX();
         final int mouseY = mouseManager.getY();
         if (new Rectangle((int) (this.x + this.bounds.x), (int) (this.y + this.bounds.y), this.bounds.width, this.bounds.height).contains(mouseX, mouseY)) {

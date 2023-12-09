@@ -4,6 +4,7 @@ import com.tuana9a.gemdino.app.Display;
 import com.tuana9a.gemdino.animation.UiAnimation;
 import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.engine.GameCamera;
+import com.tuana9a.gemdino.engine.GameMap;
 import com.tuana9a.gemdino.engine.GameWorld;
 import com.tuana9a.gemdino.graphic.Assets;
 import com.tuana9a.gemdino.input.KeyboardManager;
@@ -28,10 +29,16 @@ public class GameScreen extends Screen {
     private UiButton uiResume;
     @Getter
     private final GameCamera gameCamera;
+    @Getter
+    private final GameMap gameMap;
+    @Getter
+    private final GameWorld gameWorld;
 
     public GameScreen(App app) {
         this.app = app;
         this.gameCamera = new GameCamera(app);
+        this.gameMap = new GameMap(app);
+        this.gameWorld = new GameWorld(app);
     }
 
     @Override
@@ -101,14 +108,13 @@ public class GameScreen extends Screen {
 
     @Override
     public void update() {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         if (!this.refreshTimer.isTime()) {
             return;
         }
         if (keyboardManager.freeCamMode) {
             this.gameCamera.move();
         }
-        GameWorld gameWorld = GameWorld.getInstance();
         gameWorld.updateEveryRelCamAll();
         this.uiManager.updateAll();
         if (this.pauseGame) {
@@ -125,7 +131,6 @@ public class GameScreen extends Screen {
         this.refreshTimer.reset();
         app.getDisplay().resetFrame();
         Graphics g = app.getDisplay().getGraphics();
-        GameWorld gameWorld = GameWorld.getInstance();
         gameWorld.render(g);
         this.uiManager.renderAll(g);
         app.getDisplay().showFrame();
@@ -133,14 +138,12 @@ public class GameScreen extends Screen {
 
     public void startGame() {
         this.uiResume.onRelease();
-        GameWorld gameWorld = GameWorld.getInstance();
         gameWorld.newGame();
         this.uiGameOver.hide();
     }
 
     public void replayGame() {
         this.uiResume.onRelease();
-        GameWorld gameWorld = GameWorld.getInstance();
         gameWorld.replay();
         this.uiGameOver.hide();
     }

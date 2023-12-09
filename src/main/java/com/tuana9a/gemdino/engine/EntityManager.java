@@ -22,7 +22,6 @@ import com.tuana9a.gemdino.entities.player.Player;
 import com.tuana9a.gemdino.input.KeyboardManager;
 
 public class EntityManager {
-    private static final EntityManager instance = new EntityManager();
     private final App app;
     private Player player;
     private CanMountWeapon playerHand;
@@ -30,19 +29,15 @@ public class EntityManager {
     private final ArrayList<Weapon> weapons;
     private final ArrayList<WeaponOut> weaponOuts;
 
-    private EntityManager(App app) {
+    public EntityManager(App app) {
         this.app = app;
         this.entities = new ArrayList<>(100);
         this.weapons = new ArrayList<>(10);
         this.weaponOuts = new ArrayList<>(200);
     }
 
-    public static EntityManager getInstance() {
-        return instance;
-    }
-
     public void updateAll() {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         final GameCamera gameCamera = app.getGameCamera();
         this.player.update();
         if (this.player == null) {
@@ -101,7 +96,7 @@ public class EntityManager {
     }
 
     public void renderAll(final Graphics g) {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         if (this.player == null) {
             return;
         }

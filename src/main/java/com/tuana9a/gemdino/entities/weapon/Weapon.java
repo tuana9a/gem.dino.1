@@ -138,7 +138,7 @@ public abstract class Weapon extends StaticEntity {
     protected abstract void typicalUpdate();
 
     public void attack() {
-        EntityManager entityManager = EntityManager.getInstance();
+        EntityManager entityManager = app.getEntityManager();
         this.state = 4;
         entityManager.addAllEntities(this.typicalAttack());
     }
@@ -158,7 +158,7 @@ public abstract class Weapon extends StaticEntity {
     protected abstract ArrayList<Entity> typicalAttack();
 
     private void updateTypicalAttack() {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         if (!this.typicalTimer.isTime()) {
             return;
         }
@@ -166,7 +166,7 @@ public abstract class Weapon extends StaticEntity {
             this.attack();
             this.typicalTimer.reset();
         } else if (this.owner instanceof Enemy) {
-            EntityManager entityManager = EntityManager.getInstance();
+            EntityManager entityManager = app.getEntityManager();
             final Player player = entityManager.getPlayer();
             if (((Enemy) this.owner).reactionTimer.isTime(-500L) && this.owner.canSee(player) && this.aim(player)) {
                 this.attack();
@@ -179,7 +179,7 @@ public abstract class Weapon extends StaticEntity {
         if (this.owner instanceof Player) {
             this.updateRadianRotateMouse();
         } else if (this.owner instanceof Enemy) {
-            final EntityManager entityManager = EntityManager.getInstance();
+            final EntityManager entityManager = app.getEntityManager();
             final Player player = entityManager.getPlayer();
             if (((Enemy) this.owner).reactionTimer.isTime(-500L)) {
                 if (this.owner.canSee(player)) {
@@ -198,7 +198,7 @@ public abstract class Weapon extends StaticEntity {
     }
 
     private void updateRadianRotateMouse() {
-        MouseManager mouseManager = MouseManager.getInstance();
+        MouseManager mouseManager = app.getMouseManager();
         final double mouseX = mouseManager.getX();
         final double mouseY = mouseManager.getY();
         final double radianToMouse = Algebra.getRotate(this.xRotateCam, this.yRotateCam, mouseX, mouseY);

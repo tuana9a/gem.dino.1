@@ -40,7 +40,7 @@ public class ShootOut extends WeaponOut
     
     @Override
     protected void typicalUpdate() {
-        EntityManager entityManager = EntityManager.getInstance();
+        EntityManager entityManager = app.getEntityManager();
         if (this.hitEntity != null) {
             if (!entityManager.isManage(this.hitEntity)) {
                 this.state = 2;

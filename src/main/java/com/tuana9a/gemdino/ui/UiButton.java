@@ -3,6 +3,7 @@ package com.tuana9a.gemdino.ui;
 import java.awt.Graphics2D;
 import java.awt.Graphics;
 
+import com.tuana9a.gemdino.app.App;
 import com.tuana9a.gemdino.app.EventQueue;
 import com.tuana9a.gemdino.interfaces.EventHandler;
 import com.tuana9a.gemdino.screen.Screen;
@@ -12,8 +13,8 @@ public class UiButton extends UiComponent {
     private final UiAnimation animation;
     private final EventHandler eventHandler;
 
-    public UiButton(final Screen state, final double x, final double y, final int width, final int height, final UiAnimation animation, final EventHandler eventHandler) {
-        super(state, x, y, width, height);
+    public UiButton(App app, final Screen screen, final double x, final double y, final int width, final int height, final UiAnimation animation, final EventHandler eventHandler) {
+        super(app, screen, x, y, width, height);
         this.animation = animation;
         this.eventHandler = eventHandler;
     }
@@ -26,7 +27,7 @@ public class UiButton extends UiComponent {
 
     @Override
     public void onRelease() {
-        EventQueue eventQueue = EventQueue.getInstance();
+        EventQueue eventQueue = app.getEventQueue();
         eventQueue.push(this.eventHandler);
     }
 }

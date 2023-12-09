@@ -5,8 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyboardManager implements KeyListener {
-    private static final KeyboardManager instance= new KeyboardManager();
-
     private boolean[] keys;
     public boolean up;
     public boolean down;
@@ -31,12 +29,8 @@ public class KeyboardManager implements KeyListener {
     public boolean rotationMode;
     public boolean freeCamMode;
 
-    private KeyboardManager() {
+    public KeyboardManager() {
         this.keys = new boolean[1000];
-    }
-
-    public static KeyboardManager getInstance() {
-        return instance;
     }
 
     public void update() {
@@ -70,7 +64,7 @@ public class KeyboardManager implements KeyListener {
     public void keyPressed(final KeyEvent e) {
         try {
             this.keys[e.getKeyCode()] = true;
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
         this.update();
     }

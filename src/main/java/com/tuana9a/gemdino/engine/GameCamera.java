@@ -28,7 +28,7 @@ public class GameCamera {
     }
 
     public void move() {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         final boolean up = keyboardManager.up;
         final boolean down = keyboardManager.down;
         final boolean left = keyboardManager.left;
@@ -59,7 +59,7 @@ public class GameCamera {
     }
 
     public void checkBlankSpace() {
-        GameMap gameMap = GameMap.getInstance();
+        GameMap gameMap = app.getGameMap();
         final int mapWidth = gameMap.getMapPixelWidth();
         final int mapHeight = gameMap.getMapPixelHeight();
         final int screenWidth = app.getDisplayWidth();

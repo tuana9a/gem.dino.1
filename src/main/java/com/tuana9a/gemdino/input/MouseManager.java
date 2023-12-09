@@ -8,17 +8,12 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;
 
 public class MouseManager implements MouseListener, MouseMotionListener {
-    private static final MouseManager instance = new MouseManager();
-    private App app;
+    private final App app;
     private int mouseX;
     private int mouseY;
 
-    private MouseManager(App app) {
+    public MouseManager(App app) {
         this.app = app;
-    }
-
-    public static MouseManager getInstance() {
-        return instance;
     }
 
     @Override
@@ -61,7 +56,7 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseExited(final MouseEvent e) {
-        KeyboardManager keyboardManager = KeyboardManager.getInstance();
+        KeyboardManager keyboardManager = app.getKeyboardManager();
         keyboardManager.update();
     }
 }

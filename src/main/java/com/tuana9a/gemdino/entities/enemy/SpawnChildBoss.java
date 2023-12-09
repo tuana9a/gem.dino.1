@@ -55,9 +55,9 @@ public class SpawnChildBoss extends Enemy {
                         enemyWeapons[j] = new Spear(randomWeaponId, children[j]);
                     }
                 }
-                EventQueue eventQueue = EventQueue.getInstance();
+                EventQueue eventQueue = app.getEventQueue();
                 eventQueue.push(() -> {
-                    EntityManager entityManager = EntityManager.getInstance();
+                    EntityManager entityManager = app.getEntityManager();
                     entityManager.addAllEntities(children);
                     entityManager.addAllEntities(enemyWeapons);
                 });

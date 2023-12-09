@@ -22,27 +22,24 @@ import com.tuana9a.gemdino.screen.LoadingScreen;
 import com.tuana9a.gemdino.utils.Loading;
 import com.tuana9a.gemdino.entities.player.Player;
 import com.tuana9a.gemdino.screen.GameScreen;
+import lombok.Getter;
 
 public class GameWorld {
-    private static final GameWorld instance = new GameWorld();
-    private App app;
+    private final App app;
     private Player player;
+    @Getter
+    private final EntityManager entityManager;
 
-    private GameWorld(App app) {
+    public GameWorld(App app) {
         this.app = app;
-    }
-
-    public static GameWorld getInstance() {
-        return instance;
+        this.entityManager = new EntityManager(app);
     }
 
     public void resetEntityManagerAll() {
-        EntityManager entityManager = EntityManager.getInstance();
         entityManager.nullEveryThing();
     }
 
     public void resetEntityManagerExceptPlayer() {
-        EntityManager entityManager = EntityManager.getInstance();
         entityManager.nullEveryThingExceptPlayer();
     }
 
@@ -55,9 +52,8 @@ public class GameWorld {
     }
 
     public void replay() {
-        EntityManager entityManager = EntityManager.getInstance();
         GameScreen gameScreen = app.getGameScreen();
-        GameMap gameMap = GameMap.getInstance();
+        GameMap gameMap = app.getGameMap();
         this.player.dropAllWeapon();
         this.resetEntityManagerAll();
         this.player.updatePosition(gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
@@ -72,7 +68,7 @@ public class GameWorld {
     public void newGame(final Player newPlayer, final String mapId) {
         this.resetPlayer();
         this.resetEntityManagerAll();
-        final GameMap gameMap = GameMap.getInstance();
+        final GameMap gameMap = app.getGameMap();
         gameMap.loading = new Loading(10, 0, 100L);
         LoadingScreen loadingScreen = app.getLoadingScreen();
         app.switchScreen(loadingScreen);
@@ -81,7 +77,6 @@ public class GameWorld {
         loadingScreen.getExecutorService().submit(new Runnable() {
             @Override
             public void run() {
-                EntityManager entityManager = EntityManager.getInstance();
                 if (mapId == null || mapId.equals("")) {
                     GameWorld.this.initMapById("1");
                 } else {
@@ -90,9 +85,9 @@ public class GameWorld {
                 if (newPlayer == null) {
                     final int playerId = gameMap.getPlayerId();
                     if (playerId == -1) {
-                        GameWorld.this.player = new Player(gameScreen, 0, gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
+                        GameWorld.this.player = new Player(app, 0, gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
                     } else {
-                        GameWorld.this.player = new Player(gameScreen, playerId, gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
+                        GameWorld.this.player = new Player(app, playerId, gameMap.getPixelSpawnX(), gameMap.getPixelSpawnY());
                     }
                 } else {
                     GameWorld.this.player = newPlayer;
@@ -113,7 +108,7 @@ public class GameWorld {
     public void teleportToNewMap(final String mapId) {
         this.resetEntityManagerAll();
         this.player.clearIntersects();
-        final GameMap gameMap = GameMap.getInstance();
+        final GameMap gameMap = app.getGameMap();
         gameMap.loading = new Loading(10, 0, 100L);
         LoadingScreen loadingScreen = app.getLoadingScreen();
         app.switchScreen(loadingScreen);
@@ -121,7 +116,6 @@ public class GameWorld {
         loadingScreen.getExecutorService().submit(new Runnable() {
             @Override
             public void run() {
-                EntityManager entityManager = EntityManager.getInstance();
                 if (mapId == null || mapId.equals("")) {
                     GameWorld.this.initMapById("1");
                 } else {
@@ -141,7 +135,7 @@ public class GameWorld {
     }
 
     public void initMapById(final String mapId) {
-        GameMap gameMap = GameMap.getInstance();
+        GameMap gameMap = app.getGameMap();
         gameMap.loadMapById(mapId);
         this.initEntitiesWithMap();
     }
@@ -149,8 +143,7 @@ public class GameWorld {
     public void initEntitiesWithMap() {
         GameScreen gameScreen = app.getGameScreen();
         gameScreen.notBossStage();
-        EntityManager entityManager = EntityManager.getInstance();
-        GameMap gameMap = GameMap.getInstance();
+        GameMap gameMap = app.getGameMap();
         final int enemyNumber = gameMap.getEnemyNumber();
         final int[][] enemiesInfo = gameMap.getEnemiesInfo();
         final Enemy[] enemies = new Enemy[enemyNumber];
@@ -159,7 +152,7 @@ public class GameWorld {
             final int[] info = enemiesInfo[i];
             if (Enemy.isBoss(info[0])) {
                 gameScreen.isBossStage(ConfigEnemy.healths[info[0]]);
-                enemies[i] = new SpawnChildBoss(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                enemies[i] = new SpawnChildBoss(app, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else if (Enemy.isHard(info[0])) {
                 enemies[i] = new HardEnemy(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else {
@@ -203,18 +196,15 @@ public class GameWorld {
     }
 
     public void update() {
-        EntityManager entityManager = EntityManager.getInstance();
         entityManager.updateAll();
     }
 
     public void updateEveryRelCamAll() {
-        EntityManager entityManager = EntityManager.getInstance();
         entityManager.updateAllEveryRelCam();
     }
 
     public void render(final Graphics g) {
-        EntityManager entityManager = EntityManager.getInstance();
-        GameMap gameMap = GameMap.getInstance();
+        GameMap gameMap = app.getGameMap();
         gameMap.render(g);
         entityManager.renderAll(g);
     }
