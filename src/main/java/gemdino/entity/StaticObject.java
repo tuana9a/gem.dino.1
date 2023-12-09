@@ -1,6 +1,7 @@
 package gemdino.entity;
 
 import gemdino.animation.MoveAnimation;
+import gemdino.app.App;
 import gemdino.configs.ConfigStaticObject;
 import gemdino.graphic.Assets;
 
@@ -21,8 +22,8 @@ public class StaticObject extends StaticEntity {
         this.moveAnimation = new MoveAnimation(Assets.staticObjects[staticObjectId]);
     }
 
-    public StaticObject(final int staticObjectId, final double x, final double y) {
-        super(staticObjectId, x, y);
+    public StaticObject(App app, final int staticObjectId, final double x, final double y) {
+        super(app, staticObjectId, x, y);
         this.moveDirect = 0;
     }
 

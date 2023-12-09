@@ -154,19 +154,19 @@ public class GameWorld {
                 gameScreen.isBossStage(ConfigEnemy.healths[info[0]]);
                 enemies[i] = new SpawnChildBoss(app, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else if (Enemy.isHard(info[0])) {
-                enemies[i] = new HardEnemy(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                enemies[i] = new HardEnemy(app, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             } else {
-                enemies[i] = new NormalEnemy(info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
+                enemies[i] = new NormalEnemy(app, info[0], (info[1] + 0.5) * 64.0 - ConfigEnemy.widths[info[0]] / 2, (info[2] + 1) * 64 - ConfigEnemy.heights[info[0]]);
             }
         }
         for (int i = 0; i < enemyNumber; ++i) {
             final int randomWeaponId = i % 5;
             if (Weapon.isShootWeapon(randomWeaponId)) {
-                enemyWeapons[i] = new Shoot(randomWeaponId, enemies[i]);
+                enemyWeapons[i] = new Shoot(app, randomWeaponId, enemies[i]);
             } else if (Weapon.isSword(randomWeaponId)) {
-                enemyWeapons[i] = new Sword(randomWeaponId, enemies[i]);
+                enemyWeapons[i] = new Sword(app, randomWeaponId, enemies[i]);
             } else if (Weapon.isSpear(randomWeaponId)) {
-                enemyWeapons[i] = new Spear(randomWeaponId, enemies[i]);
+                enemyWeapons[i] = new Spear(app, randomWeaponId, enemies[i]);
             }
         }
         final int weaponNumber = gameMap.getWeaponNumber();
@@ -175,11 +175,11 @@ public class GameWorld {
         for (int j = 0; j < weaponNumber; ++j) {
             final int[] info2 = aloneWeaponsInfo[j];
             if (Weapon.isShootWeapon(info2[0])) {
-                aloneWeapons[j] = new Shoot(info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
+                aloneWeapons[j] = new Shoot(app, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             } else if (Weapon.isSword(info2[0])) {
-                aloneWeapons[j] = new Sword(info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
+                aloneWeapons[j] = new Sword(app, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             } else if (Weapon.isSpear(info2[0])) {
-                aloneWeapons[j] = new Spear(info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
+                aloneWeapons[j] = new Spear(app, info2[0], (info2[1] + 0.5) * 64.0 - ConfigWeapon.widths[info2[0]] / 2, (info2[2] + 1) * 64 - ConfigWeapon.heights[info2[0]]);
             }
         }
         final StaticObject[] statics = new StaticObject[gameMap.getStaticObjectNumber() + 1];
@@ -187,9 +187,9 @@ public class GameWorld {
         for (int k = 0; k < staticsInfo.length; ++k) {
             final int[] info3 = staticsInfo[k];
             if (Ground.isTeleAbove(info3[0])) {
-                statics[k] = new TeleportGate(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], gameMap.nextMapId);
+                statics[k] = new TeleportGate(app, info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]], gameMap.nextMapId);
             } else {
-                statics[k] = new StaticObject(info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]]);
+                statics[k] = new StaticObject(app, info3[0], (info3[1] + 0.5) * 64.0 - ConfigStaticObject.widths[info3[0]] / 2, (info3[2] + 1) * 64 - ConfigStaticObject.heights[info3[0]]);
             }
         }
         entityManager.addAllEntities(new Entity[][]{enemies, enemyWeapons, aloneWeapons, statics});

@@ -4,6 +4,7 @@ import gemdino.animation.MoveAnimation;
 import gemdino.animation.StateAnimation;
 import gemdino.app.App;
 import gemdino.enemy.Enemy;
+import gemdino.interfaces.Renderer;
 import gemdino.weapon.Weapon;
 import gemdino.weapon.WeaponOut;
 import gemdino.engine.GameCamera;
@@ -48,6 +49,9 @@ public abstract class Entity {
     public static final int RIGHT_INDEX = 1;
     public static final int X_INDEX = 0;
     public static final int Y_INDEX = 1;
+    protected Renderer innerBoundRenderer;
+    protected Renderer outerBoundRenderer;
+    protected Renderer workingAreaRenderer;
 
     protected abstract void initCoreInfo(final int p0);
 
@@ -112,29 +116,11 @@ public abstract class Entity {
     }
 
     public void renderInnerBound(final Graphics g) {
-        if (this instanceof WeaponOut) {
-            g.setColor(Color.GREEN);
-        } else if (this instanceof Animal) {
-            g.setColor(Color.BLUE);
-        } else if (this instanceof Weapon) {
-            g.setColor(Color.BLUE);
-        } else {
-            g.setColor(Color.BLACK);
-        }
-        g.fillRect((int) this.xCam + this.actualSize.x, (int) this.yCam + this.actualSize.y, this.actualSize.width, this.actualSize.height);
-        g.setColor(Color.CYAN);
-        g.drawRect((int) this.xCam + this.actualSize.x, (int) this.yCam + this.actualSize.y, this.actualSize.width, this.actualSize.height);
+        this.innerBoundRenderer.render(g);
     }
 
     public void renderOuterBound(final Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect((int) this.xCam, (int) this.yCam, this.width, this.height);
-        g.setColor(Color.CYAN);
-        g.drawRect((int) this.xCam, (int) this.yCam, this.width, this.height);
-        g.drawLine((int) this.xCam, (int) this.yCam + this.actualSize.y, (int) this.xCam + this.actualSize.x, (int) this.yCam + this.actualSize.y);
-        g.drawLine((int) this.xCam, (int) this.yCam, (int) this.xCam + this.actualSize.x, (int) this.yCam);
-        g.drawLine((int) this.xCam + this.actualSize.x, (int) this.yCam, (int) this.xCam + this.actualSize.x, (int) this.yCam + this.actualSize.y);
-        g.drawLine((int) this.xCam, (int) this.yCam, (int) this.xCam, (int) this.yCam + this.actualSize.y);
+        this.outerBoundRenderer.render(g);
     }
 
     public void renderRotation(final Graphics g) {
@@ -160,14 +146,8 @@ public abstract class Entity {
         g.fillOval((int) this.xRotateCam - r4, (int) this.yRotateCam - r4, r4 * 2, r4 * 2);
     }
 
-    public void renderWorkingArea(final Graphics g) { // TODO: strategy pattern
-        final Graphics2D g2d = (Graphics2D) g.create();
-        g2d.setColor(Color.RED);
-        final Enemy e = (Enemy) this;
-        final GameCamera gameCamera = GameCamera.getInstance();
-        final double x = gameCamera.getCamRenderX(e.workingArea.x);
-        final double y = gameCamera.getCamRenderY(e.workingArea.y);
-        g2d.drawRect((int) x, (int) y, e.workingArea.width, e.workingArea.height);
+    public void renderWorkingArea(final Graphics g) {
+        this.workingAreaRenderer.render(g);
     }
 
     public void renderEyeDistance(final Graphics g) {
@@ -241,7 +221,7 @@ public abstract class Entity {
     }
 
     public void updatePositionCam() {
-        final GameCamera gameCamera = GameCamera.getInstance();
+        final GameCamera gameCamera = app.getGameCamera();
         this.xCam = gameCamera.getCamRenderX(this.x);
         this.yCam = gameCamera.getCamRenderY(this.y);
         this.updateRotatePositionCam();
@@ -258,7 +238,7 @@ public abstract class Entity {
     }
 
     public void updateRotatePositionCam() {
-        final GameCamera gameCamera = GameCamera.getInstance();
+        final GameCamera gameCamera = app.getGameCamera();
         this.xRotateCam = gameCamera.getCamRenderX(this.x + this.xRotateRelX);
         this.yRotateCam = gameCamera.getCamRenderY(this.y + this.yRotateRelY);
     }

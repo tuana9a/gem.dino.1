@@ -24,3 +24,13 @@ graph TD;
 
 Every children does not have direct access to their parent.\
 They have access to the `App` and from the `App` they have access to their parent.
+
+```mermaid
+graph TD;
+    Entity-->MovingEntity;
+    Entity-->StaticEntity;
+    MovingEntity-->Animal;
+    MovingEntity-->WeaponOut;
+    Animal-->Player;
+    Animal-->Enemy;
+```

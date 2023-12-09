@@ -7,6 +7,9 @@ import gemdino.animation.StateAnimation;
 import gemdino.animation.MoveAnimation;
 import gemdino.graphic.Assets;
 import gemdino.configs.ConfigWeaponOut;
+import gemdino.entity.renderer.InnerBoundRenderer;
+
+import java.awt.*;
 
 public abstract class WeaponOut extends MovingEntity {
     public static final int STATE_NUMBER = 3;
@@ -44,6 +47,7 @@ public abstract class WeaponOut extends MovingEntity {
         this.owner = owner;
         this.fromWeapon = fromWeapon;
         this.moveDirect = fromWeapon.moveDirect;
+        this.innerBoundRenderer = new InnerBoundRenderer(this, Color.GREEN, Color.CYAN);
         this.updateRotateRelative();
         this.updateRotate(fromWeapon.radianRotateMain);
     }

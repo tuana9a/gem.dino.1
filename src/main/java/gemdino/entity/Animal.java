@@ -3,6 +3,7 @@ package gemdino.entity;
 import gemdino.ability.CanMountWeapon;
 import gemdino.ability.CanSee;
 import gemdino.app.App;
+import gemdino.entity.renderer.InnerBoundRenderer;
 import gemdino.weapon.Weapon;
 import gemdino.weapon.WeaponOut;
 import gemdino.engine.GameMap;
@@ -10,6 +11,8 @@ import gemdino.enemy.Enemy;
 import gemdino.animation.StateAnimation;
 import gemdino.ability.BaseSkill;
 import gemdino.utils.Timer;
+
+import java.awt.*;
 
 public abstract class Animal extends MovingEntity {
     public static int STATE_NUMBER;
@@ -42,6 +45,7 @@ public abstract class Animal extends MovingEntity {
         this.effectTime = new Timer();
         this.vision = new CanSee(app, this);
         this.hand = new CanMountWeapon(this);
+        this.innerBoundRenderer = new InnerBoundRenderer(this, Color.BLUE, Color.CYAN);
         this.initSkills();
     }
 

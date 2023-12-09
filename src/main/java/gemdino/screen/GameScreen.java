@@ -39,6 +39,7 @@ public class GameScreen extends Screen {
         this.gameCamera = new GameCamera(app);
         this.gameMap = new GameMap(app);
         this.gameWorld = new GameWorld(app);
+        this.initUi();
     }
 
     @Override

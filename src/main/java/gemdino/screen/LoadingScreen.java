@@ -29,6 +29,7 @@ public class LoadingScreen extends Screen {
     public LoadingScreen(App app) {
         this.app = app;
         this.executorService = Executors.newFixedThreadPool(4);
+        this.initUi();
     }
 
     public void create(final Loading loading) {
@@ -54,7 +55,7 @@ public class LoadingScreen extends Screen {
         final int barSize = 30;
         final int minSpace = 15;
         this.uiProgressBar = new UiProgressBar(app, this, quarterW, threeQuarterH, halfW, (int) (barSize * 1.25), Assets.progressBarLeft, Assets.progressBarMid, Assets.progressBarRight);
-        this.uiProgressAnimation = new UiImageAnimation(this, quarterW, threeQuarterH - 70, 120, 60, new UiAnimation(Assets.loadProgressAnimation, 50));
+        this.uiProgressAnimation = new UiImageAnimation(app, this, quarterW, threeQuarterH - 70, 120, 60, new UiAnimation(Assets.loadProgressAnimation, 50));
         this.uiManager.addAllUiComponent(this.uiProgressBar, this.uiProgressAnimation);
     }
 

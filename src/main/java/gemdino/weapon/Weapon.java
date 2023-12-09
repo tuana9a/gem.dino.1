@@ -1,9 +1,11 @@
 package gemdino.weapon;
 
+import gemdino.app.App;
 import gemdino.engine.EntityManager;
 import gemdino.enemy.Enemy;
 import gemdino.player.Player;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import gemdino.entity.Animal;
@@ -11,6 +13,7 @@ import gemdino.entity.Entity;
 import gemdino.entity.StaticEntity;
 import gemdino.input.KeyboardManager;
 import gemdino.input.MouseManager;
+import gemdino.entity.renderer.InnerBoundRenderer;
 import gemdino.utils.Algebra;
 import gemdino.animation.StateAnimation;
 import gemdino.animation.MoveAnimation;
@@ -68,21 +71,23 @@ public abstract class Weapon extends StaticEntity {
         this.allStateAnimations = new StateAnimation[5];
     }
 
-    public Weapon(final int weaponId, final double x, final double y) {
-        super(weaponId, x, y);
+    public Weapon(App app, final int weaponId, final double x, final double y) {
+        super(app, weaponId, x, y);
         if (isBow(weaponId)) {
             this.updateRotate(1.5707963267948966);
         } else {
             this.updateRotate(0.0);
         }
         this.state = 0;
+        this.innerBoundRenderer = new InnerBoundRenderer(this, Color.BLUE, Color.CYAN);
     }
 
-    public Weapon(final int weaponId, final Animal owner) {
-        super(weaponId, owner.x + owner.width / 2.0, owner.y + owner.height / 2.0);
+    public Weapon(App app, final int weaponId, final Animal owner) {
+        super(app, weaponId, owner.x + owner.width / 2.0, owner.y + owner.height / 2.0);
         this.updateRotate(0.0);
         owner.takeWeapon(this);
         this.moveDirect = owner.moveDirect;
+        this.innerBoundRenderer = new InnerBoundRenderer(this, Color.BLUE, Color.CYAN);
     }
 
     @Override

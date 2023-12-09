@@ -1,6 +1,7 @@
 package gemdino.enemy;
 
 import gemdino.animation.StateAnimation;
+import gemdino.app.App;
 import gemdino.graphic.Assets;
 
 public class NormalEnemy extends Enemy {
@@ -12,7 +13,7 @@ public class NormalEnemy extends Enemy {
         this.allStateAnimations[NormalEnemy.DEAD] = new StateAnimation(Assets.deadState, new double[][]{{0.0, 0.0}, {0.0, 0.0}}, this.width, this.height);
     }
 
-    public NormalEnemy(final int enemyId, final double x, final double y) {
-        super(enemyId, x, y);
+    public NormalEnemy(App app, final int enemyId, final double x, final double y) {
+        super(app, enemyId, x, y);
     }
 }

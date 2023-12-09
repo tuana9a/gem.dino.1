@@ -14,6 +14,7 @@ public class ErrorScreen extends Screen {
     public ErrorScreen(App app) {
         this.app = app;
         this.errorMessages = new ArrayList<>();
+        this.initUi();
     }
 
     public void addErrors(final String... messages) {

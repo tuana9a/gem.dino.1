@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class GameCamera {
-    private static final GameCamera instance = new GameCamera();
     private final App app;
     @Setter
     @Getter
@@ -20,10 +19,6 @@ public class GameCamera {
     public GameCamera(App app) {
         this.app = app;
         this.speed = 4.0;
-    }
-
-    public static GameCamera getInstance() { // TODO: cleanup
-        return instance;
     }
 
     public void move() {

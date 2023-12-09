@@ -6,7 +6,6 @@ import gemdino.app.App;
 import gemdino.app.EventQueue;
 import gemdino.configs.ConfigEnemy;
 import gemdino.engine.EntityManager;
-import com.tuana9a.gemdino.entities.weapon.*;
 import gemdino.graphic.Assets;
 import gemdino.screen.GameScreen;
 import gemdino.utils.Timer;
@@ -40,20 +39,20 @@ public class SpawnChildBoss extends Enemy {
                     final int randomId = (int) (Math.random() * 3.0 - 1.0);
                     final double temp = ConfigEnemy.widths[randomId] / 2.0;
                     if (isHard(randomId)) {
-                        children[i] = new HardEnemy(randomId, startX - temp, startY);
+                        children[i] = new HardEnemy(app, randomId, startX - temp, startY);
                     } else {
-                        children[i] = new NormalEnemy(randomId, startX - temp, startY);
+                        children[i] = new NormalEnemy(app, randomId, startX - temp, startY);
                     }
                 }
                 final Weapon[] enemyWeapons = new Weapon[size];
                 for (int j = 0; j < size; ++j) {
                     final int randomWeaponId = j % 5;
                     if (Weapon.isShootWeapon(randomWeaponId)) {
-                        enemyWeapons[j] = new Shoot(randomWeaponId, children[j]);
+                        enemyWeapons[j] = new Shoot(app, randomWeaponId, children[j]);
                     } else if (Weapon.isSword(randomWeaponId)) {
-                        enemyWeapons[j] = new Sword(randomWeaponId, children[j]);
+                        enemyWeapons[j] = new Sword(app, randomWeaponId, children[j]);
                     } else if (Weapon.isSpear(randomWeaponId)) {
-                        enemyWeapons[j] = new Spear(randomWeaponId, children[j]);
+                        enemyWeapons[j] = new Spear(app, randomWeaponId, children[j]);
                     }
                 }
                 EventQueue eventQueue = app.getEventQueue();

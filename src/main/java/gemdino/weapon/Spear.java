@@ -1,5 +1,6 @@
 package gemdino.weapon;
 
+import gemdino.app.App;
 import gemdino.entity.Entity;
 
 import java.util.ArrayList;
@@ -7,12 +8,12 @@ import java.util.ArrayList;
 import gemdino.entity.Animal;
 
 public class Spear extends Weapon {
-    public Spear(final int weaponId, final double x, final double y) {
-        super(weaponId, x, y);
+    public Spear(App app, final int weaponId, final double x, final double y) {
+        super(app, weaponId, x, y);
     }
 
-    public Spear(final int weaponId, final Animal owner) {
-        super(weaponId, owner);
+    public Spear(App app, final int weaponId, final Animal owner) {
+        super(app, weaponId, owner);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class Spear extends Weapon {
     }
 
     public ArrayList<Entity> typicalAttack() {
-        final SpearOut melee = new SpearOut(this.id, this, this.owner);
+        final SpearOut melee = new SpearOut(app, this.id, this, this.owner);
         return new ArrayList<Entity>() {
             {
                 add(melee);

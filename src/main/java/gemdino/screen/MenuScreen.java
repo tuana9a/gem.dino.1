@@ -15,6 +15,7 @@ public class MenuScreen extends Screen {
 
     public MenuScreen(App app) {
         this.app = app;
+        this.initUi();
     }
 
     @Override
